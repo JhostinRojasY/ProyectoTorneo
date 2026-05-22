@@ -48,6 +48,10 @@ public class PanelLlaves extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         arbolTorneo = new javax.swing.JTree();
         btnFinalizado = new javax.swing.JButton();
+        txtBuscarEquipo = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtHistorial = new javax.swing.JTextArea();
+        btnLimpiar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(37, 37, 38));
 
@@ -74,6 +78,35 @@ public class PanelLlaves extends javax.swing.JPanel {
             }
         });
 
+        txtBuscarEquipo.setText("Buscar Equipo...");
+        txtBuscarEquipo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtBuscarEquipoFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtBuscarEquipoFocusLost(evt);
+            }
+        });
+        txtBuscarEquipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarEquipoActionPerformed(evt);
+            }
+        });
+
+        txtHistorial.setEditable(false);
+        txtHistorial.setColumns(20);
+        txtHistorial.setLineWrap(true);
+        txtHistorial.setRows(5);
+        txtHistorial.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(txtHistorial);
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,13 +115,22 @@ public class PanelLlaves extends javax.swing.JPanel {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnGenerarTorneo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnFinalizado)
-                        .addGap(62, 62, 62))))
+                        .addGap(62, 62, 62))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(txtBuscarEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(75, 75, 75))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnLimpiar)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,9 +139,16 @@ public class PanelLlaves extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGenerarTorneo)
                     .addComponent(btnFinalizado))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtBuscarEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addComponent(btnLimpiar))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -172,12 +221,94 @@ public class PanelLlaves extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFinalizadoActionPerformed
 
+    private void txtBuscarEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarEquipoActionPerformed
+        // TODO add your handling code here:
+    String equipoBuscado = txtBuscarEquipo.getText().trim();
+
+    if (equipoBuscado.isEmpty() || equipoBuscado.equals("Buscar Equipo...")) {
+        txtHistorial.setText("⚠️ Por favor, ingresa el nombre\n de un equipo válido.");
+        return;
+    }
+
+
+    if (partidoFinal == null) {
+        txtHistorial.setText("❌ El torneo aún no ha sido generado.");
+        return;
+    }
+
+    StringBuilder progreso = new StringBuilder();
+
+    buscarHistorial(partidoFinal, equipoBuscado, progreso);
+
+    if (progreso.length() == 0) {
+        txtHistorial.setText(" No se encontraron registros para:\n '" + equipoBuscado + "'");
+    } else {
+        txtHistorial.setText(" PROGRESO DEL \n" +
+                             " Equipo: " + equipoBuscado.toUpperCase() + "\n" +
+                             "--------------------------------------\n" + 
+                             progreso.toString());
+    }
+    }//GEN-LAST:event_txtBuscarEquipoActionPerformed
+
+    private void txtBuscarEquipoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarEquipoFocusGained
+        // TODO add your handling code here:
+        if (txtBuscarEquipo.getText().equals("Buscar Equipo...")) {
+            txtBuscarEquipo.setText("");
+            txtBuscarEquipo.setForeground(java.awt.Color.BLACK);
+        }
+    }//GEN-LAST:event_txtBuscarEquipoFocusGained
+
+    private void txtBuscarEquipoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarEquipoFocusLost
+        // TODO add your handling code here:
+        if (txtBuscarEquipo.getText().isEmpty()) {
+        txtBuscarEquipo.setText("Buscar Equipo...");
+        txtBuscarEquipo.setForeground(java.awt.Color.GRAY); 
+        }
+    }//GEN-LAST:event_txtBuscarEquipoFocusLost
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        txtHistorial.setText(" Escribe un equipo arriba para\n ver su seguimiento aquí...");
+
+    txtBuscarEquipo.setText("Buscar Equipo...");
+    txtBuscarEquipo.setForeground(java.awt.Color.GRAY);
+    
+    this.requestFocus();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+    
+    private void buscarHistorial(com.utp.aed.proyectotorneo.model.NodoPartido nodo, String equipo, StringBuilder progreso) {
+        if (nodo == null) return;
+
+    buscarHistorial(nodo.partidoPrevio1, equipo, progreso);
+    buscarHistorial(nodo.partidoPrevio2, equipo, progreso);
+
+    if (nodo.equipo1.equalsIgnoreCase(equipo) || nodo.equipo2.equalsIgnoreCase(equipo)) {
+        String rival = nodo.equipo1.equalsIgnoreCase(equipo) ? nodo.equipo2 : nodo.equipo1;
+        
+        if (nodo.ganador.equals("Pendiente")) {
+            progreso.append("▶ Próximo partido: Pendiente vs ").append(rival).append("\n");
+        } else if (nodo.ganador.equalsIgnoreCase(equipo)) {
+           
+            if (nodo == partidoFinal) {
+                progreso.append(" Victoria en la Final vs ").append(rival).append("");
+            } else {
+                progreso.append(" Victoria vs ").append(rival).append("");
+            }
+        } else {
+            progreso.append("✗ Derrota vs ").append(rival).append(" (Eliminado)");
+        }
+    }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arbolTorneo;
     private javax.swing.JButton btnFinalizado;
     private javax.swing.JButton btnGenerarTorneo;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField txtBuscarEquipo;
+    private javax.swing.JTextArea txtHistorial;
     // End of variables declaration//GEN-END:variables
 
     // Clase especial para guardar la info sin romper el texto de la pantalla
