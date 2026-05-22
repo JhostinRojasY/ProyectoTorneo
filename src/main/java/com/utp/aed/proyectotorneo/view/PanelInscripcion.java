@@ -18,6 +18,8 @@ public class PanelInscripcion extends javax.swing.JPanel {
 
     
     private void actualizarPantalla() {
+        com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
+        Inicio.listaEquipos = (java.util.ArrayList<String>) dao.obtenerTodosLosNombres();
         
         int total = Inicio.listaEquipos.size();
         lblTotalInscritos.setText(String.valueOf(total));
@@ -256,20 +258,23 @@ public class PanelInscripcion extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {                                           
         String nombre = txtNombreEquipo.getText().trim();
         if (!nombre.isEmpty()) {
-            Inicio.listaEquipos.add(nombre); 
-            txtNombreEquipo.setText("");     
-            txtNombreEquipo.requestFocus();  
-            actualizarPantalla();            
+            com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
+            if(dao.registrarEquipo(nombre)){
+                txtNombreEquipo.setText("");     
+                txtNombreEquipo.requestFocus();  
+                actualizarPantalla();            
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar en Base de Datos. Puede que ya exista.");
+            }
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Escribe un nombre de equipo.");
         }
-    }//GEN-LAST:event_btnAgregarActionPerformed
+    }                                          
 
-    private void btnReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReiniciarActionPerformed
+    private void btnReiniciarActionPerformed(java.awt.event.ActionEvent evt) {                                             
     
     int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this, 
             "¿Estás seguro de que deseas eliminar todos los equipos inscritos y reiniciar el torneo?", 
@@ -279,14 +284,15 @@ public class PanelInscripcion extends javax.swing.JPanel {
 
     
     if (confirmacion == 0) {
-        
-        Inicio.listaEquipos.clear();
+        com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
+        dao.eliminarTodos();
+        new com.utp.aed.proyectotorneo.dao.LlaveDAO().eliminarArbol();
         Inicio.campeonActual = "";
         actualizarPantalla();
         
-        javax.swing.JOptionPane.showMessageDialog(this, "El torneo ha sido reiniciado. Lista en blanco.");
+        javax.swing.JOptionPane.showMessageDialog(this, "El torneo ha sido reiniciado en la Base de Datos.");
     }
-    }//GEN-LAST:event_btnReiniciarActionPerformed
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

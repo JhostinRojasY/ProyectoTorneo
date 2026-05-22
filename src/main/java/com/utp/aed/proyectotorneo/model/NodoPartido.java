@@ -7,6 +7,7 @@ package com.utp.aed.proyectotorneo.model;
 
 public class NodoPartido {
   
+    public int id = -1; // ID de base de datos
     public String equipo1;
     public String equipo2;
     public String ganador;

@@ -12,17 +12,27 @@ public class Inicio extends javax.swing.JFrame {
 
     public static String campeonActual = "";
     public static java.util.ArrayList<String> listaEquipos = new java.util.ArrayList<>();
+    
+    private com.utp.aed.proyectotorneo.model.Usuario usuarioActual;
 
     /**
      * Creates new form Inicio
      */
     public Inicio() {
-
         initComponents();
-        //(Ancho, Alto)
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
-
+    }
+    
+    public Inicio(com.utp.aed.proyectotorneo.model.Usuario usuario) {
+        this();
+        this.usuarioActual = usuario;
+        
+        // Control de acceso basado en el rol
+        if (usuarioActual != null && "Equipo".equalsIgnoreCase(usuarioActual.getRol().getNombre())) {
+            btnIns.setVisible(false);
+            btnConfig.setVisible(false);
+        }
     }
 
     /**
@@ -44,7 +54,7 @@ public class Inicio extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         pnlSidebar.setBackground(new java.awt.Color(204, 204, 204));
-        pnlSidebar.setLayout(new java.awt.GridLayout(5, 1));
+        pnlSidebar.setLayout(new java.awt.GridLayout(6, 1));
 
         btnDashboard.setText("🏠 Dashboard");
         btnDashboard.addActionListener(new java.awt.event.ActionListener() {
@@ -78,6 +88,17 @@ public class Inicio extends javax.swing.JFrame {
         });
         pnlSidebar.add(btnConfig);
 
+        btnCerrarSesion = new javax.swing.JButton();
+        btnCerrarSesion.setText("🚪 Cerrar Sesión");
+        btnCerrarSesion.setBackground(new java.awt.Color(255, 102, 102));
+        btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
+        pnlSidebar.add(btnCerrarSesion);
+
         getContentPane().add(pnlSidebar, java.awt.BorderLayout.WEST);
 
         pnlContenido.setBackground(new java.awt.Color(37, 37, 38));
@@ -89,46 +110,25 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-        // 1. Instanciar el panel que queremos mostrar
-        PanelDashboard pnlDash = new PanelDashboard();
-
-// 2. Limpiar todo lo que haya actualmente en el contenedor central
+        PanelDashboard pnlDash = new PanelDashboard(this.usuarioActual);
         pnlContenido.removeAll();
-
-// 3. Añadir el nuevo panel indicando que ocupe todo el centro
         pnlContenido.add(pnlDash, java.awt.BorderLayout.CENTER);
-
-// 4. Refrescar y repintar la ventana para que los cambios sean visibles
         pnlContenido.revalidate();
         pnlContenido.repaint();
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnInsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsActionPerformed
-        // TODO add your handling code here:
         PanelInscripcion pnlIns = new PanelInscripcion();
-
-// 2. Limpiar todo lo que haya actualmente en el contenedor central
         pnlContenido.removeAll();
-
-// 3. Añadir el nuevo panel indicando que ocupe todo el centro
         pnlContenido.add(pnlIns, java.awt.BorderLayout.CENTER);
-
-// 4. Refrescar y repintar la ventana para que los cambios sean visibles
         pnlContenido.revalidate();
         pnlContenido.repaint();
     }//GEN-LAST:event_btnInsActionPerformed
 
     private void btnLlavesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLlavesActionPerformed
-        // TODO add your handling code here
-        PanelLlaves pnlLlav = new PanelLlaves();
-
-// 2. Limpiar todo lo que haya actualmente en el contenedor central
+        PanelLlaves pnlLlav = new PanelLlaves(this.usuarioActual);
         pnlContenido.removeAll();
-
-// 3. Añadir el nuevo panel indicando que ocupe todo el centro
         pnlContenido.add(pnlLlav, java.awt.BorderLayout.CENTER);
-
-// 4. Refrescar y repintar la ventana para que los cambios sean visibles
         pnlContenido.revalidate();
         pnlContenido.repaint();
     }//GEN-LAST:event_btnLlavesActionPerformed
@@ -147,6 +147,11 @@ public class Inicio extends javax.swing.JFrame {
         pnlContenido.revalidate();
         pnlContenido.repaint();
     }//GEN-LAST:event_btnConfigActionPerformed
+
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        new LoginJFrame().setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -188,6 +193,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnIns;
     private javax.swing.JButton btnLlaves;
+    private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlSidebar;
     // End of variables declaration//GEN-END:variables
