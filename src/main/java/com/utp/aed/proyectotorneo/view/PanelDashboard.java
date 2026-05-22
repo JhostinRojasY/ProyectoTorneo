@@ -10,36 +10,51 @@ package com.utp.aed.proyectotorneo.view;
  */
 public class PanelDashboard extends javax.swing.JPanel {
 
-    /**
-     * Creates new form PanelDashboard
-     */
+    private com.utp.aed.proyectotorneo.model.Usuario usuarioActual;
+
     public PanelDashboard() {
         initComponents();
         actualizarPantalla(); 
     }
 
+    public PanelDashboard(com.utp.aed.proyectotorneo.model.Usuario usuario) {
+        this.usuarioActual = usuario;
+        initComponents();
+        actualizarPantalla(); 
+    }
+
     private void actualizarPantalla() {
+        com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
+        if(Inicio.listaEquipos.isEmpty()){
+            Inicio.listaEquipos = (java.util.ArrayList<String>) dao.obtenerTodosLosNombres();
+        }
+
         int total = Inicio.listaEquipos.size();
         lblTotalEquipos.setText(String.valueOf(total));
         
-      
-        if (!Inicio.campeonActual.isEmpty()) {
-            lblEstadoMotor.setText("Torneo Finalizado");
-            lblCampeon.setText(Inicio.campeonActual);
-            txtConsola.setText("INFO: Torneo concluido exitosamente.\nINFO: Renderizado del árbol completado.\nINFO: El campeón coronado es: " + Inicio.campeonActual);
-        } 
-        
-        else {
-            lblCampeon.setText("No determinado");
-            if (total == 0) {
-                lblEstadoMotor.setText("Esperando datos");
-                txtConsola.setText("INFO: Modelo inicializado.\nINFO: Árbol Binario Estricto listo para ser construido.\nINFO: Vaya al módulo 'Inscripción' para añadir equipos.");
-            } else if (total == 1) {
-                lblEstadoMotor.setText("Faltan equipos");
-                txtConsola.setText("INFO: 1 equipo detectado en memoria.\nWARNING: Se requiere al menos 2 equipos para iniciar un torneo.");
+        if (usuarioActual != null && "Equipo".equalsIgnoreCase(usuarioActual.getRol().getNombre())) {
+            lblEstadoMotor.setText("Modo Observador");
+            lblCampeon.setText(Inicio.campeonActual.isEmpty() ? "En curso" : Inicio.campeonActual);
+            txtConsola.setText("¡Bienvenido, " + usuarioActual.getUsername() + "!\n");
+            txtConsola.append("INFO: Tienes acceso de solo lectura al sistema.\n");
+            txtConsola.append("INFO: Ve a 'Ver Torneo' y busca tu nombre en la barra de búsqueda para ver tu progreso.");
+        } else {
+            if (!Inicio.campeonActual.isEmpty()) {
+                lblEstadoMotor.setText("Torneo Finalizado");
+                lblCampeon.setText(Inicio.campeonActual);
+                txtConsola.setText("INFO: Torneo concluido exitosamente.\nINFO: Renderizado del árbol completado.\nINFO: El campeón coronado es: " + Inicio.campeonActual);
             } else {
-                lblEstadoMotor.setText("Listo para simular");
-                txtConsola.setText("INFO: " + total + " equipos detectados en memoria.\nINFO: Módulo de llaves preparado para renderizar el árbol.\nINFO: Puede proceder a generar los emparejamientos.");
+                lblCampeon.setText("No determinado");
+                if (total == 0) {
+                    lblEstadoMotor.setText("Esperando datos");
+                    txtConsola.setText("INFO: Modelo inicializado.\nINFO: Árbol Binario Estricto listo para ser construido.\nINFO: Vaya al módulo 'Inscripción' para añadir equipos.");
+                } else if (total == 1) {
+                    lblEstadoMotor.setText("Faltan equipos");
+                    txtConsola.setText("INFO: 1 equipo detectado en memoria.\nWARNING: Se requiere al menos 2 equipos para iniciar un torneo.");
+                } else {
+                    lblEstadoMotor.setText("Listo para simular");
+                    txtConsola.setText("INFO: " + total + " equipos detectados en memoria.\nINFO: Módulo de llaves preparado para renderizar el árbol.\nINFO: Puede proceder a generar los emparejamientos.");
+                }
             }
         }
     }

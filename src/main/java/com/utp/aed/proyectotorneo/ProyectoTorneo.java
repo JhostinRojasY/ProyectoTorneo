@@ -11,7 +11,12 @@ package com.utp.aed.proyectotorneo;
 public class ProyectoTorneo {
 
     public static void main(String[] args) {
-    com.formdev.flatlaf.FlatDarkLaf.setup(); // Esto activa el modo oscuro
-    // Aquí llamaremos luego a la ventana principal
+        com.formdev.flatlaf.FlatDarkLaf.setup(); // Esto activa el modo oscuro
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new com.utp.aed.proyectotorneo.view.LoginJFrame().setVisible(true);
+            }
+        });
     }
 }

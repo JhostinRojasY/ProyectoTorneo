@@ -17,8 +17,8 @@ public class PanelLlaves extends javax.swing.JPanel {
         if (partido == null) return null;
 
         String titulo = partido.ganador.equals("Pendiente") ? 
-                        partido.equipo1 + " VS " + partido.equipo2 : 
-                        "🏆 " + partido.ganador;
+                        "<html><body><span style='color:#ffffff; font-weight:normal;'>" + partido.equipo1 + " VS " + partido.equipo2 + "</span></body></html>" : 
+                        "<html><body><span style='color:#FFC107; font-weight:bold;'>🏆 " + partido.ganador + "</span></body></html>";
 
         NodoTorneo nodoVisual = new NodoTorneo(titulo, partido);
 
@@ -28,11 +28,31 @@ public class PanelLlaves extends javax.swing.JPanel {
         return nodoVisual;
     }
 
-    /**
-     * Creates new form PanelLlaves
-     */
+    private com.utp.aed.proyectotorneo.model.Usuario usuarioActual;
+
     public PanelLlaves() {
         initComponents();
+    }
+
+    public PanelLlaves(com.utp.aed.proyectotorneo.model.Usuario usuario) {
+        this.usuarioActual = usuario;
+        initComponents();
+        if (usuarioActual != null && "Equipo".equalsIgnoreCase(usuarioActual.getRol().getNombre())) {
+            btnGenerarTorneo.setVisible(false);
+            btnLimpiar.setVisible(false);
+        }
+        
+        com.utp.aed.proyectotorneo.dao.LlaveDAO dao = new com.utp.aed.proyectotorneo.dao.LlaveDAO();
+        com.utp.aed.proyectotorneo.model.NodoPartido raiz = dao.cargarArbol();
+        if (raiz != null) {
+            this.partidoFinal = raiz;
+            javax.swing.tree.DefaultMutableTreeNode raizVisual = crearNodoVisual(partidoFinal);
+            arbolTorneo.setModel(new javax.swing.tree.DefaultTreeModel(raizVisual));
+            for (int i = 0; i < arbolTorneo.getRowCount(); i++) {
+                arbolTorneo.expandRow(i);
+            }
+            btnGenerarTorneo.setEnabled(false);
+        }
     }
 
     /**
@@ -178,6 +198,9 @@ public class PanelLlaves extends javax.swing.JPanel {
                 arbolTorneo.expandRow(i);
             }
             btnGenerarTorneo.setEnabled(false);
+            
+            // Guardar el árbol generado en la Base de Datos
+            new com.utp.aed.proyectotorneo.dao.LlaveDAO().guardarArbol(partidoFinal);
         }
 
 
@@ -185,6 +208,11 @@ public class PanelLlaves extends javax.swing.JPanel {
 
     private void arbolTorneoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arbolTorneoMouseClicked
     if (evt.getClickCount() == 2) {
+            if (usuarioActual != null && "Equipo".equalsIgnoreCase(usuarioActual.getRol().getNombre())) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Solo el Administrador puede editar los resultados.", "Acceso Denegado", javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             NodoTorneo nodoVisual = (NodoTorneo) arbolTorneo.getLastSelectedPathComponent();
             if (nodoVisual == null) return;
 
@@ -198,12 +226,16 @@ public class PanelLlaves extends javax.swing.JPanel {
                 if (eleccion >= 0) {
                     String ganador = opciones[eleccion];
                     partidoLogico.ganador = ganador;
+                    
+                    com.utp.aed.proyectotorneo.dao.LlaveDAO dao = new com.utp.aed.proyectotorneo.dao.LlaveDAO();
+                    dao.actualizarNodo(partidoLogico);
 
                     NodoTorneo padreVisual = (NodoTorneo) nodoVisual.getParent();
                     if(padreVisual != null){
                          com.utp.aed.proyectotorneo.model.NodoPartido partidoPadre = padreVisual.partidoLogico;
                          if(partidoPadre.partidoPrevio1 == partidoLogico) partidoPadre.equipo1 = ganador;
                          else partidoPadre.equipo2 = ganador;
+                         dao.actualizarNodo(partidoPadre);
                     } else {
                          btnFinalizado.setVisible(true); 
                          Inicio.campeonActual = ganador;
