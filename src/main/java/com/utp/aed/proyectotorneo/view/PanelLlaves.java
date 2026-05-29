@@ -12,12 +12,14 @@ public class PanelLlaves extends javax.swing.JPanel {
 
 
     private com.utp.aed.proyectotorneo.model.NodoPartido partidoFinal;
-
+    
+    private PilaDeshacer historialAcciones = new PilaDeshacer();
+    
     private javax.swing.tree.DefaultMutableTreeNode crearNodoVisual(com.utp.aed.proyectotorneo.model.NodoPartido partido) {
         if (partido == null) return null;
 
-        String titulo = partido.ganador.equals("Pendiente") ? 
-                        "<html><body><span style='color:#ffffff; font-weight:normal;'>" + partido.equipo1 + " VS " + partido.equipo2 + "</span></body></html>" : 
+       String titulo = partido.ganador.equals("Pendiente") ? 
+                        "<html><body><span style='color:#000000; font-weight:normal;'>" + partido.equipo1 + " VS " + partido.equipo2 + "</span></body></html>" : 
                         "<html><body><span style='color:#FFC107; font-weight:bold;'>🏆 " + partido.ganador + "</span></body></html>";
 
         NodoTorneo nodoVisual = new NodoTorneo(titulo, partido);
@@ -72,6 +74,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtHistorial = new javax.swing.JTextArea();
         btnLimpiar = new javax.swing.JButton();
+        btnDeshacer = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(37, 37, 38));
 
@@ -127,12 +130,19 @@ public class PanelLlaves extends javax.swing.JPanel {
             }
         });
 
+        btnDeshacer.setText("Deshacer");
+        btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeshacerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnGenerarTorneo)
@@ -140,8 +150,12 @@ public class PanelLlaves extends javax.swing.JPanel {
                         .addComponent(btnFinalizado)
                         .addGap(62, 62, 62))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(206, 206, 206)
+                                .addComponent(btnDeshacer)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(txtBuscarEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,40 +171,48 @@ public class PanelLlaves extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGenerarTorneo)
-                    .addComponent(btnFinalizado))
-                .addGap(44, 44, 44)
+                    .addComponent(btnFinalizado)
+                    .addComponent(btnGenerarTorneo))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
                         .addComponent(txtBuscarEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLimpiar))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(69, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDeshacer)))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarTorneoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTorneoActionPerformed
-        java.util.ArrayList<com.utp.aed.proyectotorneo.model.NodoPartido> rondaActual = new java.util.ArrayList<>();
-        
+        ColaPartidos cola = new ColaPartidos();
+  
         for (int i = 0; i < Inicio.listaEquipos.size(); i += 2) {
             String eq1 = Inicio.listaEquipos.get(i);
             String eq2 = (i + 1 < Inicio.listaEquipos.size()) ? Inicio.listaEquipos.get(i + 1) : "Pase Directo";
-            rondaActual.add(new com.utp.aed.proyectotorneo.model.NodoPartido(eq1, eq2));
+            cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(eq1, eq2));
         }
-        while (rondaActual.size() > 1) {
-            java.util.ArrayList<com.utp.aed.proyectotorneo.model.NodoPartido> siguienteRonda = new java.util.ArrayList<>();
-            for (int i = 0; i < rondaActual.size(); i += 2) {
-                com.utp.aed.proyectotorneo.model.NodoPartido p1 = rondaActual.get(i);
-                com.utp.aed.proyectotorneo.model.NodoPartido p2 = (i + 1 < rondaActual.size()) ? rondaActual.get(i + 1) : new com.utp.aed.proyectotorneo.model.NodoPartido("Pase Directo", "Pase Directo");
-                siguienteRonda.add(new com.utp.aed.proyectotorneo.model.NodoPartido(p1, p2));
+
+        while (cola.obtenerTamaño() > 1) {
+            com.utp.aed.proyectotorneo.model.NodoPartido p1 = cola.desencolar();
+            com.utp.aed.proyectotorneo.model.NodoPartido p2 = cola.desencolar();
+
+            if (p2 == null) {
+                p2 = new com.utp.aed.proyectotorneo.model.NodoPartido("Pase Directo", "Pase Directo");
             }
-            rondaActual = siguienteRonda;
+
+            cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(p1, p2));
         }
-        if (!rondaActual.isEmpty()) {
-            partidoFinal = rondaActual.get(0);
+
+        if (!cola.estaVacia()) {
+            partidoFinal = cola.desencolar();
+            
             javax.swing.tree.DefaultMutableTreeNode raizVisual = crearNodoVisual(partidoFinal);
             arbolTorneo.setModel(new javax.swing.tree.DefaultTreeModel(raizVisual));
             
@@ -198,12 +220,9 @@ public class PanelLlaves extends javax.swing.JPanel {
                 arbolTorneo.expandRow(i);
             }
             btnGenerarTorneo.setEnabled(false);
-            
-            // Guardar el árbol generado en la Base de Datos
+
             new com.utp.aed.proyectotorneo.dao.LlaveDAO().guardarArbol(partidoFinal);
         }
-
-
     }//GEN-LAST:event_btnGenerarTorneoActionPerformed
 
     private void arbolTorneoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arbolTorneoMouseClicked
@@ -226,6 +245,8 @@ public class PanelLlaves extends javax.swing.JPanel {
                 if (eleccion >= 0) {
                     String ganador = opciones[eleccion];
                     partidoLogico.ganador = ganador;
+                    
+                    historialAcciones.push(partidoLogico);
                     
                     com.utp.aed.proyectotorneo.dao.LlaveDAO dao = new com.utp.aed.proyectotorneo.dao.LlaveDAO();
                     dao.actualizarNodo(partidoLogico);
@@ -268,18 +289,17 @@ public class PanelLlaves extends javax.swing.JPanel {
         return;
     }
 
-    StringBuilder progreso = new StringBuilder();
+    ListaEnlazadaHistorial progreso = new ListaEnlazadaHistorial();
+buscarHistorial(partidoFinal, equipoBuscado, progreso);
 
-    buscarHistorial(partidoFinal, equipoBuscado, progreso);
-
-    if (progreso.length() == 0) {
-        txtHistorial.setText(" No se encontraron registros para:\n '" + equipoBuscado + "'");
-    } else {
-        txtHistorial.setText(" PROGRESO DEL \n" +
-                             " Equipo: " + equipoBuscado.toUpperCase() + "\n" +
-                             "--------------------------------------\n" + 
-                             progreso.toString());
-    }
+if (progreso.estaVacia()) {
+    txtHistorial.setText(" No se encontraron registros para:\n '" + equipoBuscado + "'");
+} else {
+    txtHistorial.setText(" PROGRESO DEL \n" +
+                         " Equipo: " + equipoBuscado.toUpperCase() + "\n" +
+                         "--------------------------------------\n" + 
+                         progreso.obtenerTextoCompleto());
+}
     }//GEN-LAST:event_txtBuscarEquipoActionPerformed
 
     private void txtBuscarEquipoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarEquipoFocusGained
@@ -307,33 +327,53 @@ public class PanelLlaves extends javax.swing.JPanel {
     
     this.requestFocus();
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
+        // TODO add your handling code here:
+        if (!historialAcciones.estaVacia()) {
+
+        com.utp.aed.proyectotorneo.model.NodoPartido ultimoPartido = historialAcciones.pop();
+
+        ultimoPartido.ganador = "Pendiente";
+
+        javax.swing.tree.DefaultMutableTreeNode raizVisual = crearNodoVisual(partidoFinal);
+        arbolTorneo.setModel(new javax.swing.tree.DefaultTreeModel(raizVisual));
+
+        for (int i = 0; i < arbolTorneo.getRowCount(); i++) {
+            arbolTorneo.expandRow(i);
+        }
+        
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "No hay más acciones para deshacer.");
+    }
+    }//GEN-LAST:event_btnDeshacerActionPerformed
     
-    private void buscarHistorial(com.utp.aed.proyectotorneo.model.NodoPartido nodo, String equipo, StringBuilder progreso) {
-        if (nodo == null) return;
+    private void buscarHistorial(com.utp.aed.proyectotorneo.model.NodoPartido nodo, String equipo, ListaEnlazadaHistorial progreso) {
+      if (nodo == null) return;
 
     buscarHistorial(nodo.partidoPrevio1, equipo, progreso);
     buscarHistorial(nodo.partidoPrevio2, equipo, progreso);
 
-    if (nodo.equipo1.equalsIgnoreCase(equipo) || nodo.equipo2.equalsIgnoreCase(equipo)) {
-        String rival = nodo.equipo1.equalsIgnoreCase(equipo) ? nodo.equipo2 : nodo.equipo1;
+   if (nodo.equipo1.equalsIgnoreCase(equipo) || nodo.equipo2.equalsIgnoreCase(equipo)) {
+    String rival = nodo.equipo1.equalsIgnoreCase(equipo) ? nodo.equipo2 : nodo.equipo1;
         
         if (nodo.ganador.equals("Pendiente")) {
-            progreso.append("▶ Próximo partido: Pendiente vs ").append(rival).append("\n");
+            progreso.insertarFinal("▶ Próximo partido: Pendiente vs " + rival);
         } else if (nodo.ganador.equalsIgnoreCase(equipo)) {
-           
             if (nodo == partidoFinal) {
-                progreso.append(" Victoria en la Final vs ").append(rival).append("");
+                progreso.insertarFinal("🏆 Victoria en la Final vs " + rival);
             } else {
-                progreso.append(" Victoria vs ").append(rival).append("");
+                progreso.insertarFinal("✅ Victoria vs " + rival);
             }
         } else {
-            progreso.append("✗ Derrota vs ").append(rival).append(" (Eliminado)");
+            progreso.insertarFinal("✗ Derrota vs " + rival + " (Eliminado)");
         }
     }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arbolTorneo;
+    private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnFinalizado;
     private javax.swing.JButton btnGenerarTorneo;
     private javax.swing.JButton btnLimpiar;
@@ -343,13 +383,165 @@ public class PanelLlaves extends javax.swing.JPanel {
     private javax.swing.JTextArea txtHistorial;
     // End of variables declaration//GEN-END:variables
 
-    // Clase especial para guardar la info sin romper el texto de la pantalla
+
     class NodoTorneo extends javax.swing.tree.DefaultMutableTreeNode {
         public com.utp.aed.proyectotorneo.model.NodoPartido partidoLogico;
         
         public NodoTorneo(String texto, com.utp.aed.proyectotorneo.model.NodoPartido partido) {
-            super(texto); // Esto le dice a Java exactamente qué texto mostrar en pantalla
-            this.partidoLogico = partido; // Aquí escondemos los datos de forma segura
+            super(texto); 
+            this.partidoLogico = partido; 
+        }
+    }
+    // --- INICIO DE TAD: LISTA ENLAZADA ---
+    class NodoHistorial {
+        String mensaje;
+        NodoHistorial siguiente;
+
+        public NodoHistorial(String mensaje) {
+            this.mensaje = mensaje;
+            this.siguiente = null;
+        }
+    }
+
+    class ListaEnlazadaHistorial {
+        NodoHistorial cabeza;
+
+        public ListaEnlazadaHistorial() {
+            this.cabeza = null;
+        }
+
+        public void insertarFinal(String mensaje) {
+            NodoHistorial nuevo = new NodoHistorial(mensaje);
+            if (cabeza == null) {
+                cabeza = nuevo;
+            } else {
+                NodoHistorial actual = cabeza;
+                while (actual.siguiente != null) {
+                    actual = actual.siguiente;
+                }
+                actual.siguiente = nuevo;
+            }
+        }
+        
+        public boolean eliminarPorTexto(String textoBuscado) {
+            if (cabeza == null) {
+                return false; 
+            }
+
+            if (cabeza.mensaje.toLowerCase().contains(textoBuscado.toLowerCase())) {
+                cabeza = cabeza.siguiente; 
+                return true;
+            }
+
+            NodoHistorial actual = cabeza;
+            while (actual.siguiente != null) {
+                if (actual.siguiente.mensaje.toLowerCase().contains(textoBuscado.toLowerCase())) {
+                    actual.siguiente = actual.siguiente.siguiente; 
+                    return true;
+                }
+                actual = actual.siguiente; 
+            }
+
+            return false; 
+        }
+        
+        public boolean estaVacia() {
+            return cabeza == null;
+        }
+
+        public String obtenerTextoCompleto() {
+            StringBuilder sb = new StringBuilder();
+            NodoHistorial actual = cabeza;
+            while (actual != null) {
+                sb.append(actual.mensaje).append("\n");
+                actual = actual.siguiente;
+            }
+            return sb.toString();
+        }
+    }
+
+    class NodoColaPartido {
+        com.utp.aed.proyectotorneo.model.NodoPartido partido;
+        NodoColaPartido siguiente;
+
+        public NodoColaPartido(com.utp.aed.proyectotorneo.model.NodoPartido partido) {
+            this.partido = partido;
+            this.siguiente = null;
+        }
+    }
+
+    class ColaPartidos {
+        NodoColaPartido frente;
+        NodoColaPartido fin;
+        int tamaño; 
+        public ColaPartidos() {
+            this.frente = null;
+            this.fin = null;
+            this.tamaño = 0;
+        }
+
+        public void encolar(com.utp.aed.proyectotorneo.model.NodoPartido partido) {
+            NodoColaPartido nuevo = new NodoColaPartido(partido);
+            if (frente == null) {
+                frente = nuevo;
+                fin = nuevo;
+            } else {
+                fin.siguiente = nuevo;
+                fin = nuevo;
+            }
+            tamaño++;
+        }
+
+        public com.utp.aed.proyectotorneo.model.NodoPartido desencolar() {
+            if (frente == null) return null;
+            
+            com.utp.aed.proyectotorneo.model.NodoPartido extraido = frente.partido;
+            frente = frente.siguiente;
+            
+            if (frente == null) fin = null;
+            
+            tamaño--;
+            return extraido;
+        }
+
+        public boolean estaVacia() {
+            return frente == null;
+        }
+        
+        public int obtenerTamaño() {
+            return tamaño;
+        }
+    }
+
+    class NodoPilaPartido {
+        com.utp.aed.proyectotorneo.model.NodoPartido partido;
+        NodoPilaPartido siguiente;
+
+        public NodoPilaPartido(com.utp.aed.proyectotorneo.model.NodoPartido partido) {
+            this.partido = partido;
+            this.siguiente = null;
+        }
+    }
+
+    class PilaDeshacer {
+        NodoPilaPartido cima;
+
+        public boolean estaVacia() {
+            return cima == null;
+        }
+
+        public void push(com.utp.aed.proyectotorneo.model.NodoPartido partido) {
+            NodoPilaPartido nuevo = new NodoPilaPartido(partido);
+            nuevo.siguiente = cima;
+            cima = nuevo;
+        }
+
+        public com.utp.aed.proyectotorneo.model.NodoPartido pop() {
+            if (estaVacia()) return null;
+            
+            com.utp.aed.proyectotorneo.model.NodoPartido extraido = cima.partido;
+            cima = cima.siguiente;
+            return extraido;
         }
     }
 }
