@@ -13,22 +13,39 @@ public class PanelInscripcion extends javax.swing.JPanel {
    
     public PanelInscripcion() {
         initComponents();
+        javax.swing.JButton btnOrdenar = new javax.swing.JButton("Ordenar (A-Z)");
+        btnOrdenar.addActionListener(e -> {
+            Inicio.listaEquipos.ordenarBurbujaAlfabeticamente();
+            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaEquipos.getModel();
+            modelo.setRowCount(0);
+            for (int i = 0; i < Inicio.listaEquipos.getTamano(); i++) {
+                modelo.addRow(new Object[]{Inicio.listaEquipos.obtener(i)});
+            }
+        });
+        
+        // Lo añadimos al panel superior donde está el título
+        jPanel1.add(btnOrdenar);
+        
         actualizarPantalla();
     }
 
     
     private void actualizarPantalla() {
         com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
-        Inicio.listaEquipos = (java.util.ArrayList<String>) dao.obtenerTodosLosNombres();
+        java.util.List<String> equiposDB = dao.obtenerTodosLosNombres();
+        Inicio.listaEquipos.limpiar();
+        for (String eq : equiposDB) {
+            Inicio.listaEquipos.insertar(eq);
+        }
         
-        int total = Inicio.listaEquipos.size();
+        int total = Inicio.listaEquipos.getTamano();
         lblTotalInscritos.setText(String.valueOf(total));
 
         btnReiniciar.setVisible(total > 0);
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaEquipos.getModel();
         modelo.setRowCount(0);
-        for (String equipo : Inicio.listaEquipos) {
-            modelo.addRow(new Object[]{equipo});
+        for (int i = 0; i < Inicio.listaEquipos.getTamano(); i++) {
+            modelo.addRow(new Object[]{Inicio.listaEquipos.obtener(i)});
         }
         
         // 3. Validar Potencia de 2 (2, 4, 8, 16...)
@@ -36,10 +53,8 @@ public class PanelInscripcion extends javax.swing.JPanel {
         
         if (esPotenciaDeDos) {
             btnGenerarLlaves.setEnabled(true);
-            btnGenerarLlaves.setBackground(new java.awt.Color(0, 153, 51));
         } else {
             btnGenerarLlaves.setEnabled(false);
-            btnGenerarLlaves.setBackground(new java.awt.Color(60, 60, 60));
         }
     }
     /**
@@ -69,6 +84,8 @@ public class PanelInscripcion extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaEquipos = new javax.swing.JTable();
         btnReiniciar = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(244, 246, 248));
 
         jLabel2.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
         jLabel2.setText("Módulo de Inscripción ");
@@ -129,7 +146,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
         lblTotalInscritos.setText("0");
 
         jLabel7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 102, 51));
+        jLabel7.setForeground(new java.awt.Color(244, 246, 248));
         jLabel7.setText("Formato Eliminatorio");
 
         btnGenerarLlaves.setText("Generar Llaves del Torneo");

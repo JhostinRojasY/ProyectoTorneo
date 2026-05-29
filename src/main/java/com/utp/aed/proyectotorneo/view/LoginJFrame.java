@@ -26,13 +26,15 @@ public class LoginJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Torneo - Login");
+        setBackground(new java.awt.Color(170, 186, 188));
+        setIconImages(null);
         setResizable(false);
         getContentPane().setLayout(null);
 
         lblTitle.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         lblTitle.setText("Bienvenido al Torneo");
         getContentPane().add(lblTitle);
-        lblTitle.setBounds(100, 20, 200, 30);
+        lblTitle.setBounds(100, 20, 240, 30);
 
         jLabel1.setText("Usuario:");
         getContentPane().add(jLabel1);

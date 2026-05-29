@@ -11,7 +11,7 @@ package com.utp.aed.proyectotorneo.view;
 public class Inicio extends javax.swing.JFrame {
 
     public static String campeonActual = "";
-    public static java.util.ArrayList<String> listaEquipos = new java.util.ArrayList<>();
+    public static com.utp.aed.proyectotorneo.estructuras.ListaEnlazadaEquipos listaEquipos = new com.utp.aed.proyectotorneo.estructuras.ListaEnlazadaEquipos();
     
     private com.utp.aed.proyectotorneo.model.Usuario usuarioActual;
 
@@ -20,7 +20,7 @@ public class Inicio extends javax.swing.JFrame {
      */
     public Inicio() {
         initComponents();
-        this.setSize(800, 600);
+        this.setSize(1000, 700);
         this.setLocationRelativeTo(null);
     }
     
@@ -49,13 +49,16 @@ public class Inicio extends javax.swing.JFrame {
         btnIns = new javax.swing.JButton();
         btnLlaves = new javax.swing.JButton();
         btnConfig = new javax.swing.JButton();
+        btncerrar = new javax.swing.JButton();
         pnlContenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        pnlSidebar.setBackground(new java.awt.Color(204, 204, 204));
-        pnlSidebar.setLayout(new java.awt.GridLayout(6, 1));
+        pnlSidebar.setBackground(new java.awt.Color(33, 37, 41));
+        pnlSidebar.setLayout(new java.awt.GridLayout(5, 1));
 
+        btnDashboard.setBackground(new java.awt.Color(0, 0, 0));
+        btnDashboard.setForeground(new java.awt.Color(204, 204, 204));
         btnDashboard.setText("🏠 Dashboard");
         btnDashboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,6 +67,8 @@ public class Inicio extends javax.swing.JFrame {
         });
         pnlSidebar.add(btnDashboard);
 
+        btnIns.setBackground(new java.awt.Color(0, 0, 0));
+        btnIns.setForeground(new java.awt.Color(204, 204, 204));
         btnIns.setText("📝 Inscripción");
         btnIns.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,6 +77,8 @@ public class Inicio extends javax.swing.JFrame {
         });
         pnlSidebar.add(btnIns);
 
+        btnLlaves.setBackground(new java.awt.Color(0, 0, 0));
+        btnLlaves.setForeground(new java.awt.Color(204, 204, 204));
         btnLlaves.setText("🌳 Ver Torneo");
         btnLlaves.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,6 +87,8 @@ public class Inicio extends javax.swing.JFrame {
         });
         pnlSidebar.add(btnLlaves);
 
+        btnConfig.setBackground(new java.awt.Color(0, 0, 0));
+        btnConfig.setForeground(new java.awt.Color(204, 204, 204));
         btnConfig.setText("⚙️ Configuración");
         btnConfig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,20 +97,20 @@ public class Inicio extends javax.swing.JFrame {
         });
         pnlSidebar.add(btnConfig);
 
-        btnCerrarSesion = new javax.swing.JButton();
-        btnCerrarSesion.setText("🚪 Cerrar Sesión");
-        btnCerrarSesion.setBackground(new java.awt.Color(255, 102, 102));
-        btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
-        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+        btncerrar.setBackground(new java.awt.Color(255, 51, 51));
+        btncerrar.setForeground(new java.awt.Color(204, 204, 204));
+        btncerrar.setText("Cerrar Sesion");
+        btncerrar.setOpaque(true);
+        btncerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCerrarSesionActionPerformed(evt);
+                btncerrarActionPerformed(evt);
             }
         });
-        pnlSidebar.add(btnCerrarSesion);
+        pnlSidebar.add(btncerrar);
 
         getContentPane().add(pnlSidebar, java.awt.BorderLayout.WEST);
 
-        pnlContenido.setBackground(new java.awt.Color(37, 37, 38));
+        pnlContenido.setBackground(new java.awt.Color(0, 0, 0));
         pnlContenido.setForeground(new java.awt.Color(255, 255, 255));
         pnlContenido.setLayout(new java.awt.BorderLayout());
         getContentPane().add(pnlContenido, java.awt.BorderLayout.CENTER);
@@ -148,11 +157,12 @@ public class Inicio extends javax.swing.JFrame {
         pnlContenido.repaint();
     }//GEN-LAST:event_btnConfigActionPerformed
 
-    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {
+    private void btncerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarActionPerformed
         this.dispose();
         new LoginJFrame().setVisible(true);
-    }
+    }//GEN-LAST:event_btncerrarActionPerformed
 
+ 
     /**
      * @param args the command line arguments
      */
@@ -193,7 +203,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnIns;
     private javax.swing.JButton btnLlaves;
-    private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JButton btncerrar;
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlSidebar;
     // End of variables declaration//GEN-END:variables

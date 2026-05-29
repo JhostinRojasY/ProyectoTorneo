@@ -25,11 +25,12 @@ public class PanelDashboard extends javax.swing.JPanel {
 
     private void actualizarPantalla() {
         com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
-        if(Inicio.listaEquipos.isEmpty()){
-            Inicio.listaEquipos = (java.util.ArrayList<String>) dao.obtenerTodosLosNombres();
+        if(Inicio.listaEquipos.estaVacia()){
+            java.util.List<String> equipos = dao.obtenerTodosLosNombres();
+            for(String eq : equipos) Inicio.listaEquipos.insertar(eq);
         }
 
-        int total = Inicio.listaEquipos.size();
+        int total = Inicio.listaEquipos.getTamano();
         lblTotalEquipos.setText(String.valueOf(total));
         
         if (usuarioActual != null && "Equipo".equalsIgnoreCase(usuarioActual.getRol().getNombre())) {
@@ -84,18 +85,18 @@ public class PanelDashboard extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtConsola = new javax.swing.JTextArea();
 
-        setBackground(new java.awt.Color(30, 30, 30));
+        setBackground(new java.awt.Color(244, 246, 248));
 
-        jPanel3.setBackground(new java.awt.Color(37, 37, 38));
-        jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(45, 45, 45), 5, true));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(230, 230, 230), 5, true));
 
         jlabel2.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
-        jlabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jlabel2.setForeground(new java.awt.Color(33, 37, 41));
         jlabel2.setText("Estado");
 
         lblEstadoMotor.setBackground(new java.awt.Color(255, 255, 255));
         lblEstadoMotor.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblEstadoMotor.setForeground(new java.awt.Color(255, 255, 255));
+        lblEstadoMotor.setForeground(new java.awt.Color(33, 37, 41));
         lblEstadoMotor.setText("Esperando datos");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -121,11 +122,11 @@ public class PanelDashboard extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel2.setBackground(new java.awt.Color(37, 37, 38));
-        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(45, 45, 45), 5, true));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(230, 230, 230), 5, true));
 
         jlabel1.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
-        jlabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jlabel1.setForeground(new java.awt.Color(33, 37, 41));
         jlabel1.setText("Campeon");
 
         lblCampeon.setBackground(new java.awt.Color(255, 255, 255));
@@ -156,16 +157,16 @@ public class PanelDashboard extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBackground(new java.awt.Color(37, 37, 38));
-        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(45, 45, 45), 5, true));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(230, 230, 230), 5, true));
 
         jlabel.setFont(new java.awt.Font("Roboto Thin", 0, 24)); // NOI18N
-        jlabel.setForeground(new java.awt.Color(255, 255, 255));
+        jlabel.setForeground(new java.awt.Color(33, 37, 41));
         jlabel.setText("Equipos Inscritos");
 
         lblTotalEquipos.setBackground(new java.awt.Color(255, 255, 255));
         lblTotalEquipos.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        lblTotalEquipos.setForeground(new java.awt.Color(255, 255, 255));
+        lblTotalEquipos.setForeground(new java.awt.Color(33, 37, 41));
         lblTotalEquipos.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -189,16 +190,16 @@ public class PanelDashboard extends javax.swing.JPanel {
                 .addGap(21, 21, 21))
         );
 
-        jPanel4.setBackground(new java.awt.Color(37, 37, 38));
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(33, 37, 41));
         jLabel1.setText("REGISTRO ");
 
         txtConsola.setEditable(false);
-        txtConsola.setBackground(new java.awt.Color(37, 37, 38));
+        txtConsola.setBackground(new java.awt.Color(255, 255, 255));
         txtConsola.setColumns(20);
-        txtConsola.setForeground(new java.awt.Color(255, 255, 255));
+        txtConsola.setForeground(new java.awt.Color(33, 37, 41));
         txtConsola.setRows(5);
         jScrollPane1.setViewportView(txtConsola);
 
