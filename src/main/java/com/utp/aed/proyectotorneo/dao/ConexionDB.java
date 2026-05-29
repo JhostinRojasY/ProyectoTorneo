@@ -8,7 +8,7 @@ public class ConexionDB {
     // Configura aquí tus credenciales de MySQL Workbench
     private static final String URL = "jdbc:mysql://localhost:3306/torneo_db?useSSL=false&serverTimezone=UTC";
     private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "root";
 
     public static Connection getConnection() {
         Connection connection = null;
