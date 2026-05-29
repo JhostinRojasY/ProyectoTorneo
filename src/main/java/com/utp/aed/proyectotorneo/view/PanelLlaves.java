@@ -228,55 +228,41 @@ public class PanelLlaves extends javax.swing.JPanel {
     private void btnGenerarTorneoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTorneoActionPerformed
 
         ColaPartidos cola = new ColaPartidos();
-  
-        for (int i = 0; i < Inicio.listaEquipos.getTamano(); i += 2) {
-            String eq1 = Inicio.listaEquipos.obtener(i);
-            String eq2 = (i + 1 < Inicio.listaEquipos.getTamano()) ? Inicio.listaEquipos.obtener(i + 1) : "Pase Directo";
-            cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(eq1, eq2));
-        } 
+
+    // 1. Crear los partidos base (las hojas del árbol) a partir de la lista de equipos
+    for (int i = 0; i < Inicio.listaEquipos.getTamano(); i += 2) {
+        String eq1 = Inicio.listaEquipos.obtener(i);
+        String eq2 = (i + 1 < Inicio.listaEquipos.getTamano()) ? Inicio.listaEquipos.obtener(i + 1) : "Pase Directo";
+        cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(eq1, eq2));
+    } 
+
+    // 2. Construir el árbol de llaves de abajo hacia arriba
+    while (cola.obtenerTamaño() > 1) {
+        com.utp.aed.proyectotorneo.model.NodoPartido p1 = cola.desencolar();
+        com.utp.aed.proyectotorneo.model.NodoPartido p2 = cola.desencolar();
+
+        if (p2 == null) {
+            p2 = new com.utp.aed.proyectotorneo.model.NodoPartido("Pase Directo", "Pase Directo");
+        }
+
+        // Se encola el partido padre que une a las dos llaves previas
+        cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(p1, p2));
+    }
+
+    // 3. Establecer la raíz real y renderizar
+    if (!cola.estaVacia()) {
+        // La cola solo tiene 1 elemento ahora: El nodo de la Gran Final (con todas sus ramas dentro)
+        partidoFinal = cola.desencolar();
         
-        java.util.ArrayList<com.utp.aed.proyectotorneo.model.NodoPartido> rondaActual = new java.util.ArrayList<>();
+        // Renderizamos el árbol usando tu método existente
+        llenarArbol(partidoFinal);
         
-        for (int i = 0; i < Inicio.listaEquipos.getTamano(); i += 2) {
-            String eq1 = Inicio.listaEquipos.obtener(i);
-            String eq2 = (i + 1 < Inicio.listaEquipos.getTamano()) ? Inicio.listaEquipos.obtener(i + 1) : "Pase Directo";
-            rondaActual.add(new com.utp.aed.proyectotorneo.model.NodoPartido(eq1, eq2));
+        // Desactivamos el botón para no generar el torneo dos veces
+        btnGenerarTorneo.setEnabled(false);
 
-        }
-
-        while (cola.obtenerTamaño() > 1) {
-            com.utp.aed.proyectotorneo.model.NodoPartido p1 = cola.desencolar();
-            com.utp.aed.proyectotorneo.model.NodoPartido p2 = cola.desencolar();
-
-            if (p2 == null) {
-                p2 = new com.utp.aed.proyectotorneo.model.NodoPartido("Pase Directo", "Pase Directo");
-            }
-
-            cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(p1, p2));
-        }
-
-
-        if (!cola.estaVacia()) {
-            partidoFinal = cola.desencolar();
-            
-            javax.swing.tree.DefaultMutableTreeNode raizVisual = crearNodoVisual(partidoFinal);
-            arbolTorneo.setModel(new javax.swing.tree.DefaultTreeModel(raizVisual));
-            
-            for (int i = 0; i < arbolTorneo.getRowCount(); i++) {
-                arbolTorneo.expandRow(i);
-            }
-            btnGenerarTorneo.setEnabled(false);
-
-
-        if (!rondaActual.isEmpty()) {
-            partidoFinal = rondaActual.get(0);
-            llenarArbol(partidoFinal);
-            btnGenerarTorneo.setEnabled(false);
-            
-
-            new com.utp.aed.proyectotorneo.dao.LlaveDAO().guardarArbol(partidoFinal);
-        }
-      }
+        // Guardamos el árbol completo en la Base de Datos
+        new com.utp.aed.proyectotorneo.dao.LlaveDAO().guardarArbol(partidoFinal);
+    }
     }//GEN-LAST:event_btnGenerarTorneoActionPerformed
 
     private void arbolTorneoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arbolTorneoMouseClicked
