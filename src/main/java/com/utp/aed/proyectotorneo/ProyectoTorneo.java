@@ -11,7 +11,7 @@ package com.utp.aed.proyectotorneo;
 public class ProyectoTorneo {
 
     public static void main(String[] args) {
-        com.formdev.flatlaf.FlatDarkLaf.setup(); // Esto activa el modo oscuro
+        com.formdev.flatlaf.FlatLightLaf.setup(); // Activamos el modo claro (Estilo Web)
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
