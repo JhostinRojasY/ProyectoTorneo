@@ -31,6 +31,7 @@ public class RegistroEquipoJFrame extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         btnRegistrar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registro de Nuevo Equipo");
@@ -54,6 +55,7 @@ public class RegistroEquipoJFrame extends javax.swing.JFrame {
         getContentPane().add(txtPassword);
         txtPassword.setBounds(150, 130, 150, 25);
 
+        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_registrar.png"))); // NOI18N
         btnRegistrar.setText("Registrar");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -61,8 +63,9 @@ public class RegistroEquipoJFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnRegistrar);
-        btnRegistrar.setBounds(120, 180, 140, 30);
+        btnRegistrar.setBounds(130, 180, 150, 40);
 
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png"))); // NOI18N
         btnVolver.setText("Volver al Login");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,7 +73,11 @@ public class RegistroEquipoJFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnVolver);
-        btnVolver.setBounds(120, 220, 140, 30);
+        btnVolver.setBounds(130, 230, 150, 40);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(0, 0, 400, 300);
 
         pack();
         setLocationRelativeTo(null);
@@ -120,6 +127,7 @@ public class RegistroEquipoJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;

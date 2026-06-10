@@ -57,7 +57,7 @@ public class LoginJFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnLogin);
-        btnLogin.setBounds(130, 180, 140, 40);
+        btnLogin.setBounds(120, 180, 160, 40);
 
         btnRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_registrar.png"))); // NOI18N
         btnRegistro.setText("Registrar Equipo");
@@ -67,7 +67,7 @@ public class LoginJFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnRegistro);
-        btnRegistro.setBounds(130, 230, 140, 40);
+        btnRegistro.setBounds(120, 230, 160, 40);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         getContentPane().add(jLabel3);

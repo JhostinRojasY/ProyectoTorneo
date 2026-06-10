@@ -84,6 +84,7 @@ public class PanelDashboard extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtConsola = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(0, 0, 0));
 
@@ -92,6 +93,7 @@ public class PanelDashboard extends javax.swing.JPanel {
 
         jlabel2.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
         jlabel2.setForeground(new java.awt.Color(33, 37, 41));
+        jlabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_estado.png"))); // NOI18N
         jlabel2.setText("Estado");
 
         lblEstadoMotor.setBackground(new java.awt.Color(255, 255, 255));
@@ -127,6 +129,7 @@ public class PanelDashboard extends javax.swing.JPanel {
 
         jlabel1.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
         jlabel1.setForeground(new java.awt.Color(33, 37, 41));
+        jlabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_campeon.png"))); // NOI18N
         jlabel1.setText("Campeon");
 
         lblCampeon.setBackground(new java.awt.Color(255, 255, 255));
@@ -162,6 +165,7 @@ public class PanelDashboard extends javax.swing.JPanel {
 
         jlabel.setFont(new java.awt.Font("Roboto Thin", 0, 24)); // NOI18N
         jlabel.setForeground(new java.awt.Color(33, 37, 41));
+        jlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_registrar.png"))); // NOI18N
         jlabel.setText("Equipos Inscritos");
 
         lblTotalEquipos.setBackground(new java.awt.Color(255, 255, 255));
@@ -194,6 +198,7 @@ public class PanelDashboard extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(33, 37, 41));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_dashboard.png"))); // NOI18N
         jLabel1.setText("REGISTRO ");
 
         txtConsola.setEditable(false);
@@ -210,9 +215,11 @@ public class PanelDashboard extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -239,6 +246,10 @@ public class PanelDashboard extends javax.swing.JPanel {
                         .addGap(44, 44, 44)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(165, 165, 165))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,16 +258,19 @@ public class PanelDashboard extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(39, 39, 39)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, Short.MAX_VALUE))
+                .addGap(5, 5, 5)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
