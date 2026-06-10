@@ -83,7 +83,7 @@
     <Component class="javax.swing.JButton" name="btnLogin">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/img/icono_Iniciar.png"/>
+          <Image iconType="3" name="/img/icono_iniciar.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Iniciar Sesi&#xf3;n"/>
       </Properties>
@@ -92,12 +92,15 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="120" y="180" width="140" height="30"/>
+          <AbsoluteConstraints x="130" y="180" width="140" height="40"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JButton" name="btnRegistro">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/img/icono_registrar.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Registrar Equipo"/>
       </Properties>
       <Events>
@@ -105,7 +108,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="120" y="220" width="140" height="30"/>
+          <AbsoluteConstraints x="130" y="230" width="140" height="40"/>
         </Constraint>
       </Constraints>
     </Component>

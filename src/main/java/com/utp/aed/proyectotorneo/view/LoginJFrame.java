@@ -49,7 +49,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         getContentPane().add(txtPassword);
         txtPassword.setBounds(150, 130, 150, 25);
 
-        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_Iniciar.png"))); // NOI18N
+        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_iniciar.png"))); // NOI18N
         btnLogin.setText("Iniciar Sesión");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -57,8 +57,9 @@ public class LoginJFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnLogin);
-        btnLogin.setBounds(120, 180, 140, 30);
+        btnLogin.setBounds(130, 180, 140, 40);
 
+        btnRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_registrar.png"))); // NOI18N
         btnRegistro.setText("Registrar Equipo");
         btnRegistro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,7 +67,7 @@ public class LoginJFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnRegistro);
-        btnRegistro.setBounds(120, 220, 140, 30);
+        btnRegistro.setBounds(130, 230, 140, 40);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         getContentPane().add(jLabel3);

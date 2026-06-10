@@ -59,7 +59,8 @@ public class Inicio extends javax.swing.JFrame {
 
         btnDashboard.setBackground(new java.awt.Color(0, 0, 0));
         btnDashboard.setForeground(new java.awt.Color(204, 204, 204));
-        btnDashboard.setText("🏠 Dashboard");
+        btnDashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_dashboard.png"))); // NOI18N
+        btnDashboard.setText("Dashboard");
         btnDashboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDashboardActionPerformed(evt);
@@ -69,7 +70,8 @@ public class Inicio extends javax.swing.JFrame {
 
         btnIns.setBackground(new java.awt.Color(0, 0, 0));
         btnIns.setForeground(new java.awt.Color(204, 204, 204));
-        btnIns.setText("📝 Inscripción");
+        btnIns.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_inscripcion.png"))); // NOI18N
+        btnIns.setText("Inscripción");
         btnIns.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInsActionPerformed(evt);
@@ -79,7 +81,8 @@ public class Inicio extends javax.swing.JFrame {
 
         btnLlaves.setBackground(new java.awt.Color(0, 0, 0));
         btnLlaves.setForeground(new java.awt.Color(204, 204, 204));
-        btnLlaves.setText("🌳 Ver Torneo");
+        btnLlaves.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_torneo.png"))); // NOI18N
+        btnLlaves.setText("Ver Torneo");
         btnLlaves.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLlavesActionPerformed(evt);
@@ -89,7 +92,8 @@ public class Inicio extends javax.swing.JFrame {
 
         btnConfig.setBackground(new java.awt.Color(0, 0, 0));
         btnConfig.setForeground(new java.awt.Color(204, 204, 204));
-        btnConfig.setText("⚙️ Configuración");
+        btnConfig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_configuracion.png"))); // NOI18N
+        btnConfig.setText("Configuración");
         btnConfig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfigActionPerformed(evt);
@@ -99,6 +103,7 @@ public class Inicio extends javax.swing.JFrame {
 
         btncerrar.setBackground(new java.awt.Color(255, 51, 51));
         btncerrar.setForeground(new java.awt.Color(204, 204, 204));
+        btncerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_cerrar.png"))); // NOI18N
         btncerrar.setText("Cerrar Sesion");
         btncerrar.setOpaque(true);
         btncerrar.addActionListener(new java.awt.event.ActionListener() {
