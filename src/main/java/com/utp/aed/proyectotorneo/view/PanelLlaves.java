@@ -114,9 +114,7 @@ public class PanelLlaves extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(244, 246, 248));
 
-        btnGenerarTorneo.setBackground(new java.awt.Color(198, 40, 40));
-        btnGenerarTorneo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnGenerarTorneo.setForeground(new java.awt.Color(255, 255, 255));
+        btnGenerarTorneo.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         btnGenerarTorneo.setText("Generar Emparejamientos");
         btnGenerarTorneo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,6 +131,11 @@ public class PanelLlaves extends javax.swing.JPanel {
         jScrollPane2.setViewportView(arbolTorneo);
 
         btnFinalizado.setText("🏆 Torneo Finalizado");
+        btnFinalizado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizadoActionPerformed(evt);
+            }
+        });
 
         txtBuscarEquipo.setText("Buscar Equipo...");
         txtBuscarEquipo.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -156,9 +159,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         txtHistorial.setWrapStyleWord(true);
         jScrollPane1.setViewportView(txtHistorial);
 
-        btnLimpiar.setBackground(new java.awt.Color(100, 100, 100));
-        btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
-        btnLimpiar.setText("Limpiar Búsqueda");
+        btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);
@@ -190,7 +191,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(206, 206, 206)
                                 .addComponent(btnDeshacer)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(txtBuscarEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -204,7 +205,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFinalizado)
                     .addComponent(btnGenerarTorneo))
@@ -221,10 +222,25 @@ public class PanelLlaves extends javax.swing.JPanel {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnDeshacer)))
-                .addContainerGap(70, Short.MAX_VALUE))
-        );    
-}// </editor-fold>//GEN-END:initComponents
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
 
+    private void btnFinalizadoActionPerformed(java.awt.event.ActionEvent evt) {
+        // Lógica para cuando se hace clic en Torneo Finalizado
+        if (partidoFinal != null && !partidoFinal.ganador.equals("Pendiente")) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "El gran campeón es: " + partidoFinal.ganador, 
+                "Torneo Finalizado", 
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "El torneo aún no ha terminado.", 
+                "Aviso", 
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
     private void btnGenerarTorneoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTorneoActionPerformed
 
         ColaPartidos cola = new ColaPartidos();
@@ -256,7 +272,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         
         // Renderizamos el árbol usando tu método existente
         llenarArbol(partidoFinal);
-        
+
         // Desactivamos el botón para no generar el torneo dos veces
         btnGenerarTorneo.setEnabled(false);
 
