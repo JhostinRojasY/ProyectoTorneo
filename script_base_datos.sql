@@ -34,10 +34,9 @@ CREATE TABLE IF NOT EXISTS Llave (
     FOREIGN KEY (previo2_id) REFERENCES Llave(id) ON DELETE SET NULL
 );
 
--- Insertar roles por defecto
+
 INSERT IGNORE INTO Rol (nombre) VALUES ('Administrador');
 INSERT IGNORE INTO Rol (nombre) VALUES ('Equipo');
 
--- Insertar un administrador por defecto (admin / admin123)
--- Nota: En un entorno real la contraseña debería estar hasheada.
+
 INSERT IGNORE INTO Usuario (username, password, rol_id) VALUES ('admin', 'admin123', 1);

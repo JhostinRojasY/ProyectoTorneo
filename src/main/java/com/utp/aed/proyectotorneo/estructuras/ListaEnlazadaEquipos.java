@@ -24,7 +24,7 @@ public class ListaEnlazadaEquipos {
         tamano++;
     }
 
-    // Obtener elemento por índice (simulando ArrayList)
+    // Obtener elemento por índice 
     public String obtener(int indice) {
         if (indice < 0 || indice >= tamano) {
             return null;
@@ -60,7 +60,7 @@ public class ListaEnlazadaEquipos {
         return false;
     }
 
-    // Algoritmo de Búsqueda Binaria (Convierte la lista a arreglo primero para poder hacerlo)
+    // Algoritmo de Búsqueda Binaria 
     public boolean buscarBinaria(String nombre) {
         if (tamano == 0) return false;
         
@@ -73,7 +73,7 @@ public class ListaEnlazadaEquipos {
             actual = actual.getSiguiente();
         }
         
-        // 2. Ordenar el arreglo (Requisito para la búsqueda binaria)
+        // 2. Ordenar el arreglo 
         java.util.Arrays.sort(arreglo, String.CASE_INSENSITIVE_ORDER);
         
         // 3. Búsqueda Binaria Clásica
@@ -95,7 +95,7 @@ public class ListaEnlazadaEquipos {
         return false;
     }
 
-    // Algoritmo de Ordenamiento: Método de la Burbuja adaptado a Listas Enlazadas
+    // Algoritmo de Ordenamiento
     public void ordenarBurbujaAlfabeticamente() {
         if (tamano > 1) {
             boolean huboCambio;
@@ -109,7 +109,7 @@ public class ListaEnlazadaEquipos {
                     if (actual.getNombre().compareToIgnoreCase(siguiente.getNombre()) > 0) {
                         huboCambio = true;
                         
-                        // Intercambiar nodos (no solo los valores, para demostrar dominio de punteros)
+                        // Intercambiar nodos 
                         if (previo != null) {
                             NodoEquipo sig = siguiente.getSiguiente();
                             previo.setSiguiente(siguiente);

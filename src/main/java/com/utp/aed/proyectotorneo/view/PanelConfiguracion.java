@@ -38,7 +38,7 @@ public class PanelConfiguracion extends javax.swing.JPanel {
         add(lblPeligro);
         lblPeligro.setBounds(30, 110, 200, 25);
 
-        btnReiniciar.setText("⚠️ REINICIAR SISTEMA COMPLETO (Borrar DB)");
+        btnReiniciar.setText("⚠️ REINICIAR SISTEMA COMPLETO");
         btnReiniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReiniciarActionPerformed(evt);
