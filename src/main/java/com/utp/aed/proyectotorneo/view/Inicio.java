@@ -28,7 +28,7 @@ public class Inicio extends javax.swing.JFrame {
         this();
         this.usuarioActual = usuario;
         
-        // Control de acceso basado en el rol
+        
         if (usuarioActual != null && "Equipo".equalsIgnoreCase(usuarioActual.getRol().getNombre())) {
             btnIns.setVisible(false);
             btnConfig.setVisible(false);

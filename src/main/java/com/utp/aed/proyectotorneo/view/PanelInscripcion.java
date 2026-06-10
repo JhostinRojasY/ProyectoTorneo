@@ -10,7 +10,9 @@ package com.utp.aed.proyectotorneo.view;
  */
 public class PanelInscripcion extends javax.swing.JPanel {
 
-   
+    private PilaEquipos pilaDeshacer = new PilaEquipos();
+    private PilaPapelera papeleraReciclaje = new PilaPapelera();
+
     public PanelInscripcion() {
         initComponents();
         javax.swing.JButton btnOrdenar = new javax.swing.JButton("Ordenar (A-Z)");
@@ -22,14 +24,13 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 modelo.addRow(new Object[]{Inicio.listaEquipos.obtener(i)});
             }
         });
-        
+
         // Lo añadimos al panel superior donde está el título
         jPanel1.add(btnOrdenar);
-        
+
         actualizarPantalla();
     }
 
-    
     private void actualizarPantalla() {
         com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
         java.util.List<String> equiposDB = dao.obtenerTodosLosNombres();
@@ -37,7 +38,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
         for (String eq : equiposDB) {
             Inicio.listaEquipos.insertar(eq);
         }
-        
+
         int total = Inicio.listaEquipos.getTamano();
         lblTotalInscritos.setText(String.valueOf(total));
 
@@ -47,16 +48,15 @@ public class PanelInscripcion extends javax.swing.JPanel {
         for (int i = 0; i < Inicio.listaEquipos.getTamano(); i++) {
             modelo.addRow(new Object[]{Inicio.listaEquipos.obtener(i)});
         }
-        
-        // 3. Validar Potencia de 2 (2, 4, 8, 16...)
-        boolean esPotenciaDeDos = (total > 1) && ((total & (total - 1)) == 0);
-        
-        if (esPotenciaDeDos) {
+
+        // 3. Validar mínimo de equipos para iniciar el torneo (Cualquier número mayor o igual a 2)
+        if (total >= 2) {
             btnGenerarLlaves.setEnabled(true);
         } else {
             btnGenerarLlaves.setEnabled(false);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,13 +84,18 @@ public class PanelInscripcion extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaEquipos = new javax.swing.JTable();
         btnReiniciar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnDeshacer = new javax.swing.JButton();
+        btnRestaurar = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(244, 246, 248));
+        setBackground(new java.awt.Color(0, 0, 0));
 
         jLabel2.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Módulo de Inscripción ");
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Gestión de los equipos que participarán en el torneo");
 
         jLabel1.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
@@ -151,6 +156,11 @@ public class PanelInscripcion extends javax.swing.JPanel {
 
         btnGenerarLlaves.setText("Generar Llaves del Torneo");
         btnGenerarLlaves.setEnabled(false);
+        btnGenerarLlaves.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarLlavesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -206,10 +216,8 @@ public class PanelInscripcion extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel8))
+                    .addComponent(jLabel8)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -218,8 +226,8 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnReiniciar.setBackground(new java.awt.Color(255, 51, 51));
@@ -231,26 +239,56 @@ public class PanelInscripcion extends javax.swing.JPanel {
             }
         });
 
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnDeshacer.setText("Deshacer");
+        btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeshacerActionPerformed(evt);
+            }
+        });
+
+        btnRestaurar.setText("Restaurar");
+        btnRestaurar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestaurarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnReiniciar)
-                .addGap(49, 49, 49))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnEliminar)
+                            .addComponent(btnRestaurar)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(143, 143, 143)
+                        .addComponent(btnDeshacer)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
+                .addComponent(btnReiniciar)
+                .addGap(49, 49, 49))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,52 +308,193 @@ public class PanelInscripcion extends javax.swing.JPanel {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(43, 43, 43)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDeshacer))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(btnEliminar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRestaurar)))
+                .addContainerGap(120, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {                                           
+    private void btnGenerarLlavesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarLlavesActionPerformed
+
+    }//GEN-LAST:event_btnGenerarLlavesActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+
+        // 1. Obtener el índice de la fila seleccionada en la tabla
+    int filaSeleccionada = tablaEquipos.getSelectedRow();
+    
+    // 2. Verificar si el usuario realmente seleccionó una fila
+    if (filaSeleccionada != -1) {
+        // Obtener el nombre del equipo de la columna 0 en la fila seleccionada
+        String nombreEquipo = tablaEquipos.getValueAt(filaSeleccionada, 0).toString();
+        
+        // 3. Ventana de confirmación para evitar eliminaciones accidentales
+        int confirmar = javax.swing.JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de que deseas eliminar al equipo '" + nombreEquipo + "'?",
+                "Confirmar Eliminación",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+                
+        if (confirmar == javax.swing.JOptionPane.YES_OPTION) {
+            // Creamos la conexión DAO PRIMERO
+            com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
+            
+            // 4. Ejecutar la eliminación en la BD y guardar en la Pila (Papelera)
+            if (dao.eliminarPorNombre(nombreEquipo)) {
+                
+                papeleraReciclaje.push(nombreEquipo); // <-- SE GUARDA EN LA PILA DE LA PAPELERA
+                
+                javax.swing.JOptionPane.showMessageDialog(this, "Equipo enviado a la papelera.");
+                actualizarPantalla(); 
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al eliminar el equipo de la Base de Datos.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un equipo de la tabla para poder eliminarlo.", "Aviso", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
+        if (!pilaDeshacer.estaVacia()) {
+            // Extrae el último equipo ingresado (LIFO)
+            String ultimoEquipo = pilaDeshacer.pop();
+
+            com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
+            if (dao.eliminarPorNombre(ultimoEquipo)) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Acción deshecha. Se eliminó el registro de: " + ultimoEquipo);
+                actualizarPantalla();
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay registros recientes para deshacer en esta sesión.");
+        }
+    }//GEN-LAST:event_btnDeshacerActionPerformed
+
+    private void btnRestaurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestaurarActionPerformed
+        if (!papeleraReciclaje.estaVacia()) {
+        // Sacamos el último eliminado de la pila (LIFO)
+        String equipoARestaurar = papeleraReciclaje.pop(); 
+        
+        com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
+        if (dao.registrarEquipo(equipoARestaurar)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Se ha restaurado el equipo: " + equipoARestaurar);
+            actualizarPantalla();
+        }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "La papelera está vacía.");
+    }
+    }//GEN-LAST:event_btnRestaurarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {
         String nombre = txtNombreEquipo.getText().trim();
         if (!nombre.isEmpty()) {
             com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
-            if(dao.registrarEquipo(nombre)){
-                txtNombreEquipo.setText("");     
-                txtNombreEquipo.requestFocus();  
-                actualizarPantalla();            
+            if (dao.registrarEquipo(nombre)) {
+                pilaDeshacer.push(nombre);
+                txtNombreEquipo.setText("");
+                txtNombreEquipo.requestFocus();
+                actualizarPantalla();
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar en Base de Datos. Puede que ya exista.");
             }
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Escribe un nombre de equipo.");
         }
-    }                                          
-
-    private void btnReiniciarActionPerformed(java.awt.event.ActionEvent evt) {                                             
-    
-    int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this, 
-            "¿Estás seguro de que deseas eliminar todos los equipos inscritos y reiniciar el torneo?", 
-            "Confirmar Reinicio", 
-            javax.swing.JOptionPane.YES_NO_OPTION,
-            javax.swing.JOptionPane.WARNING_MESSAGE);
-
-    
-    if (confirmacion == 0) {
-        com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
-        dao.eliminarTodos();
-        new com.utp.aed.proyectotorneo.dao.LlaveDAO().eliminarArbol();
-        Inicio.campeonActual = "";
-        actualizarPantalla();
-        
-        javax.swing.JOptionPane.showMessageDialog(this, "El torneo ha sido reiniciado en la Base de Datos.");
-    }
     }
 
+    private void btnReiniciarActionPerformed(java.awt.event.ActionEvent evt) {
 
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de que deseas eliminar todos los equipos inscritos y reiniciar el torneo?",
+                "Confirmar Reinicio",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+
+        if (confirmacion == 0) {
+            com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
+            dao.eliminarTodos();
+            new com.utp.aed.proyectotorneo.dao.LlaveDAO().eliminarArbol();
+            Inicio.campeonActual = "";
+            actualizarPantalla();
+
+            javax.swing.JOptionPane.showMessageDialog(this, "El torneo ha sido reiniciado en la Base de Datos.");
+        }
+    }
+
+// ESTRUCTURAS DE DATOS: PILA PARA DESHACER INSCRIPCIONES
+    class NodoPilaEquipo {
+
+        String nombreEquipo;
+        NodoPilaEquipo siguiente;
+
+        public NodoPilaEquipo(String nombre) {
+            this.nombreEquipo = nombre;
+            this.siguiente = null;
+        }
+    }
+
+    class PilaEquipos {
+
+        NodoPilaEquipo cima;
+
+        public void push(String nombre) {
+            NodoPilaEquipo nuevo = new NodoPilaEquipo(nombre);
+            nuevo.siguiente = cima;
+            cima = nuevo;
+        }
+
+        public String pop() {
+            if (cima == null) {
+                return null;
+            }
+            String extraido = cima.nombreEquipo;
+            cima = cima.siguiente;
+            return extraido;
+        }
+
+        public boolean estaVacia() {
+            return cima == null;
+        }
+    }
+
+    class PilaPapelera {
+
+        NodoPilaEquipo cima; // Usa la misma clase NodoPilaEquipo que ya creaste
+
+        public void push(String nombre) {
+            NodoPilaEquipo nuevo = new NodoPilaEquipo(nombre);
+            nuevo.siguiente = cima;
+            cima = nuevo;
+        }
+
+        public String pop() {
+            if (cima == null) {
+                return null;
+            }
+            String extraido = cima.nombreEquipo;
+            cima = cima.siguiente;
+            return extraido;
+        }
+
+        public boolean estaVacia() {
+            return cima == null;
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnDeshacer;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGenerarLlaves;
     private javax.swing.JButton btnReiniciar;
+    private javax.swing.JButton btnRestaurar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -23,10 +23,11 @@ public class LoginJFrame extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
         btnRegistro = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Torneo - Login");
-        setBackground(new java.awt.Color(170, 186, 188));
+        setBackground(new java.awt.Color(170, 220, 224));
         setIconImages(null);
         setResizable(false);
         getContentPane().setLayout(null);
@@ -48,6 +49,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         getContentPane().add(txtPassword);
         txtPassword.setBounds(150, 130, 150, 25);
 
+        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_Iniciar.png"))); // NOI18N
         btnLogin.setText("Iniciar Sesión");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -65,6 +67,10 @@ public class LoginJFrame extends javax.swing.JFrame {
         });
         getContentPane().add(btnRegistro);
         btnRegistro.setBounds(120, 220, 140, 30);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(0, 0, 400, 300);
 
         pack();
         setLocationRelativeTo(null);
@@ -106,6 +112,7 @@ public class LoginJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnRegistro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
