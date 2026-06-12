@@ -253,43 +253,188 @@ public class PanelLlaves extends javax.swing.JPanel {
     }
     
     private void btnGenerarTorneoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTorneoActionPerformed
-
-        ColaPartidos cola = new ColaPartidos();
-
-    // 1. Crear los partidos base (las hojas del árbol) a partir de la lista de equipos
-    for (int i = 0; i < Inicio.listaEquipos.getTamano(); i += 2) {
-        String eq1 = Inicio.listaEquipos.obtener(i);
-        String eq2 = (i + 1 < Inicio.listaEquipos.getTamano()) ? Inicio.listaEquipos.obtener(i + 1) : "Pase Directo";
-        cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(eq1, eq2));
-    } 
-
-    // 2. Construir el árbol de llaves de abajo hacia arriba
-    while (cola.obtenerTamaño() > 1) {
-        com.utp.aed.proyectotorneo.model.NodoPartido p1 = cola.desencolar();
-        com.utp.aed.proyectotorneo.model.NodoPartido p2 = cola.desencolar();
-
-        if (p2 == null) {
-            p2 = new com.utp.aed.proyectotorneo.model.NodoPartido("Pase Directo", "Pase Directo");
+    
+       ListaEnlazadaHistorial clasificados = obtenerClasificadosFaseGrupos();
+        
+        if (clasificados.estaVacia()) {
+            return;
         }
 
-        // Se encola el partido padre que une a las dos llaves previas
-        cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(p1, p2));
-    }
-
-    // 3. Establecer la raíz real y renderizar
-    if (!cola.estaVacia()) {
-        // La cola solo tiene 1 elemento ahora: El nodo de la Gran Final (con todas sus ramas dentro)
-        partidoFinal = cola.desencolar();
+        java.util.ArrayList<String> listaAleatoria = new java.util.ArrayList<>();
+        NodoHistorial temp = clasificados.cabeza;
         
-        // Renderizamos el árbol usando tu método existente
-        llenarArbol(partidoFinal);
+        // Pasamos los nombres a la lista temporal
+        while (temp != null) {
+            listaAleatoria.add(temp.mensaje);
+            temp = temp.siguiente;
+        }
+        
+        // ¡Magia! Mezclamos la lista al azar
+        java.util.Collections.shuffle(listaAleatoria);
+        // =========================================================
 
-        // Desactivamos el botón para no generar el torneo dos veces
-        btnGenerarTorneo.setEnabled(false);
+        ColaPartidos cola = new ColaPartidos();
+        
+        // Encolar los partidos tomando a los equipos ya mezclados de 2 en 2
+        for (int i = 0; i < listaAleatoria.size(); i += 2) {
+            String eq1 = listaAleatoria.get(i);
+            String eq2 = "Pase Directo";
+            
+            // Si hay un rival disponible, lo tomamos; si no, pasa directo
+            if (i + 1 < listaAleatoria.size()) {
+                eq2 = listaAleatoria.get(i + 1);
+            }
+            
+            cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(eq1, eq2));
+        }
 
-        // Guardamos el árbol completo en la Base de Datos
-        new com.utp.aed.proyectotorneo.dao.LlaveDAO().guardarArbol(partidoFinal);
+        // Construir el árbol de llaves de abajo hacia arriba
+        while (cola.obtenerTamaño() > 1) {
+            com.utp.aed.proyectotorneo.model.NodoPartido p1 = cola.desencolar();
+            com.utp.aed.proyectotorneo.model.NodoPartido p2 = cola.desencolar();
+
+            if (p2 == null) {
+                p2 = new com.utp.aed.proyectotorneo.model.NodoPartido("Pase Directo", "Pase Directo");
+            }
+
+            cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(p1, p2));
+        }
+
+        if (!cola.estaVacia()) {
+            partidoFinal = cola.desencolar();
+            llenarArbol(partidoFinal);
+            btnGenerarTorneo.setEnabled(false);
+            new com.utp.aed.proyectotorneo.dao.LlaveDAO().guardarArbol(partidoFinal);
+            
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Sorteo finalizado! \nLas llaves se han generado de forma aleatoria.");
+        }
     }
+
+
+    private ListaEnlazadaHistorial obtenerClasificadosFaseGrupos() {
+        ListaEnlazadaHistorial clasificados = new ListaEnlazadaHistorial();
+        int totalEquipos = Inicio.listaEquipos.getTamano();
+
+        if (totalEquipos < 2) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Se necesitan al menos 2 equipos para iniciar.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return clasificados;
+        }
+
+        // 1. SORTEO ALEATORIO DE EQUIPOS
+        java.util.ArrayList<String> equiposSorteados = new java.util.ArrayList<>();
+        for (int i = 0; i < totalEquipos; i++) {
+            equiposSorteados.add(Inicio.listaEquipos.obtener(i));
+        }
+        java.util.Collections.shuffle(equiposSorteados); // Mezclamos los equipos al azar
+
+        // 2. DEFINIR GRUPOS
+        int tamanoGrupo = (totalEquipos <= 5) ? 3 : 4; 
+        int numGrupos = (int) Math.ceil((double) totalEquipos / tamanoGrupo);
+        
+        String[][] grupos = new String[numGrupos][tamanoGrupo];
+        int cont = 0;
+    
+        // Asignar los equipos ya mezclados a los grupos
+        for (int i = 0; i < numGrupos; i++) {
+            for (int j = 0; j < tamanoGrupo; j++) {
+                if (cont < totalEquipos) {
+                    grupos[i][j] = equiposSorteados.get(cont);
+                    cont++;
+                } else {
+                    grupos[i][j] = "Vacío";
+                }
+            }
+        }
+
+        // 3. INTERACCIÓN Y CREACIÓN DEL FIXTURE (CALENDARIO)
+        for (int i = 0; i < numGrupos; i++) {
+            int equiposReales = 0;
+            java.util.ArrayList<String> equiposGrupo = new java.util.ArrayList<>();
+            
+            for (int j = 0; j < tamanoGrupo; j++) {
+                if (!grupos[i][j].equals("Vacío")) {
+                    equiposReales++;
+                    equiposGrupo.add(grupos[i][j]);
+                }
+            }
+
+            char letraGrupo = (char) ('A' + i);
+
+            // Armar el texto con los enfrentamientos de este grupo
+            StringBuilder enfrentamientos = new StringBuilder();
+            enfrentamientos.append("⚽ CALENDARIO - GRUPO ").append(letraGrupo).append(" ⚽\n\n");
+            
+            if (equiposReales == 1) {
+                enfrentamientos.append(equiposGrupo.get(0)).append(" (Sin rivales - Pasa directo)\n");
+            } else {
+                int numPartido = 1;
+                // Lógica de Todos contra Todos
+                for (int m = 0; m < equiposGrupo.size(); m++) {
+                    for (int n = m + 1; n < equiposGrupo.size(); n++) {
+                        enfrentamientos.append("Partido ").append(numPartido).append(": ")
+                                       .append(equiposGrupo.get(m)).append("  vs  ").append(equiposGrupo.get(n)).append("\n");
+                        numPartido++;
+                    }
+                }
+            }
+            enfrentamientos.append("\n==========================\n");
+            enfrentamientos.append("Según estos partidos, ¿Quién clasificó en 1ER PUESTO?\n");
+
+            if (equiposReales == 1) {
+                javax.swing.JOptionPane.showMessageDialog(this, enfrentamientos.toString(), "Grupo " + letraGrupo, javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                clasificados.insertarFinal(equiposGrupo.get(0));
+                continue;
+            }
+
+            // Diálogo que muestra los partidos Y pregunta por el 1er lugar al mismo tiempo
+            Object[] opciones1 = equiposGrupo.toArray();
+
+            int eleccion1 = javax.swing.JOptionPane.showOptionDialog(
+                this, 
+                enfrentamientos.toString(), 
+                "Resultados - Grupo " + letraGrupo, 
+                javax.swing.JOptionPane.DEFAULT_OPTION, 
+                javax.swing.JOptionPane.QUESTION_MESSAGE, 
+                null, opciones1, opciones1[0]
+            );
+
+            if (eleccion1 < 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Generación cancelada.");
+                return new ListaEnlazadaHistorial(); 
+            }
+
+            String primero = (String) opciones1[eleccion1];
+            clasificados.insertarFinal(primero);
+
+            // Preguntar por el 2do lugar
+            Object[] opciones2 = new Object[equiposReales - 1];
+            int idx2 = 0;
+            for (Object op : opciones1) {
+                if (!op.equals(primero)) {
+                    opciones2[idx2++] = op;
+                }
+            }
+
+            int eleccion2 = javax.swing.JOptionPane.showOptionDialog(
+                this, 
+                "⭐ 1er Puesto asegurado: " + primero + "\n\n¿Quién clasificó en 2DO PUESTO en el Grupo " + letraGrupo + "?", 
+                "Resultados - Grupo " + letraGrupo, 
+                javax.swing.JOptionPane.DEFAULT_OPTION, 
+                javax.swing.JOptionPane.QUESTION_MESSAGE, 
+                null, opciones2, opciones2[0]
+            );
+
+            if (eleccion2 < 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Generación cancelada.");
+                return new ListaEnlazadaHistorial();
+            }
+
+            String segundo = (String) opciones2[eleccion2];
+            clasificados.insertarFinal(segundo); 
+        }
+
+        return clasificados;
+    
     }//GEN-LAST:event_btnGenerarTorneoActionPerformed
 
     private void arbolTorneoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arbolTorneoMouseClicked

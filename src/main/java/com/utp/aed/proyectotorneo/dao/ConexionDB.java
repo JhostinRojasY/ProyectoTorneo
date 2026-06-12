@@ -8,7 +8,7 @@ public class ConexionDB {
    
     private static final String URL = "jdbc:mysql://localhost:3306/torneo_db?useSSL=false&serverTimezone=UTC";
     private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "";
 
     public static Connection getConnection() {
         Connection connection = null;
