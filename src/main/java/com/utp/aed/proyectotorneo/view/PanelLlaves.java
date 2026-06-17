@@ -312,7 +312,7 @@ public class PanelLlaves extends javax.swing.JPanel {
 
 
     private ListaEnlazadaHistorial obtenerClasificadosFaseGrupos() {
-        ListaEnlazadaHistorial clasificados = new ListaEnlazadaHistorial();
+       ListaEnlazadaHistorial clasificados = new ListaEnlazadaHistorial();
         int totalEquipos = Inicio.listaEquipos.getTamano();
 
         if (totalEquipos < 2) {
@@ -325,7 +325,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         for (int i = 0; i < totalEquipos; i++) {
             equiposSorteados.add(Inicio.listaEquipos.obtener(i));
         }
-        java.util.Collections.shuffle(equiposSorteados); // Mezclamos los equipos al azar
+        java.util.Collections.shuffle(equiposSorteados);
 
         // 2. DEFINIR GRUPOS
         int tamanoGrupo = (totalEquipos <= 5) ? 3 : 4; 
@@ -334,7 +334,6 @@ public class PanelLlaves extends javax.swing.JPanel {
         String[][] grupos = new String[numGrupos][tamanoGrupo];
         int cont = 0;
     
-        // Asignar los equipos ya mezclados a los grupos
         for (int i = 0; i < numGrupos; i++) {
             for (int j = 0; j < tamanoGrupo; j++) {
                 if (cont < totalEquipos) {
@@ -360,81 +359,136 @@ public class PanelLlaves extends javax.swing.JPanel {
 
             char letraGrupo = (char) ('A' + i);
 
-            // Armar el texto con los enfrentamientos de este grupo
-            StringBuilder enfrentamientos = new StringBuilder();
-            enfrentamientos.append("⚽ CALENDARIO - GRUPO ").append(letraGrupo).append(" ⚽\n\n");
-            
             if (equiposReales == 1) {
-                enfrentamientos.append(equiposGrupo.get(0)).append(" (Sin rivales - Pasa directo)\n");
-            } else {
-                int numPartido = 1;
-                // Lógica de Todos contra Todos
-                for (int m = 0; m < equiposGrupo.size(); m++) {
-                    for (int n = m + 1; n < equiposGrupo.size(); n++) {
-                        enfrentamientos.append("Partido ").append(numPartido).append(": ")
-                                       .append(equiposGrupo.get(m)).append("  vs  ").append(equiposGrupo.get(n)).append("\n");
-                        numPartido++;
-                    }
-                }
-            }
-            enfrentamientos.append("\n==========================\n");
-            enfrentamientos.append("Según estos partidos, ¿Quién clasificó en 1ER PUESTO?\n");
-
-            if (equiposReales == 1) {
-                javax.swing.JOptionPane.showMessageDialog(this, enfrentamientos.toString(), "Grupo " + letraGrupo, javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(this, equiposGrupo.get(0) + " (Sin rivales - Pasa directo)", "Grupo " + letraGrupo, javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 clasificados.insertarFinal(equiposGrupo.get(0));
                 continue;
             }
 
-            // Diálogo que muestra los partidos Y pregunta por el 1er lugar al mismo tiempo
-            Object[] opciones1 = equiposGrupo.toArray();
-
-            int eleccion1 = javax.swing.JOptionPane.showOptionDialog(
-                this, 
-                enfrentamientos.toString(), 
-                "Resultados - Grupo " + letraGrupo, 
-                javax.swing.JOptionPane.DEFAULT_OPTION, 
-                javax.swing.JOptionPane.QUESTION_MESSAGE, 
-                null, opciones1, opciones1[0]
-            );
-
-            if (eleccion1 < 0) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Generación cancelada.");
-                return new ListaEnlazadaHistorial(); 
-            }
-
-            String primero = (String) opciones1[eleccion1];
-            clasificados.insertarFinal(primero);
-
-            // Preguntar por el 2do lugar
-            Object[] opciones2 = new Object[equiposReales - 1];
-            int idx2 = 0;
-            for (Object op : opciones1) {
-                if (!op.equals(primero)) {
-                    opciones2[idx2++] = op;
+            // --- INICIO DE LA NUEVA INTERFAZ DE LISTA DE PARTIDOS ---
+            
+            // Determinar todos los enfrentamientos del grupo
+            java.util.ArrayList<String[]> emparejamientos = new java.util.ArrayList<>();
+            for (int m = 0; m < equiposGrupo.size(); m++) {
+                for (int n = m + 1; n < equiposGrupo.size(); n++) {
+                    emparejamientos.add(new String[]{equiposGrupo.get(m), equiposGrupo.get(n)});
                 }
             }
 
-            int eleccion2 = javax.swing.JOptionPane.showOptionDialog(
-                this, 
-                "⭐ 1er Puesto asegurado: " + primero + "\n\n¿Quién clasificó en 2DO PUESTO en el Grupo " + letraGrupo + "?", 
-                "Resultados - Grupo " + letraGrupo, 
-                javax.swing.JOptionPane.DEFAULT_OPTION, 
-                javax.swing.JOptionPane.QUESTION_MESSAGE, 
-                null, opciones2, opciones2[0]
-            );
+            String[] ganadoresPartido = new String[emparejamientos.size()];
 
-            if (eleccion2 < 0) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Generación cancelada.");
-                return new ListaEnlazadaHistorial();
+            // Crear un cuadro de diálogo personalizado (JDialog)
+            javax.swing.JDialog dialogoGrupo = new javax.swing.JDialog((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), "Partidos - Grupo " + letraGrupo, true);
+            dialogoGrupo.setLayout(new java.awt.BorderLayout());
+            dialogoGrupo.setSize(450, 350);
+            dialogoGrupo.setLocationRelativeTo(this);
+            // Evitar que cierren la ventana con la 'X' sin terminar los partidos
+            dialogoGrupo.setDefaultCloseOperation(javax.swing.JDialog.DO_NOTHING_ON_CLOSE); 
+
+            javax.swing.JPanel panelCentro = new javax.swing.JPanel(new java.awt.GridLayout(emparejamientos.size(), 1, 5, 5));
+            panelCentro.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+            // Crear un botón para cada partido
+            javax.swing.JButton[] botonesPartidos = new javax.swing.JButton[emparejamientos.size()];
+            for (int p = 0; p < emparejamientos.size(); p++) {
+                final int index = p;
+                String eq1 = emparejamientos.get(p)[0];
+                String eq2 = emparejamientos.get(p)[1];
+
+                botonesPartidos[index] = new javax.swing.JButton("Partido " + (index + 1) + ": " + eq1 + " vs " + eq2 + " (Pendiente)");
+                botonesPartidos[index].setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
+                
+                botonesPartidos[index].addActionListener(e -> {
+                    String[] opciones = {eq1, eq2};
+                    int eleccion = javax.swing.JOptionPane.showOptionDialog(
+                        dialogoGrupo, 
+                        "¿Quién ganó el Partido " + (index + 1) + "?\n\n" + eq1 + "  VS  " + eq2, 
+                        "Definir Ganador", 
+                        javax.swing.JOptionPane.DEFAULT_OPTION, 
+                        javax.swing.JOptionPane.QUESTION_MESSAGE, 
+                        null, opciones, opciones[0]
+                    );
+
+                    if (eleccion >= 0) {
+                        ganadoresPartido[index] = opciones[eleccion];
+                        // Actualizar el texto del botón para que sepas quién ganó
+                        botonesPartidos[index].setText("Partido " + (index + 1) + ": " + eq1 + " vs " + eq2 + "  🏆 Ganó: " + opciones[eleccion]);
+                        // Poner un fondo ligeramente verde para indicar que ya se jugó
+                        botonesPartidos[index].setBackground(new java.awt.Color(200, 255, 200)); 
+                    }
+                });
+                panelCentro.add(botonesPartidos[index]);
             }
 
-            String segundo = (String) opciones2[eleccion2];
+            javax.swing.JScrollPane scrollPanel = new javax.swing.JScrollPane(panelCentro);
+            dialogoGrupo.add(scrollPanel, java.awt.BorderLayout.CENTER);
+
+            // Botón en la parte inferior para confirmar y calcular resultados
+            javax.swing.JPanel panelSur = new javax.swing.JPanel();
+            javax.swing.JButton btnFinalizarGrupo = new javax.swing.JButton("Finalizar Grupo y Calcular Clasificados");
+            btnFinalizarGrupo.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+            
+            btnFinalizarGrupo.addActionListener(e -> {
+                // Verificar que no queden partidos en nulo
+                boolean todosJugados = true;
+                for (String g : ganadoresPartido) {
+                    if (g == null) {
+                        todosJugados = false;
+                        break;
+                    }
+                }
+
+                if (!todosJugados) {
+                    javax.swing.JOptionPane.showMessageDialog(dialogoGrupo, "Aún hay partidos pendientes en este grupo. Completa todos los resultados.", "Partidos Incompletos", javax.swing.JOptionPane.WARNING_MESSAGE);
+                } else {
+                    dialogoGrupo.dispose(); // Cerrar el diálogo y permitir que el código continúe
+                }
+            });
+
+            panelSur.add(btnFinalizarGrupo);
+            dialogoGrupo.add(panelSur, java.awt.BorderLayout.SOUTH);
+
+            // Mostrar el diálogo modal (el sistema se pausa aquí hasta que se cierre el diálogo)
+            dialogoGrupo.setVisible(true);
+
+            // --- FIN DE LA INTERFAZ. PROCEDEMOS A CALCULAR PUNTOS ---
+
+            int[] puntos = new int[equiposGrupo.size()];
+            
+            // Contar victorias sumando los resultados del arreglo ganadoresPartido
+            for (String ganador : ganadoresPartido) {
+                int indexGanador = equiposGrupo.indexOf(ganador);
+                if (indexGanador != -1) {
+                    puntos[indexGanador]++;
+                }
+            }
+
+            // Ordenar los equipos según la cantidad de victorias
+            java.util.ArrayList<Integer> indices = new java.util.ArrayList<>();
+            for (int k = 0; k < equiposGrupo.size(); k++) {
+                indices.add(k);
+            }
+            
+            // Ordenamiento descendente por puntos
+            indices.sort((a, b) -> Integer.compare(puntos[b], puntos[a])); 
+
+            // Determinar a los clasificados
+            String primero = equiposGrupo.get(indices.get(0));
+            clasificados.insertarFinal(primero);
+
+            String segundo = equiposGrupo.get(indices.get(1));
             clasificados.insertarFinal(segundo); 
+            
+            // Mostrar resumen final del grupo
+            StringBuilder resumen = new StringBuilder();
+            resumen.append("🏆 CLASIFICADOS GRUPO ").append(letraGrupo).append(" 🏆\n\n");
+            resumen.append("1er Puesto: ").append(primero).append(" (").append(puntos[indices.get(0)]).append(" victorias)\n");
+            resumen.append("2do Puesto: ").append(segundo).append(" (").append(puntos[indices.get(1)]).append(" victorias)\n");
+            
+            javax.swing.JOptionPane.showMessageDialog(this, resumen.toString(), "Resumen Grupo " + letraGrupo, javax.swing.JOptionPane.INFORMATION_MESSAGE);
         }
 
         return clasificados;
-    
     }//GEN-LAST:event_btnGenerarTorneoActionPerformed
 
     private void arbolTorneoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arbolTorneoMouseClicked
