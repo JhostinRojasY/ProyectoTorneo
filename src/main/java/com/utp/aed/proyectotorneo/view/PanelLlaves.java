@@ -112,8 +112,10 @@ public class PanelLlaves extends javax.swing.JPanel {
         btnLimpiar = new javax.swing.JButton();
         btnDeshacer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(244, 246, 248));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnGenerarTorneo.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
         btnGenerarTorneo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_generar.png"))); // NOI18N
@@ -123,6 +125,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnGenerarTorneoActionPerformed(evt);
             }
         });
+        add(btnGenerarTorneo, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 17, -1, -1));
 
         arbolTorneo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         arbolTorneo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -132,6 +135,8 @@ public class PanelLlaves extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(arbolTorneo);
 
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 75, 289, 284));
+
         btnFinalizado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_campeon.png"))); // NOI18N
         btnFinalizado.setText("Torneo Finalizado");
         btnFinalizado.addActionListener(new java.awt.event.ActionListener() {
@@ -139,6 +144,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnFinalizadoActionPerformed(evt);
             }
         });
+        add(btnFinalizado, new org.netbeans.lib.awtextra.AbsoluteConstraints(403, 18, -1, -1));
 
         txtBuscarEquipo.setText("Buscar Equipo...");
         txtBuscarEquipo.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -154,6 +160,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 txtBuscarEquipoActionPerformed(evt);
             }
         });
+        add(txtBuscarEquipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(454, 117, -1, -1));
 
         txtHistorial.setEditable(false);
         txtHistorial.setColumns(20);
@@ -162,6 +169,8 @@ public class PanelLlaves extends javax.swing.JPanel {
         txtHistorial.setWrapStyleWord(true);
         jScrollPane1.setViewportView(txtHistorial);
 
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(408, 157, 188, 192));
+
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_limpiar.png"))); // NOI18N
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
@@ -169,6 +178,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnLimpiarActionPerformed(evt);
             }
         });
+        add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 355, -1, -1));
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png"))); // NOI18N
         btnDeshacer.setText("Deshacer");
@@ -177,64 +187,13 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnDeshacerActionPerformed(evt);
             }
         });
+        add(btnDeshacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(223, 377, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_buscar.png"))); // NOI18N
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(416, 107, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnGenerarTorneo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnFinalizado)
-                        .addGap(62, 62, 62))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(206, 206, 206)
-                                .addComponent(btnDeshacer)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBuscarEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(75, 75, 75))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnLimpiar)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(30, 30, 30))))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFinalizado)
-                    .addComponent(btnGenerarTorneo))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtBuscarEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLimpiar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDeshacer)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizadoActionPerformed(java.awt.event.ActionEvent evt) {
@@ -730,6 +689,7 @@ public class PanelLlaves extends javax.swing.JPanel {
     private javax.swing.JButton btnGenerarTorneo;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtBuscarEquipo;

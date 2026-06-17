@@ -87,17 +87,21 @@ public class PanelInscripcion extends javax.swing.JPanel {
         btnEliminar = new javax.swing.JButton();
         btnDeshacer = new javax.swing.JButton();
         btnRestaurar = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(0, 0, 0));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_inscripcion.png"))); // NOI18N
         jLabel2.setText("Módulo de Inscripción ");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 12, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Gestión de los equipos que participarán en el torneo");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(54, 50, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_registro.png"))); // NOI18N
@@ -145,6 +149,8 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 .addComponent(btnAgregar)
                 .addGap(24, 24, 24))
         );
+
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 85, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_torneo1.png"))); // NOI18N
@@ -202,6 +208,8 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 291, -1, -1));
+
         jLabel8.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_inscripcion.png"))); // NOI18N
         jLabel8.setText("Lista De Equipos Inscritos");
@@ -237,6 +245,8 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, 85, -1, -1));
+
         btnReiniciar.setBackground(new java.awt.Color(255, 51, 51));
         btnReiniciar.setForeground(new java.awt.Color(255, 255, 255));
         btnReiniciar.setText("Reiniciar Torneo");
@@ -245,6 +255,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 btnReiniciarActionPerformed(evt);
             }
         });
+        add(btnReiniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(599, 28, -1, -1));
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_eliminar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
@@ -253,6 +264,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 btnEliminarActionPerformed(evt);
             }
         });
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(636, 134, 116, -1));
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png"))); // NOI18N
         btnDeshacer.setText("Deshacer");
@@ -261,6 +273,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 btnDeshacerActionPerformed(evt);
             }
         });
+        add(btnDeshacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 470, -1, -1));
 
         btnRestaurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_restaurar.png"))); // NOI18N
         btnRestaurar.setText("Restaurar");
@@ -269,73 +282,10 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 btnRestaurarActionPerformed(evt);
             }
         });
+        add(btnRestaurar, new org.netbeans.lib.awtextra.AbsoluteConstraints(636, 191, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addComponent(jLabel3)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReiniciar)
-                        .addGap(49, 49, 49))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnRestaurar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(136, 136, 136)
-                                .addComponent(btnDeshacer)))
-                        .addContainerGap(11, Short.MAX_VALUE))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(btnReiniciar)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeshacer)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(49, 49, 49)
-                                .addComponent(btnEliminar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnRestaurar)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(72, 72, 72))))
-        );
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarLlavesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarLlavesActionPerformed
@@ -520,6 +470,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
