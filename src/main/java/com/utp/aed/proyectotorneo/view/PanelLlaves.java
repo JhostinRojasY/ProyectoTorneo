@@ -254,33 +254,67 @@ public class PanelLlaves extends javax.swing.JPanel {
     
     private void btnGenerarTorneoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTorneoActionPerformed
     
-       ListaEnlazadaHistorial clasificados = obtenerClasificadosFaseGrupos();
-        
-        if (clasificados.estaVacia()) {
-            return;
+       Object[] opciones = {"Fase de Grupos", "Eliminatorias Directas", "Cancelar"};
+        int eleccionFormato = javax.swing.JOptionPane.showOptionDialog(
+            this,
+            "¿Qué formato deseas utilizar para el torneo?",
+            "Formato de Emparejamientos",
+            javax.swing.JOptionPane.DEFAULT_OPTION,
+            javax.swing.JOptionPane.QUESTION_MESSAGE,
+            new javax.swing.ImageIcon(getClass().getResource("/img/icono_generar.png")), // Puedes usar null si no quieres icono
+            opciones,
+            opciones[0]
+        );
+
+        if (eleccionFormato == 2 || eleccionFormato == javax.swing.JOptionPane.CLOSED_OPTION) {
+            return; 
+        }
+
+        ListaEnlazadaHistorial equiposParaLlaves = new ListaEnlazadaHistorial();
+
+        if (eleccionFormato == 0) {
+            equiposParaLlaves = obtenerClasificadosFaseGrupos();
+
+            if (equiposParaLlaves.estaVacia()) {
+                return; 
+            }
+            
+        } else if (eleccionFormato == 1) {
+            int totalEquipos = Inicio.listaEquipos.getTamano();
+            
+            if (totalEquipos < 2) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Se necesitan al menos 2 equipos para iniciar.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            java.util.ArrayList<String> todosLosEquipos = new java.util.ArrayList<>();
+            for (int i = 0; i < totalEquipos; i++) {
+                todosLosEquipos.add(Inicio.listaEquipos.obtener(i));
+            }
+
+            java.util.Collections.shuffle(todosLosEquipos);
+
+            for (String eq : todosLosEquipos) {
+                equiposParaLlaves.insertarFinal(eq);
+            }
         }
 
         java.util.ArrayList<String> listaAleatoria = new java.util.ArrayList<>();
-        NodoHistorial temp = clasificados.cabeza;
-        
-        // Pasamos los nombres a la lista temporal
+        NodoHistorial temp = equiposParaLlaves.cabeza;
+
         while (temp != null) {
             listaAleatoria.add(temp.mensaje);
             temp = temp.siguiente;
         }
         
-        // ¡Magia! Mezclamos la lista al azar
         java.util.Collections.shuffle(listaAleatoria);
-        // =========================================================
 
         ColaPartidos cola = new ColaPartidos();
-        
-        // Encolar los partidos tomando a los equipos ya mezclados de 2 en 2
+
         for (int i = 0; i < listaAleatoria.size(); i += 2) {
             String eq1 = listaAleatoria.get(i);
             String eq2 = "Pase Directo";
-            
-            // Si hay un rival disponible, lo tomamos; si no, pasa directo
+
             if (i + 1 < listaAleatoria.size()) {
                 eq2 = listaAleatoria.get(i + 1);
             }
@@ -288,7 +322,6 @@ public class PanelLlaves extends javax.swing.JPanel {
             cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(eq1, eq2));
         }
 
-        // Construir el árbol de llaves de abajo hacia arriba
         while (cola.obtenerTamaño() > 1) {
             com.utp.aed.proyectotorneo.model.NodoPartido p1 = cola.desencolar();
             com.utp.aed.proyectotorneo.model.NodoPartido p2 = cola.desencolar();
@@ -306,13 +339,13 @@ public class PanelLlaves extends javax.swing.JPanel {
             btnGenerarTorneo.setEnabled(false);
             new com.utp.aed.proyectotorneo.dao.LlaveDAO().guardarArbol(partidoFinal);
             
-            javax.swing.JOptionPane.showMessageDialog(this, "¡Sorteo finalizado! \nLas llaves se han generado de forma aleatoria.");
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Sorteo finalizado! \nLas llaves se han generado.");
         }
     }
 
 
     private ListaEnlazadaHistorial obtenerClasificadosFaseGrupos() {
-       ListaEnlazadaHistorial clasificados = new ListaEnlazadaHistorial();
+     ListaEnlazadaHistorial clasificados = new ListaEnlazadaHistorial();
         int totalEquipos = Inicio.listaEquipos.getTamano();
 
         if (totalEquipos < 2) {
@@ -320,15 +353,13 @@ public class PanelLlaves extends javax.swing.JPanel {
             return clasificados;
         }
 
-        // 1. SORTEO ALEATORIO DE EQUIPOS
         java.util.ArrayList<String> equiposSorteados = new java.util.ArrayList<>();
         for (int i = 0; i < totalEquipos; i++) {
             equiposSorteados.add(Inicio.listaEquipos.obtener(i));
         }
         java.util.Collections.shuffle(equiposSorteados);
 
-        // 2. DEFINIR GRUPOS
-        int tamanoGrupo = (totalEquipos <= 5) ? 3 : 4; 
+        int tamanoGrupo = 4; 
         int numGrupos = (int) Math.ceil((double) totalEquipos / tamanoGrupo);
         
         String[][] grupos = new String[numGrupos][tamanoGrupo];
@@ -345,7 +376,6 @@ public class PanelLlaves extends javax.swing.JPanel {
             }
         }
 
-        // 3. INTERACCIÓN Y CREACIÓN DEL FIXTURE (CALENDARIO)
         for (int i = 0; i < numGrupos; i++) {
             int equiposReales = 0;
             java.util.ArrayList<String> equiposGrupo = new java.util.ArrayList<>();
@@ -365,9 +395,6 @@ public class PanelLlaves extends javax.swing.JPanel {
                 continue;
             }
 
-            // --- INICIO DE LA NUEVA INTERFAZ DE LISTA DE PARTIDOS ---
-            
-            // Determinar todos los enfrentamientos del grupo
             java.util.ArrayList<String[]> emparejamientos = new java.util.ArrayList<>();
             for (int m = 0; m < equiposGrupo.size(); m++) {
                 for (int n = m + 1; n < equiposGrupo.size(); n++) {
@@ -377,18 +404,20 @@ public class PanelLlaves extends javax.swing.JPanel {
 
             String[] ganadoresPartido = new String[emparejamientos.size()];
 
-            // Crear un cuadro de diálogo personalizado (JDialog)
+            // NUEVO: Pila para guardar el orden de los partidos y poder deshacer
+            java.util.Stack<Integer> pilaDeshacerGrupo = new java.util.Stack<>();
+
             javax.swing.JDialog dialogoGrupo = new javax.swing.JDialog((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), "Partidos - Grupo " + letraGrupo, true);
             dialogoGrupo.setLayout(new java.awt.BorderLayout());
             dialogoGrupo.setSize(450, 350);
             dialogoGrupo.setLocationRelativeTo(this);
-            // Evitar que cierren la ventana con la 'X' sin terminar los partidos
-            dialogoGrupo.setDefaultCloseOperation(javax.swing.JDialog.DO_NOTHING_ON_CLOSE); 
+
+            // Ahora permitimos cerrar con la 'X' para que funcione como "Cancelar Torneo"
+            dialogoGrupo.setDefaultCloseOperation(javax.swing.JDialog.DISPOSE_ON_CLOSE); 
 
             javax.swing.JPanel panelCentro = new javax.swing.JPanel(new java.awt.GridLayout(emparejamientos.size(), 1, 5, 5));
             panelCentro.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-            // Crear un botón para cada partido
             javax.swing.JButton[] botonesPartidos = new javax.swing.JButton[emparejamientos.size()];
             for (int p = 0; p < emparejamientos.size(); p++) {
                 final int index = p;
@@ -410,10 +439,9 @@ public class PanelLlaves extends javax.swing.JPanel {
                     );
 
                     if (eleccion >= 0) {
+                        pilaDeshacerGrupo.push(index); // Guardar la acción en la pila
                         ganadoresPartido[index] = opciones[eleccion];
-                        // Actualizar el texto del botón para que sepas quién ganó
                         botonesPartidos[index].setText("Partido " + (index + 1) + ": " + eq1 + " vs " + eq2 + "  🏆 Ganó: " + opciones[eleccion]);
-                        // Poner un fondo ligeramente verde para indicar que ya se jugó
                         botonesPartidos[index].setBackground(new java.awt.Color(200, 255, 200)); 
                     }
                 });
@@ -423,13 +451,18 @@ public class PanelLlaves extends javax.swing.JPanel {
             javax.swing.JScrollPane scrollPanel = new javax.swing.JScrollPane(panelCentro);
             dialogoGrupo.add(scrollPanel, java.awt.BorderLayout.CENTER);
 
-            // Botón en la parte inferior para confirmar y calcular resultados
+            // --- INICIO DE LA MODIFICACIÓN DE LOS BOTONES INFERIORES ---
             javax.swing.JPanel panelSur = new javax.swing.JPanel();
-            javax.swing.JButton btnFinalizarGrupo = new javax.swing.JButton("Finalizar Grupo y Calcular Clasificados");
-            btnFinalizarGrupo.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+            javax.swing.JButton btnFinalizarGrupo = new javax.swing.JButton("Finalizar Grupo");
+            javax.swing.JButton btnDeshacer = new javax.swing.JButton("Deshacer");
             
+            btnFinalizarGrupo.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+            btnDeshacer.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+
+            // Bandera para saber si se presionó Finalizar correctamente
+            boolean[] finalizadoCorrectamente = {false};
+
             btnFinalizarGrupo.addActionListener(e -> {
-                // Verificar que no queden partidos en nulo
                 boolean todosJugados = true;
                 for (String g : ganadoresPartido) {
                     if (g == null) {
@@ -441,21 +474,38 @@ public class PanelLlaves extends javax.swing.JPanel {
                 if (!todosJugados) {
                     javax.swing.JOptionPane.showMessageDialog(dialogoGrupo, "Aún hay partidos pendientes en este grupo. Completa todos los resultados.", "Partidos Incompletos", javax.swing.JOptionPane.WARNING_MESSAGE);
                 } else {
-                    dialogoGrupo.dispose(); // Cerrar el diálogo y permitir que el código continúe
+                    finalizadoCorrectamente[0] = true; // Todo validado
+                    dialogoGrupo.dispose();
+                }
+            });
+
+            btnDeshacer.addActionListener(e -> {
+                if (!pilaDeshacerGrupo.isEmpty()) {
+                    int ultimoIndex = pilaDeshacerGrupo.pop(); // Sacar el último partido jugado
+                    ganadoresPartido[ultimoIndex] = null; // Borrar el ganador
+                    String eq1 = emparejamientos.get(ultimoIndex)[0];
+                    String eq2 = emparejamientos.get(ultimoIndex)[1];
+                    botonesPartidos[ultimoIndex].setText("Partido " + (ultimoIndex + 1) + ": " + eq1 + " vs " + eq2 + " (Pendiente)");
+                    botonesPartidos[ultimoIndex].setBackground(null); // Restaurar el color original
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(dialogoGrupo, "No hay resultados registrados para deshacer.", "Aviso", javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 }
             });
 
             panelSur.add(btnFinalizarGrupo);
+            panelSur.add(btnDeshacer);
             dialogoGrupo.add(panelSur, java.awt.BorderLayout.SOUTH);
 
-            // Mostrar el diálogo modal (el sistema se pausa aquí hasta que se cierre el diálogo)
             dialogoGrupo.setVisible(true);
 
-            // --- FIN DE LA INTERFAZ. PROCEDEMOS A CALCULAR PUNTOS ---
+            // Si la ventana se cerró (con la 'X') sin finalizar correctamente, abortamos el torneo devolviendo lista vacía
+            if (!finalizadoCorrectamente[0]) {
+                return new ListaEnlazadaHistorial();
+            }
+            // --- FIN DE LA MODIFICACIÓN ---
 
             int[] puntos = new int[equiposGrupo.size()];
             
-            // Contar victorias sumando los resultados del arreglo ganadoresPartido
             for (String ganador : ganadoresPartido) {
                 int indexGanador = equiposGrupo.indexOf(ganador);
                 if (indexGanador != -1) {
@@ -463,23 +513,19 @@ public class PanelLlaves extends javax.swing.JPanel {
                 }
             }
 
-            // Ordenar los equipos según la cantidad de victorias
             java.util.ArrayList<Integer> indices = new java.util.ArrayList<>();
             for (int k = 0; k < equiposGrupo.size(); k++) {
                 indices.add(k);
             }
-            
-            // Ordenamiento descendente por puntos
+
             indices.sort((a, b) -> Integer.compare(puntos[b], puntos[a])); 
 
-            // Determinar a los clasificados
             String primero = equiposGrupo.get(indices.get(0));
             clasificados.insertarFinal(primero);
 
             String segundo = equiposGrupo.get(indices.get(1));
             clasificados.insertarFinal(segundo); 
-            
-            // Mostrar resumen final del grupo
+ 
             StringBuilder resumen = new StringBuilder();
             resumen.append("🏆 CLASIFICADOS GRUPO ").append(letraGrupo).append(" 🏆\n\n");
             resumen.append("1er Puesto: ").append(primero).append(" (").append(puntos[indices.get(0)]).append(" victorias)\n");
@@ -576,22 +622,81 @@ public class PanelLlaves extends javax.swing.JPanel {
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
-        if (!historialAcciones.estaVacia()) {
-
-        com.utp.aed.proyectotorneo.model.NodoPartido ultimoPartido = historialAcciones.pop();
-
-        ultimoPartido.ganador = "Pendiente";
-
-        javax.swing.tree.DefaultMutableTreeNode raizVisual = crearNodoVisual(partidoFinal);
-        arbolTorneo.setModel(new javax.swing.tree.DefaultTreeModel(raizVisual));
-
-        for (int i = 0; i < arbolTorneo.getRowCount(); i++) {
-            arbolTorneo.expandRow(i);
+      if (partidoFinal == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay ningún torneo generado para deshacer.", "Aviso", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
-        
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "No hay más acciones para deshacer.");
-    }
+
+        // --- 1. MOSTRAR OPCIONES DE DESHACER ---
+        Object[] opciones = {"Deshacer Último Partido", "Reiniciar Torneo Completo", "Cancelar"};
+        int eleccion = javax.swing.JOptionPane.showOptionDialog(
+            this,
+            "¿Qué acción deseas realizar?",
+            "Opciones de Deshacer",
+            javax.swing.JOptionPane.DEFAULT_OPTION,
+            javax.swing.JOptionPane.QUESTION_MESSAGE,
+            new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png")), // Usa null si prefieres sin icono
+            opciones,
+            opciones[0]
+        );
+
+        // --- 2. LÓGICA SEGÚN LA ELECCIÓN ---
+        if (eleccion == 0) {
+            // Opción: Deshacer solo el último partido del árbol de llaves
+            if (!historialAcciones.estaVacia()) {
+                com.utp.aed.proyectotorneo.model.NodoPartido ultimoPartido = historialAcciones.pop();
+                ultimoPartido.ganador = "Pendiente";
+
+                // Actualizar el DAO para que el cambio persista
+                com.utp.aed.proyectotorneo.dao.LlaveDAO dao = new com.utp.aed.proyectotorneo.dao.LlaveDAO();
+                dao.actualizarNodo(ultimoPartido);
+
+                // Refrescar el árbol visual
+                javax.swing.tree.DefaultMutableTreeNode raizVisual = crearNodoVisual(partidoFinal);
+                arbolTorneo.setModel(new javax.swing.tree.DefaultTreeModel(raizVisual));
+
+                for (int i = 0; i < arbolTorneo.getRowCount(); i++) {
+                    arbolTorneo.expandRow(i);
+                }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "No hay resultados de partidos en las llaves para deshacer.", "Pila Vacía", javax.swing.JOptionPane.WARNING_MESSAGE);
+            }
+            
+        } else if (eleccion == 1) {
+            // Opción: Reiniciar todo para volver a la fase de grupos o selección inicial
+            int confirmar = javax.swing.JOptionPane.showConfirmDialog(
+                this, 
+                "¿Estás seguro de que deseas eliminar todo el progreso del torneo actual?\nEsto te permitirá volver a generar los grupos o eliminatorias desde cero.", 
+                "Confirmar Reinicio", 
+                javax.swing.JOptionPane.YES_NO_OPTION, 
+                javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+
+            if (confirmar == javax.swing.JOptionPane.YES_OPTION) {
+                // 1. Limpiar la variable raíz del árbol lógico
+                partidoFinal = null;
+                
+                // 2. Limpiar el modelo visual del JTree
+                arbolTorneo.setModel(null);
+                
+                // 3. Vaciar la pila de deshacer completamente
+                while (!historialAcciones.estaVacia()) {
+                    historialAcciones.pop();
+                }
+                
+                // 4. Volver a habilitar el botón de generación y ocultar finalizado
+                btnGenerarTorneo.setEnabled(true);
+                btnFinalizado.setVisible(false);
+                
+                // Opcional: Si deseas limpiar el registro guardado en el archivo/BD
+                // new com.utp.aed.proyectotorneo.dao.LlaveDAO().borrarArbol(); 
+                
+                // Limpiar área de historial de búsqueda
+                txtHistorial.setText(" El torneo ha sido reiniciado.");
+                
+                javax.swing.JOptionPane.showMessageDialog(this, "El torneo ha sido reiniciado con éxito. Puedes volver a generar los emparejamientos.");
+            }
+        }
     }//GEN-LAST:event_btnDeshacerActionPerformed
     
     private void buscarHistorial(com.utp.aed.proyectotorneo.model.NodoPartido nodo, String equipo, ListaEnlazadaHistorial progreso) {
