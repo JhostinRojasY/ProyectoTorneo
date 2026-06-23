@@ -202,7 +202,16 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
     }
-
+public void irAPanelLlaves() {
+        // Usamos el usuarioActual que ya está guardado en Inicio
+        PanelLlaves pnlLlav = new PanelLlaves(this.usuarioActual);
+        
+        // Limpiamos y repintamos el panel central, tal como hacen tus botones del menú
+        pnlContenido.removeAll();
+        pnlContenido.add(pnlLlav, java.awt.BorderLayout.CENTER);
+        pnlContenido.revalidate();
+        pnlContenido.repaint();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfig;
     private javax.swing.JButton btnDashboard;

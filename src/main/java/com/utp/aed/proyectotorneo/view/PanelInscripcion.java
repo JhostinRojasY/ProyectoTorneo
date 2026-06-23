@@ -87,19 +87,18 @@ public class PanelInscripcion extends javax.swing.JPanel {
         btnEliminar = new javax.swing.JButton();
         btnDeshacer = new javax.swing.JButton();
         btnRestaurar = new javax.swing.JButton();
+        btnOrdenar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(0, 0, 0));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_inscripcion.png"))); // NOI18N
         jLabel2.setText("Módulo de Inscripción ");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 12, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Gestión de los equipos que participarán en el torneo");
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(54, 50, -1, -1));
 
@@ -123,10 +122,10 @@ public class PanelInscripcion extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addContainerGap(124, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(55, 55, 55)
                 .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -284,49 +283,69 @@ public class PanelInscripcion extends javax.swing.JPanel {
         });
         add(btnRestaurar, new org.netbeans.lib.awtextra.AbsoluteConstraints(636, 191, -1, -1));
 
+        btnOrdenar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_ordenar.png"))); // NOI18N
+        btnOrdenar.setText("Ordenar");
+        btnOrdenar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrdenarActionPerformed(evt);
+            }
+        });
+        add(btnOrdenar, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 250, -1, -1));
+
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
-        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 2320, 950));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarLlavesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarLlavesActionPerformed
-
+                                                    
+    // 1. Buscamos la ventana principal que contiene este panel
+    java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
+    
+    // 2. Verificamos que la ventana sea realmente nuestro JFrame "Inicio"
+    if (ventana instanceof Inicio) {
+        Inicio inicioFrame = (Inicio) ventana;
+        
+        // 3. Le ordenamos a la ventana principal que cambie al panel de llaves
+        inicioFrame.irAPanelLlaves();
+    
+}
     }//GEN-LAST:event_btnGenerarLlavesActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
         // 1. Obtener el índice de la fila seleccionada en la tabla
-    int filaSeleccionada = tablaEquipos.getSelectedRow();
-    
-    // 2. Verificar si el usuario realmente seleccionó una fila
-    if (filaSeleccionada != -1) {
-        // Obtener el nombre del equipo de la columna 0 en la fila seleccionada
-        String nombreEquipo = tablaEquipos.getValueAt(filaSeleccionada, 0).toString();
-        
-        // 3. Ventana de confirmación para evitar eliminaciones accidentales
-        int confirmar = javax.swing.JOptionPane.showConfirmDialog(this,
-                "¿Estás seguro de que deseas eliminar al equipo '" + nombreEquipo + "'?",
-                "Confirmar Eliminación",
-                javax.swing.JOptionPane.YES_NO_OPTION,
-                javax.swing.JOptionPane.WARNING_MESSAGE);
-                
-        if (confirmar == javax.swing.JOptionPane.YES_OPTION) {
-            // Creamos la conexión DAO PRIMERO
-            com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
-            
-            // 4. Ejecutar la eliminación en la BD y guardar en la Pila (Papelera)
-            if (dao.eliminarPorNombre(nombreEquipo)) {
-                
-                papeleraReciclaje.push(nombreEquipo); // <-- SE GUARDA EN LA PILA DE LA PAPELERA
-                
-                javax.swing.JOptionPane.showMessageDialog(this, "Equipo enviado a la papelera.");
-                actualizarPantalla(); 
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Error al eliminar el equipo de la Base de Datos.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        int filaSeleccionada = tablaEquipos.getSelectedRow();
+
+        // 2. Verificar si el usuario realmente seleccionó una fila
+        if (filaSeleccionada != -1) {
+            // Obtener el nombre del equipo de la columna 0 en la fila seleccionada
+            String nombreEquipo = tablaEquipos.getValueAt(filaSeleccionada, 0).toString();
+
+            // 3. Ventana de confirmación para evitar eliminaciones accidentales
+            int confirmar = javax.swing.JOptionPane.showConfirmDialog(this,
+                    "¿Estás seguro de que deseas eliminar al equipo '" + nombreEquipo + "'?",
+                    "Confirmar Eliminación",
+                    javax.swing.JOptionPane.YES_NO_OPTION,
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+
+            if (confirmar == javax.swing.JOptionPane.YES_OPTION) {
+                // Creamos la conexión DAO PRIMERO
+                com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
+
+                // 4. Ejecutar la eliminación en la BD y guardar en la Pila (Papelera)
+                if (dao.eliminarPorNombre(nombreEquipo)) {
+
+                    papeleraReciclaje.push(nombreEquipo); // <-- SE GUARDA EN LA PILA DE LA PAPELERA
+
+                    javax.swing.JOptionPane.showMessageDialog(this, "Equipo enviado a la papelera.");
+                    actualizarPantalla();
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Error al eliminar el equipo de la Base de Datos.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
             }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un equipo de la tabla para poder eliminarlo.", "Aviso", javax.swing.JOptionPane.INFORMATION_MESSAGE);
         }
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un equipo de la tabla para poder eliminarlo.", "Aviso", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }
 
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -347,18 +366,37 @@ public class PanelInscripcion extends javax.swing.JPanel {
 
     private void btnRestaurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestaurarActionPerformed
         if (!papeleraReciclaje.estaVacia()) {
-        // Sacamos el último eliminado de la pila (LIFO)
-        String equipoARestaurar = papeleraReciclaje.pop(); 
-        
-        com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
-        if (dao.registrarEquipo(equipoARestaurar)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Se ha restaurado el equipo: " + equipoARestaurar);
-            actualizarPantalla();
+            // Sacamos el último eliminado de la pila (LIFO)
+            String equipoARestaurar = papeleraReciclaje.pop();
+
+            com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
+            if (dao.registrarEquipo(equipoARestaurar)) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Se ha restaurado el equipo: " + equipoARestaurar);
+                actualizarPantalla();
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "La papelera está vacía.");
         }
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "La papelera está vacía.");
-    }
     }//GEN-LAST:event_btnRestaurarActionPerformed
+
+    private void btnOrdenarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdenarActionPerformed
+        // 1. Instanciamos nuestro Árbol Binario de Búsqueda
+        ArbolBinarioBusqueda arbolEquipos = new ArbolBinarioBusqueda();
+
+        // 2. Llenamos el árbol con los equipos que están en la lista enlazada actual
+        for (int i = 0; i < Inicio.listaEquipos.getTamano(); i++) {
+            arbolEquipos.insertar(Inicio.listaEquipos.obtener(i));
+        }
+
+        // 3. Preparamos la tabla para recibir los datos ordenados
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaEquipos.getModel();
+        modelo.setRowCount(0); // Limpia la tabla visual
+
+        // 4. Ejecutamos el recorrido En Orden (In-Order) que llenará la tabla automáticamente
+        arbolEquipos.llenarTablaEnOrden(arbolEquipos.raiz, modelo);
+
+        javax.swing.JOptionPane.showMessageDialog(this, "Equipos ordenados");
+    }//GEN-LAST:event_btnOrdenarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {
         String nombre = txtNombreEquipo.getText().trim();
@@ -455,11 +493,63 @@ public class PanelInscripcion extends javax.swing.JPanel {
             return cima == null;
         }
     }
+
+    // ESTRUCTURA DE DATOS: ÁRBOL BINARIO DE BÚSQUEDA (ABB) PARA ORDENAMIENTO
+    class NodoArbolEquipo {
+
+        String nombreEquipo;
+        NodoArbolEquipo izquierdo, derecho;
+
+        public NodoArbolEquipo(String nombre) {
+            this.nombreEquipo = nombre;
+            izquierdo = derecho = null;
+        }
+    }
+
+    class ArbolBinarioBusqueda {
+
+        NodoArbolEquipo raiz;
+
+        public ArbolBinarioBusqueda() {
+            raiz = null;
+        }
+
+        // Método para insertar manteniendo la regla del ABB alfabético
+        public void insertar(String nombre) {
+            raiz = insertarRecursivo(raiz, nombre);
+        }
+
+        private NodoArbolEquipo insertarRecursivo(NodoArbolEquipo nodo, String nombre) {
+            if (nodo == null) {
+                return new NodoArbolEquipo(nombre);
+            }
+
+            // Compara alfabéticamente ignorando mayúsculas/minúsculas
+            if (nombre.compareToIgnoreCase(nodo.nombreEquipo) < 0) {
+                nodo.izquierdo = insertarRecursivo(nodo.izquierdo, nombre);
+            } else if (nombre.compareToIgnoreCase(nodo.nombreEquipo) > 0) {
+                nodo.derecho = insertarRecursivo(nodo.derecho, nombre);
+            }
+            // Si es igual, no se inserta (evita duplicados en el árbol)
+            return nodo;
+        }
+
+        // Recorrido In-Order: Izquierda -> Raíz -> Derecha (Devuelve A-Z)
+        public void llenarTablaEnOrden(NodoArbolEquipo nodo, javax.swing.table.DefaultTableModel modelo) {
+            if (nodo != null) {
+                llenarTablaEnOrden(nodo.izquierdo, modelo);
+                modelo.addRow(new Object[]{nodo.nombreEquipo}); // Añade a la tabla
+                llenarTablaEnOrden(nodo.derecho, modelo);
+            }
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnDeshacer;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGenerarLlaves;
+    private javax.swing.JButton btnOrdenar;
     private javax.swing.JButton btnReiniciar;
     private javax.swing.JButton btnRestaurar;
     private javax.swing.JLabel jLabel1;

@@ -10,6 +10,8 @@ public class LoginJFrame extends javax.swing.JFrame {
         initComponents();
         setSize(400, 320); 
         setLocationRelativeTo(null);
+        
+        this.getRootPane().setDefaultButton(btnLogin);
     }
 
     @SuppressWarnings("unchecked")
@@ -57,7 +59,7 @@ public class LoginJFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnLogin);
-        btnLogin.setBounds(120, 180, 160, 40);
+        btnLogin.setBounds(120, 180, 170, 40);
 
         btnRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_registrar.png"))); // NOI18N
         btnRegistro.setText("Registrar Equipo");
@@ -67,7 +69,7 @@ public class LoginJFrame extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnRegistro);
-        btnRegistro.setBounds(120, 230, 160, 40);
+        btnRegistro.setBounds(120, 230, 170, 40);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         getContentPane().add(jLabel3);
@@ -86,9 +88,12 @@ public class LoginJFrame extends javax.swing.JFrame {
 
         if (user != null) {
             JOptionPane.showMessageDialog(this, "Bienvenido " + user.getUsername() + " (" + user.getRol().getNombre() + ")");
-            Inicio inicio = new Inicio(user);
-            inicio.setVisible(true);
             this.dispose();
+            SeleccionDeporte menuDeportes = new SeleccionDeporte(user); // Asegúrate de que el nombre coincida con tu archivo
+        menuDeportes.setVisible(true);
+        
+        // Cerramos la ventana de Login
+        this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
         }

@@ -102,6 +102,7 @@ public class PanelLlaves extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel3 = new javax.swing.JLabel();
         btnGenerarTorneo = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         arbolTorneo = new javax.swing.JTree();
@@ -113,6 +114,8 @@ public class PanelLlaves extends javax.swing.JPanel {
         btnDeshacer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+
+        jLabel3.setText("jLabel3");
 
         setBackground(new java.awt.Color(244, 246, 248));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -135,7 +138,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(arbolTorneo);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 75, 289, 284));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 75, 360, 330));
 
         btnFinalizado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_campeon.png"))); // NOI18N
         btnFinalizado.setText("Torneo Finalizado");
@@ -146,6 +149,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         });
         add(btnFinalizado, new org.netbeans.lib.awtextra.AbsoluteConstraints(403, 18, -1, -1));
 
+        txtBuscarEquipo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtBuscarEquipo.setText("Buscar Equipo...");
         txtBuscarEquipo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -160,16 +164,17 @@ public class PanelLlaves extends javax.swing.JPanel {
                 txtBuscarEquipoActionPerformed(evt);
             }
         });
-        add(txtBuscarEquipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(454, 117, -1, -1));
+        add(txtBuscarEquipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 110, 140, -1));
 
         txtHistorial.setEditable(false);
         txtHistorial.setColumns(20);
+        txtHistorial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtHistorial.setLineWrap(true);
         txtHistorial.setRows(5);
         txtHistorial.setWrapStyleWord(true);
         jScrollPane1.setViewportView(txtHistorial);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(408, 157, 188, 192));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(448, 150, 230, 230));
 
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_limpiar.png"))); // NOI18N
         btnLimpiar.setText("Limpiar");
@@ -178,7 +183,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnLimpiarActionPerformed(evt);
             }
         });
-        add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 355, -1, -1));
+        add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 410, -1, -1));
 
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png"))); // NOI18N
         btnDeshacer.setText("Deshacer");
@@ -187,10 +192,10 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnDeshacerActionPerformed(evt);
             }
         });
-        add(btnDeshacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(223, 377, -1, -1));
+        add(btnDeshacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 430, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_buscar.png"))); // NOI18N
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(416, 107, -1, -1));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 110, 70, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -535,7 +540,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         }
 
         if (!Inicio.listaEquipos.buscar(equipoBuscado)) {
-            txtHistorial.setText(" Búsqueda Secuencial:\nEl equipo '" + equipoBuscado + "' no se \nencuentra en la Lista Enlazada.");
+            txtHistorial.setText("\nEl equipo '" + equipoBuscado + "' no se \nencuentra registrado en el Torneo .");
             return;
         }
 
@@ -690,6 +695,7 @@ public class PanelLlaves extends javax.swing.JPanel {
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtBuscarEquipo;
