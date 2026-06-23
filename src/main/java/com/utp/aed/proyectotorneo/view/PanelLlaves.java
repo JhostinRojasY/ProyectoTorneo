@@ -619,7 +619,7 @@ public class PanelLlaves extends javax.swing.JPanel {
 
         if (!Inicio.listaEquipos.buscar(equipoBuscado)) {
             txtHistorial.setText("\nEl equipo '" + equipoBuscado + "' no se \nencuentra registrado en el Torneo .");
-            txtHistorial.setText(" Búsqueda Secuencial:\nEl equipo '" + equipoBuscado + "' no se \nencuentra inscrito.");
+            txtHistorial.setText("\nEl equipo '" + equipoBuscado + "' no se \nencuentra inscrito.");
             return;
         }
 

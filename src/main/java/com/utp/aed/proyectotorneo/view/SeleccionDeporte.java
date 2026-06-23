@@ -54,41 +54,59 @@ public class SeleccionDeporte extends javax.swing.JFrame {
         setTitle("Sistema de Torneo - Selección de Deporte");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnFutbol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_futbol.png"))); // NOI18N
+        btnFutbol.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        btnFutbol.setForeground(new java.awt.Color(255, 255, 255));
+        btnFutbol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_Futbol1.png"))); // NOI18N
         btnFutbol.setText("FUTBOL");
+        btnFutbol.setBorderPainted(false);
+        btnFutbol.setContentAreaFilled(false);
+        btnFutbol.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnFutbol.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnFutbol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFutbolActionPerformed(evt);
             }
         });
-        getContentPane().add(btnFutbol, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
+        getContentPane().add(btnFutbol, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 130, 120));
 
-        btnVoley.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_Voley.png"))); // NOI18N
-        btnVoley.setText("VOLEYBALL");
+        btnVoley.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        btnVoley.setForeground(new java.awt.Color(255, 255, 255));
+        btnVoley.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_Voley2.png"))); // NOI18N
+        btnVoley.setText("VOLEY");
+        btnVoley.setBorderPainted(false);
+        btnVoley.setContentAreaFilled(false);
+        btnVoley.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnVoley.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnVoley.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVoleyActionPerformed(evt);
             }
         });
-        getContentPane().add(btnVoley, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, -1, -1));
+        getContentPane().add(btnVoley, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 130, 120));
 
-        btnBasquet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_basquet.png"))); // NOI18N
-        btnBasquet.setText("BASQUETBALL");
+        btnBasquet.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        btnBasquet.setForeground(new java.awt.Color(255, 255, 255));
+        btnBasquet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_basquet (2).png"))); // NOI18N
+        btnBasquet.setText("BASQUET");
+        btnBasquet.setBorderPainted(false);
+        btnBasquet.setContentAreaFilled(false);
+        btnBasquet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBasquet.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnBasquet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBasquetActionPerformed(evt);
             }
         });
-        getContentPane().add(btnBasquet, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, -1, -1));
+        getContentPane().add(btnBasquet, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 200, 130, 120));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 3, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("SELECCIONA DEPORTE A REALIZAR");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, -1, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
-        jLabel1.setText("BASQUETBALL");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo_seleccion.png"))); // NOI18N
         jLabel1.setToolTipText("");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 620));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 1060, 700));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
