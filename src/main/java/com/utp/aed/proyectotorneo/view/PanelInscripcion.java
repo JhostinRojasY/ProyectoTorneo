@@ -12,9 +12,10 @@ public class PanelInscripcion extends javax.swing.JPanel {
 
     private PilaEquipos pilaDeshacer = new PilaEquipos();
     private PilaPapelera papeleraReciclaje = new PilaPapelera();
-
+    
     public PanelInscripcion() {
         initComponents();
+        
         javax.swing.JButton btnOrdenar = new javax.swing.JButton("Ordenar (A-Z)");
         btnOrdenar.addActionListener(e -> {
             Inicio.listaEquipos.ordenarBurbujaAlfabeticamente();
@@ -107,6 +108,12 @@ public class PanelInscripcion extends javax.swing.JPanel {
         jLabel1.setText("REGISTRO DE EQUIPOS");
 
         jLabel4.setText("Nombre del equipo");
+
+        txtNombreEquipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreEquipoActionPerformed(evt);
+            }
+        });
 
         btnAgregar.setText("+ Agregar Equipo");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -397,6 +404,11 @@ public class PanelInscripcion extends javax.swing.JPanel {
 
         javax.swing.JOptionPane.showMessageDialog(this, "Equipos ordenados");
     }//GEN-LAST:event_btnOrdenarActionPerformed
+
+    private void txtNombreEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreEquipoActionPerformed
+        // TODO add your handling code here:
+        btnAgregar.doClick();
+    }//GEN-LAST:event_txtNombreEquipoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {
         String nombre = txtNombreEquipo.getText().trim();

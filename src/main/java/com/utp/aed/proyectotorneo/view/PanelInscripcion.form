@@ -118,6 +118,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNombreEquipo">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNombreEquipoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnAgregar">
           <Properties>

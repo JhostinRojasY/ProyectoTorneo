@@ -11,26 +11,17 @@ package com.utp.aed.proyectotorneo.view;
 public class SeleccionDeporte extends javax.swing.JFrame {
     
     private com.utp.aed.proyectotorneo.model.Usuario usuarioActual;
-    private ArbolNavegacion enrutador; // <-- Declaramos el árbol de navegación
+    private ArbolNavegacion enrutador;     
     
-    
-    /**
-     * Creates new form OPCIONES
-     */
     public SeleccionDeporte() {
         initComponents();
-        // 1. Lo hacemos un poco más grande que el Login (el login era 400x320)
         this.setSize(600, 400); 
-        
-        // 2. Lo centramos en la pantalla para que aparezca en la misma posición
         this.setLocationRelativeTo(null);
     }
     
     public SeleccionDeporte(com.utp.aed.proyectotorneo.model.Usuario usuario) {
         this(); 
         this.usuarioActual = usuario; 
-        
-        // Inicializamos el árbol pasándole esta ventana y el usuario
         this.enrutador = new ArbolNavegacion(this, this.usuarioActual);
     }
     
@@ -131,51 +122,22 @@ public class SeleccionDeporte extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SeleccionDeporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SeleccionDeporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SeleccionDeporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SeleccionDeporte.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+            java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new SeleccionDeporte().setVisible(true);
             }
         });
     }
-    // =====================================================================
-    // ESTRUCTURA DE DATOS: ÁRBOL N-ARIO (ÁRBOL GENERAL) PARA NAVEGACIÓN
-    // =====================================================================
+    
+    //ESTRUCTURA
+    
     class NodoRuta {
         String nombreModulo;
-        java.util.List<NodoRuta> subModulos; // Permite múltiples hijos (N-ario)
-
+        java.util.List<NodoRuta> subModulos; 
         public NodoRuta(String nombreModulo) {
             this.nombreModulo = nombreModulo;
             this.subModulos = new java.util.ArrayList<>();
         }
-
         public void agregarSubRuta(NodoRuta hijo) {
             subModulos.add(hijo);
         }
@@ -190,7 +152,6 @@ public class SeleccionDeporte extends javax.swing.JFrame {
             this.ventanaActual = ventanaActual;
             this.usuarioActivo = usuarioActivo;
             
-            // Construimos el árbol de rutas en memoria
             raiz = new NodoRuta("SeleccionDeporte");
             
             NodoRuta nodoFutbol = new NodoRuta("Futbol");
@@ -202,27 +163,24 @@ public class SeleccionDeporte extends javax.swing.JFrame {
             raiz.agregarSubRuta(nodoBasquet);
         }
 
-        // Método que recorre el árbol para ejecutar la acción correcta
         public void navegarA(String destino) {
             boolean rutaEncontrada = buscarYEjecutarRuta(raiz, destino);
             
             if (!rutaEncontrada) {
                 javax.swing.JOptionPane.showMessageDialog(ventanaActual, 
-                    "Error de enrutamiento: Nodo no encontrado en el Árbol de Navegación.", 
-                    "Error 404", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    "Error de enrutamiento: No encontrado en el Árbol de Navegación.", 
+                    "Error ", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         }
 
         private boolean buscarYEjecutarRuta(NodoRuta nodoActual, String destino) {
             if (nodoActual == null) return false;
-
-            // Si encontramos el nodo destino en el árbol, ejecutamos la apertura de ventana
             if (nodoActual.nombreModulo.equalsIgnoreCase(destino)) {
                 
                 if (destino.equals("Futbol")) {
                     Inicio ventanaTorneo = new Inicio(usuarioActivo);
                     ventanaTorneo.setVisible(true);
-                    ventanaActual.dispose(); // Cierra el menú actual
+                    ventanaActual.dispose();
                 } 
                 else if (destino.equals("Voley") || destino.equals("Basquet")) {
                     javax.swing.JOptionPane.showMessageDialog(ventanaActual, 
@@ -231,8 +189,6 @@ public class SeleccionDeporte extends javax.swing.JFrame {
                 }
                 return true;
             }
-
-            // Búsqueda recursiva en los hijos (N-ario)
             for (NodoRuta hijo : nodoActual.subModulos) {
                 if (buscarYEjecutarRuta(hijo, destino)) {
                     return true;
