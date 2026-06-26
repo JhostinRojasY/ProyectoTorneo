@@ -164,4 +164,8 @@ public class ListaEnlazadaEquipos {
     public void clear() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
+    public void vaciar() {
+        this.cabeza = null; 
+        this.tamano = 0;
+    }
 }

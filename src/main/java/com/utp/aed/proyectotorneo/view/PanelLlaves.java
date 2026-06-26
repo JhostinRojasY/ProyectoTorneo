@@ -7,20 +7,25 @@ public class PanelLlaves extends javax.swing.JPanel {
 
     private com.utp.aed.proyectotorneo.model.NodoPartido partidoFinal;
 
-    
     private PilaDeshacer historialAcciones = new PilaDeshacer();
-    
-    private javax.swing.tree.DefaultMutableTreeNode crearNodoVisual(com.utp.aed.proyectotorneo.model.NodoPartido partido) {
-        if (partido == null) return null;
 
-       String titulo = partido.ganador.equals("Pendiente") ? 
-                        "<html><body><span style='color:#000000; font-weight:normal;'>" + partido.equipo1 + " VS " + partido.equipo2 + "</span></body></html>" : 
-                        "<html><body><span style='color:#FFC107; font-weight:bold;'>🏆 " + partido.ganador + "</span></body></html>";
+    private javax.swing.tree.DefaultMutableTreeNode crearNodoVisual(com.utp.aed.proyectotorneo.model.NodoPartido partido) {
+        if (partido == null) {
+            return null;
+        }
+
+        String titulo = partido.ganador.equals("Pendiente")
+                ? "<html><body><span style='color:#000000; font-weight:normal;'>" + partido.equipo1 + " VS " + partido.equipo2 + "</span></body></html>"
+                : "<html><body><span style='color:#FFC107; font-weight:bold;'>🏆 " + partido.ganador + "</span></body></html>";
 
         NodoTorneo nodoVisual = new NodoTorneo(titulo, partido);
 
-        if (partido.partidoPrevio1 != null) nodoVisual.add(crearNodoVisual(partido.partidoPrevio1));
-        if (partido.partidoPrevio2 != null) nodoVisual.add(crearNodoVisual(partido.partidoPrevio2));
+        if (partido.partidoPrevio1 != null) {
+            nodoVisual.add(crearNodoVisual(partido.partidoPrevio1));
+        }
+        if (partido.partidoPrevio2 != null) {
+            nodoVisual.add(crearNodoVisual(partido.partidoPrevio2));
+        }
 
         return nodoVisual;
     }
@@ -30,12 +35,12 @@ public class PanelLlaves extends javax.swing.JPanel {
     public PanelLlaves(com.utp.aed.proyectotorneo.model.Usuario usuario) {
         this.usuarioActual = usuario;
         initComponents();
-        
+
         if (usuarioActual != null && "Equipo".equalsIgnoreCase(usuarioActual.getRol().getNombre())) {
             btnGenerarTorneo.setVisible(false);
             btnLimpiar.setVisible(false);
         }
-        
+
         com.utp.aed.proyectotorneo.dao.LlaveDAO dao = new com.utp.aed.proyectotorneo.dao.LlaveDAO();
         com.utp.aed.proyectotorneo.model.NodoPartido raiz = dao.cargarArbol();
         if (raiz != null) {
@@ -46,55 +51,61 @@ public class PanelLlaves extends javax.swing.JPanel {
     }
 
     private void llenarArbol(com.utp.aed.proyectotorneo.model.NodoPartido raizLogica) {
-        if (raizLogica == null) return;
-        
+        if (raizLogica == null) {
+            return;
+        }
+
         NodoTorneo raizSwing = crearNodoSwing(raizLogica);
         DefaultTreeModel modelo = new DefaultTreeModel(raizSwing);
         arbolTorneo.setModel(modelo);
-        
+
         for (int i = 0; i < arbolTorneo.getRowCount(); i++) {
             arbolTorneo.expandRow(i);
         }
     }
-    
+
     private NodoTorneo crearNodoSwing(com.utp.aed.proyectotorneo.model.NodoPartido nodo) {
-        if (nodo == null) return null;
-        
-        String texto = (nodo.ganador.equals("Pendiente")) 
-            ? "[" + nodo.equipo1 + " vs " + nodo.equipo2 + "]"
-            : "Ganador: " + nodo.ganador;
-            
+        if (nodo == null) {
+            return null;
+        }
+
+        String texto = (nodo.ganador.equals("Pendiente"))
+                ? "[" + nodo.equipo1 + " vs " + nodo.equipo2 + "]"
+                : "Ganador: " + nodo.ganador;
+
         NodoTorneo actual = new NodoTorneo(texto, nodo);
-        
+
         if (nodo.partidoPrevio1 != null) {
             actual.add(crearNodoSwing(nodo.partidoPrevio1));
         }
         if (nodo.partidoPrevio2 != null) {
             actual.add(crearNodoSwing(nodo.partidoPrevio2));
         }
-        
+
         return actual;
     }
 
     private void actualizarPadre(com.utp.aed.proyectotorneo.model.NodoPartido raiz, com.utp.aed.proyectotorneo.model.NodoPartido hijo, String ganador, com.utp.aed.proyectotorneo.dao.LlaveDAO dao) {
-        if(raiz == null) return;
-        if(raiz.partidoPrevio1 == hijo) {
+        if (raiz == null) {
+            return;
+        }
+        if (raiz.partidoPrevio1 == hijo) {
             raiz.equipo1 = ganador;
             dao.actualizarNodo(raiz);
             return;
         }
-        if(raiz.partidoPrevio2 == hijo) {
+        if (raiz.partidoPrevio2 == hijo) {
             raiz.equipo2 = ganador;
             dao.actualizarNodo(raiz);
             return;
         }
         actualizarPadre(raiz.partidoPrevio1, hijo, ganador, dao);
         actualizarPadre(raiz.partidoPrevio2, hijo, ganador, dao);
-        
+
         if (this.partidoFinal == hijo) {
-             btnFinalizado.setVisible(true); 
-             Inicio.campeonActual = ganador;
-             javax.swing.JOptionPane.showMessageDialog(this, "¡EL CAMPEÓN ES: " + ganador + "!", "FIN DEL TORNEO", javax.swing.JOptionPane.WARNING_MESSAGE);
+            btnFinalizado.setVisible(true);
+            Inicio.campeonActual = ganador;
+            javax.swing.JOptionPane.showMessageDialog(this, "¡EL CAMPEÓN ES: " + ganador + "!", "FIN DEL TORNEO", javax.swing.JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -130,6 +141,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         });
         add(btnGenerarTorneo, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 17, -1, -1));
 
+        arbolTorneo.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         arbolTorneo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         arbolTorneo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -138,8 +150,9 @@ public class PanelLlaves extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(arbolTorneo);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 75, 360, 330));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 75, 430, 390));
 
+        btnFinalizado.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnFinalizado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_campeon.png"))); // NOI18N
         btnFinalizado.setText("Torneo Finalizado");
         btnFinalizado.addActionListener(new java.awt.event.ActionListener() {
@@ -147,7 +160,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnFinalizadoActionPerformed(evt);
             }
         });
-        add(btnFinalizado, new org.netbeans.lib.awtextra.AbsoluteConstraints(403, 18, -1, -1));
+        add(btnFinalizado, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 190, -1));
 
         txtBuscarEquipo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtBuscarEquipo.setText("Buscar Equipo...");
@@ -164,7 +177,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 txtBuscarEquipoActionPerformed(evt);
             }
         });
-        add(txtBuscarEquipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 110, 140, -1));
+        add(txtBuscarEquipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 120, 150, -1));
 
         txtHistorial.setEditable(false);
         txtHistorial.setColumns(20);
@@ -174,8 +187,9 @@ public class PanelLlaves extends javax.swing.JPanel {
         txtHistorial.setWrapStyleWord(true);
         jScrollPane1.setViewportView(txtHistorial);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(448, 150, 230, 230));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 160, 230, 230));
 
+        btnLimpiar.setFont(new java.awt.Font("Rossanova Personal Use Light", 1, 14)); // NOI18N
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_limpiar.png"))); // NOI18N
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
@@ -183,8 +197,9 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnLimpiarActionPerformed(evt);
             }
         });
-        add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 410, -1, -1));
+        add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 410, 120, -1));
 
+        btnDeshacer.setFont(new java.awt.Font("Rossanova Personal Use Light", 1, 14)); // NOI18N
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png"))); // NOI18N
         btnDeshacer.setText("Deshacer");
         btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
@@ -192,46 +207,46 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnDeshacerActionPerformed(evt);
             }
         });
-        add(btnDeshacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 430, -1, -1));
+        add(btnDeshacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 490, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_buscar.png"))); // NOI18N
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 110, 70, -1));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 120, 70, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizadoActionPerformed(java.awt.event.ActionEvent evt) {
-        // Lógica para cuando se hace clic en Torneo Finalizado
+
         if (partidoFinal != null && !partidoFinal.ganador.equals("Pendiente")) {
-            javax.swing.JOptionPane.showMessageDialog(this, 
-                "El gran campeón es: " + partidoFinal.ganador, 
-                "Torneo Finalizado", 
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El gran campeón es: " + partidoFinal.ganador,
+                    "Torneo Finalizado",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, 
-                "El torneo aún no ha terminado.", 
-                "Aviso", 
-                javax.swing.JOptionPane.WARNING_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El torneo aún no ha terminado.",
+                    "Aviso",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
     private void btnGenerarTorneoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTorneoActionPerformed
-    
-       Object[] opciones = {"Fase de Grupos", "Eliminatorias Directas", "Cancelar"};
+
+        Object[] opciones = {"Fase de Grupos", "Eliminatorias Directas", "Cancelar"};
         int eleccionFormato = javax.swing.JOptionPane.showOptionDialog(
-            this,
-            "¿Qué formato deseas utilizar para el torneo?",
-            "Formato de Emparejamientos",
-            javax.swing.JOptionPane.DEFAULT_OPTION,
-            javax.swing.JOptionPane.QUESTION_MESSAGE,
-            new javax.swing.ImageIcon(getClass().getResource("/img/icono_generar.png")), // Puedes usar null si no quieres icono
-            opciones,
-            opciones[0]
+                this,
+                "¿Qué formato deseas utilizar para el torneo?",
+                "Formato de Emparejamientos",
+                javax.swing.JOptionPane.DEFAULT_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE,
+                new javax.swing.ImageIcon(getClass().getResource("/img/icono_generar.png")), // Puedes usar null si no quieres icono
+                opciones,
+                opciones[0]
         );
 
         if (eleccionFormato == 2 || eleccionFormato == javax.swing.JOptionPane.CLOSED_OPTION) {
-            return; 
+            return;
         }
 
         ListaEnlazadaHistorial equiposParaLlaves = new ListaEnlazadaHistorial();
@@ -240,17 +255,17 @@ public class PanelLlaves extends javax.swing.JPanel {
             equiposParaLlaves = obtenerClasificadosFaseGrupos();
 
             if (equiposParaLlaves.estaVacia()) {
-                return; 
+                return;
             }
-            
+
         } else if (eleccionFormato == 1) {
             int totalEquipos = Inicio.listaEquipos.getTamano();
-            
+
             if (totalEquipos < 2) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Se necesitan al menos 2 equipos para iniciar.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            
+
             java.util.ArrayList<String> todosLosEquipos = new java.util.ArrayList<>();
             for (int i = 0; i < totalEquipos; i++) {
                 todosLosEquipos.add(Inicio.listaEquipos.obtener(i));
@@ -270,7 +285,7 @@ public class PanelLlaves extends javax.swing.JPanel {
             listaAleatoria.add(temp.mensaje);
             temp = temp.siguiente;
         }
-        
+
         java.util.Collections.shuffle(listaAleatoria);
 
         ColaPartidos cola = new ColaPartidos();
@@ -282,7 +297,7 @@ public class PanelLlaves extends javax.swing.JPanel {
             if (i + 1 < listaAleatoria.size()) {
                 eq2 = listaAleatoria.get(i + 1);
             }
-            
+
             cola.encolar(new com.utp.aed.proyectotorneo.model.NodoPartido(eq1, eq2));
         }
 
@@ -302,22 +317,19 @@ public class PanelLlaves extends javax.swing.JPanel {
             llenarArbol(partidoFinal);
             btnGenerarTorneo.setEnabled(false);
             new com.utp.aed.proyectotorneo.dao.LlaveDAO().guardarArbol(partidoFinal);
-            
+
             javax.swing.JOptionPane.showMessageDialog(this, "¡Sorteo finalizado! \nLas llaves se han generado.");
         }
     }
 
-
     private ListaEnlazadaHistorial obtenerClasificadosFaseGrupos() {
-     ListaEnlazadaHistorial clasificados = new ListaEnlazadaHistorial();
+        ListaEnlazadaHistorial clasificados = new ListaEnlazadaHistorial();
         int totalEquipos = Inicio.listaEquipos.getTamano();
 
         if (totalEquipos < 2) {
             javax.swing.JOptionPane.showMessageDialog(this, "Se necesitan al menos 2 equipos para iniciar.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
             return clasificados;
         }
-
-        // 1. SORTEO Y DIVISIÓN (Límite 4 por grupo)
         java.util.ArrayList<String> equiposSorteados = new java.util.ArrayList<>();
         for (int i = 0; i < totalEquipos; i++) {
             equiposSorteados.add(Inicio.listaEquipos.obtener(i));
@@ -339,29 +351,25 @@ public class PanelLlaves extends javax.swing.JPanel {
             }
             listaGrupos.add(grupo);
         }
-
-        // 2. ESTADOS DE LOS GRUPOS (Para guardar el progreso)
         boolean[] grupoFinalizado = new boolean[numGrupos];
         String[][] ganadoresPorGrupo = new String[numGrupos][];
-        
-        // --- VENTANA PRINCIPAL DEL MENÚ DE GRUPOS ---
+
         javax.swing.JDialog dialogoPrincipal = new javax.swing.JDialog((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), "Selección de Fase de Grupos", true);
         dialogoPrincipal.setLayout(new java.awt.BorderLayout());
-        dialogoPrincipal.setSize(400, 350); 
+        dialogoPrincipal.setSize(400, 350);
         dialogoPrincipal.setLocationRelativeTo(this);
         dialogoPrincipal.setDefaultCloseOperation(javax.swing.JDialog.DISPOSE_ON_CLOSE);
 
         javax.swing.JPanel panelBotonesGrupos = new javax.swing.JPanel(new java.awt.GridLayout(numGrupos, 1, 10, 10));
         panelBotonesGrupos.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        
+
         javax.swing.JButton[] botonesGrupos = new javax.swing.JButton[numGrupos];
 
         for (int i = 0; i < numGrupos; i++) {
             final int indexGrupo = i;
             char letra = (char) ('A' + i);
             java.util.ArrayList<String> equiposGrupo = listaGrupos.get(i);
-            
-            // Si el grupo se formó con un solo equipo por ser impar, pasa directo
+
             if (equiposGrupo.size() == 1) {
                 grupoFinalizado[i] = true;
                 botonesGrupos[i] = new javax.swing.JButton("Grupo " + letra + " - Pasa Directo (" + equiposGrupo.get(0) + ")");
@@ -373,8 +381,7 @@ public class PanelLlaves extends javax.swing.JPanel {
 
             botonesGrupos[i] = new javax.swing.JButton("Jugar Grupo " + letra + " (Pendiente)");
             botonesGrupos[i].setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
-            
-            // Generar todos los cruces de este grupo en específico
+
             java.util.ArrayList<String[]> emparejamientos = new java.util.ArrayList<>();
             for (int m = 0; m < equiposGrupo.size(); m++) {
                 for (int n = m + 1; n < equiposGrupo.size(); n++) {
@@ -383,60 +390,55 @@ public class PanelLlaves extends javax.swing.JPanel {
             }
             ganadoresPorGrupo[i] = new String[emparejamientos.size()];
 
-            // Al darle clic, abre la ventana específica de ese grupo
             botonesGrupos[i].addActionListener(e -> {
                 abrirVentanaGrupo(letra, emparejamientos, ganadoresPorGrupo[indexGrupo], dialogoPrincipal, botonesGrupos[indexGrupo], grupoFinalizado, indexGrupo);
             });
-            
+
             panelBotonesGrupos.add(botonesGrupos[i]);
         }
 
         javax.swing.JScrollPane scrollPrincipal = new javax.swing.JScrollPane(panelBotonesGrupos);
         dialogoPrincipal.add(scrollPrincipal, java.awt.BorderLayout.CENTER);
 
-        // 3. BOTÓN INFERIOR PARA AVANZAR A LAS LLAVES
         javax.swing.JPanel panelSurPrincipal = new javax.swing.JPanel();
         javax.swing.JButton btnContinuarLlaves = new javax.swing.JButton("Generar Llaves de Eliminatorias");
         btnContinuarLlaves.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
-        
+
         boolean[] torneoAprobado = {false};
 
         btnContinuarLlaves.addActionListener(e -> {
             boolean todosListos = true;
             for (boolean fin : grupoFinalizado) {
                 if (!fin) {
-                    todosListos = false; 
+                    todosListos = false;
                     break;
                 }
             }
-            
+
             if (!todosListos) {
                 javax.swing.JOptionPane.showMessageDialog(dialogoPrincipal, "Aún hay grupos pendientes. Debes jugar y guardar todos los grupos antes de generar las llaves.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
             } else {
                 torneoAprobado[0] = true;
-                dialogoPrincipal.dispose(); // Cierra el menú principal
+                dialogoPrincipal.dispose();
             }
         });
 
         panelSurPrincipal.add(btnContinuarLlaves);
         dialogoPrincipal.add(panelSurPrincipal, java.awt.BorderLayout.SOUTH);
 
-        // Mostrar la ventana del menú de grupos (el código se pausa aquí)
         dialogoPrincipal.setVisible(true);
 
-        // Si el usuario cerró la ventana con la X en lugar de "Generar Llaves"
         if (!torneoAprobado[0]) {
-            return new ListaEnlazadaHistorial(); 
+            return new ListaEnlazadaHistorial();
         }
 
-        // --- CÁLCULO FINAL PARA ENVIAR AL ÁRBOL BINARIO ---
         StringBuilder resumenGlobal = new StringBuilder();
         resumenGlobal.append("🏆 CLASIFICADOS A LA FASE ELIMINATORIA 🏆\n\n");
 
         for (int i = 0; i < numGrupos; i++) {
             java.util.ArrayList<String> equiposGrupo = listaGrupos.get(i);
             char letra = (char) ('A' + i);
-            
+
             if (equiposGrupo.size() == 1) {
                 clasificados.insertarFinal(equiposGrupo.get(0));
                 resumenGlobal.append("Grupo ").append(letra).append(": ").append(equiposGrupo.get(0)).append(" (Pase directo)\n");
@@ -445,36 +447,38 @@ public class PanelLlaves extends javax.swing.JPanel {
 
             int[] puntos = new int[equiposGrupo.size()];
             for (String ganador : ganadoresPorGrupo[i]) {
-                if(ganador != null) {
+                if (ganador != null) {
                     int indexGanador = equiposGrupo.indexOf(ganador);
-                    if (indexGanador != -1) puntos[indexGanador]++;
+                    if (indexGanador != -1) {
+                        puntos[indexGanador]++;
+                    }
                 }
             }
 
             java.util.ArrayList<Integer> indices = new java.util.ArrayList<>();
-            for (int k = 0; k < equiposGrupo.size(); k++) indices.add(k);
+            for (int k = 0; k < equiposGrupo.size(); k++) {
+                indices.add(k);
+            }
             indices.sort((a, b) -> Integer.compare(puntos[b], puntos[a])); // Ordenar de mayor a menor
 
             String primero = equiposGrupo.get(indices.get(0));
             clasificados.insertarFinal(primero);
-            
+
             String segundo = equiposGrupo.get(indices.get(1));
             clasificados.insertarFinal(segundo);
 
             resumenGlobal.append("Grupo ").append(letra).append(": 1° ").append(primero).append(" | 2° ").append(segundo).append("\n");
         }
-        
+
         javax.swing.JOptionPane.showMessageDialog(this, resumenGlobal.toString(), "Resumen Fase de Grupos", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
         return clasificados;
     }
 
-
-    // MÉTODO AUXILIAR: Para manejar la ventana de cada grupo individualmente
     private void abrirVentanaGrupo(char letraGrupo, java.util.ArrayList<String[]> emparejamientos, String[] ganadoresPartido, javax.swing.JDialog parent, javax.swing.JButton botonGrupo, boolean[] grupoFinalizado, int indexGrupo) {
-        
+
         java.util.Stack<Integer> pilaDeshacerGrupo = new java.util.Stack<>();
-        
+
         javax.swing.JDialog dialogoGrupo = new javax.swing.JDialog(parent, "Partidos - Grupo " + letraGrupo, true);
         dialogoGrupo.setLayout(new java.awt.BorderLayout());
         dialogoGrupo.setSize(450, 350);
@@ -492,32 +496,31 @@ public class PanelLlaves extends javax.swing.JPanel {
 
             botonesPartidos[index] = new javax.swing.JButton();
             botonesPartidos[index].setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
-            
-            // Si el partido ya se había jugado antes y la persona regresó a la ventana
+
             if (ganadoresPartido[index] != null) {
                 botonesPartidos[index].setText("Partido " + (index + 1) + ": " + eq1 + " vs " + eq2 + "  🏆 Ganó: " + ganadoresPartido[index]);
                 botonesPartidos[index].setBackground(new java.awt.Color(200, 255, 200));
-                pilaDeshacerGrupo.push(index); 
+                pilaDeshacerGrupo.push(index);
             } else {
                 botonesPartidos[index].setText("Partido " + (index + 1) + ": " + eq1 + " vs " + eq2 + " (Pendiente)");
             }
-            
+
             botonesPartidos[index].addActionListener(e -> {
                 String[] opciones = {eq1, eq2};
                 int eleccion = javax.swing.JOptionPane.showOptionDialog(
-                    dialogoGrupo, 
-                    "¿Quién ganó el Partido " + (index + 1) + "?\n\n" + eq1 + "  VS  " + eq2, 
-                    "Definir Ganador", 
-                    javax.swing.JOptionPane.DEFAULT_OPTION, 
-                    javax.swing.JOptionPane.QUESTION_MESSAGE, 
-                    null, opciones, opciones[0]
+                        dialogoGrupo,
+                        "¿Quién ganó el Partido " + (index + 1) + "?\n\n" + eq1 + "  VS  " + eq2,
+                        "Definir Ganador",
+                        javax.swing.JOptionPane.DEFAULT_OPTION,
+                        javax.swing.JOptionPane.QUESTION_MESSAGE,
+                        null, opciones, opciones[0]
                 );
 
                 if (eleccion >= 0) {
                     pilaDeshacerGrupo.push(index);
                     ganadoresPartido[index] = opciones[eleccion];
                     botonesPartidos[index].setText("Partido " + (index + 1) + ": " + eq1 + " vs " + eq2 + "  🏆 Ganó: " + opciones[eleccion]);
-                    botonesPartidos[index].setBackground(new java.awt.Color(200, 255, 200)); 
+                    botonesPartidos[index].setBackground(new java.awt.Color(200, 255, 200));
                 }
             });
             panelCentro.add(botonesPartidos[index]);
@@ -529,7 +532,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         javax.swing.JPanel panelSur = new javax.swing.JPanel();
         javax.swing.JButton btnFinalizarGrupo = new javax.swing.JButton("Guardar Grupo");
         javax.swing.JButton btnDeshacer = new javax.swing.JButton("Deshacer");
-        
+
         btnFinalizarGrupo.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
         btnDeshacer.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
 
@@ -545,7 +548,7 @@ public class PanelLlaves extends javax.swing.JPanel {
             if (!todosJugados) {
                 javax.swing.JOptionPane.showMessageDialog(dialogoGrupo, "Aún hay partidos pendientes. Debes completarlos para guardar el grupo.", "Incompleto", javax.swing.JOptionPane.WARNING_MESSAGE);
             } else {
-                // Actualiza el botón en el menú principal para mostrar que ya se completó
+
                 grupoFinalizado[indexGrupo] = true;
                 botonGrupo.setText("Grupo " + letraGrupo + " - ¡Finalizado!");
                 botonGrupo.setBackground(new java.awt.Color(150, 255, 150));
@@ -559,11 +562,10 @@ public class PanelLlaves extends javax.swing.JPanel {
                 ganadoresPartido[ultimoIndex] = null;
                 String eq1 = emparejamientos.get(ultimoIndex)[0];
                 String eq2 = emparejamientos.get(ultimoIndex)[1];
-                
+
                 botonesPartidos[ultimoIndex].setText("Partido " + (ultimoIndex + 1) + ": " + eq1 + " vs " + eq2 + " (Pendiente)");
                 botonesPartidos[ultimoIndex].setBackground(null);
-                
-                // Al deshacer un partido, el grupo deja de estar "Finalizado"
+
                 grupoFinalizado[indexGrupo] = false;
                 botonGrupo.setText("Jugar Grupo " + letraGrupo + " (Incompleto)");
                 botonGrupo.setBackground(new java.awt.Color(255, 255, 200));
@@ -585,21 +587,23 @@ public class PanelLlaves extends javax.swing.JPanel {
                 javax.swing.JOptionPane.showMessageDialog(this, "Solo el Administrador puede editar los resultados.", "Acceso Denegado", javax.swing.JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            
+
             NodoTorneo nodoSel = (NodoTorneo) arbolTorneo.getLastSelectedPathComponent();
-            if (nodoSel == null) return;
-            
+            if (nodoSel == null) {
+                return;
+            }
+
             com.utp.aed.proyectotorneo.model.NodoPartido partido = nodoSel.partidoLogico;
-            
+
             if (partido.ganador.equals("Pendiente") && !partido.equipo1.startsWith("Esperando") && !partido.equipo2.startsWith("Esperando")) {
                 String[] opciones = {partido.equipo1, partido.equipo2};
                 int eleccion = javax.swing.JOptionPane.showOptionDialog(this, "¿Quién ganó este partido?", "Resultado", javax.swing.JOptionPane.DEFAULT_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
                 if (eleccion >= 0) {
                     String ganador = opciones[eleccion];
                     partido.ganador = ganador;
-                    
+
                     historialAcciones.push(partido);
-                    
+
                     com.utp.aed.proyectotorneo.dao.LlaveDAO dao = new com.utp.aed.proyectotorneo.dao.LlaveDAO();
                     dao.actualizarNodo(partido);
                     actualizarPadre(partidoFinal, partido, ganador, dao);
@@ -628,18 +632,17 @@ public class PanelLlaves extends javax.swing.JPanel {
             return;
         }
 
+        ListaEnlazadaHistorial progreso = new ListaEnlazadaHistorial();
+        buscarHistorial(partidoFinal, equipoBuscado, progreso);
 
-    ListaEnlazadaHistorial progreso = new ListaEnlazadaHistorial();
-    buscarHistorial(partidoFinal, equipoBuscado, progreso);
-
-    if (progreso.estaVacia()) {
-    txtHistorial.setText(" No se encontraron registros para:\n '" + equipoBuscado + "'");
-} else {
-    txtHistorial.setText(" PROGRESO DEL \n" +
-                         " Equipo: " + equipoBuscado.toUpperCase() + "\n" +
-                         "--------------------------------------\n" + 
-                         progreso.obtenerTextoCompleto());
-    }
+        if (progreso.estaVacia()) {
+            txtHistorial.setText(" No se encontraron registros para:\n '" + equipoBuscado + "'");
+        } else {
+            txtHistorial.setText(" PROGRESO DEL \n"
+                    + " Equipo: " + equipoBuscado.toUpperCase() + "\n"
+                    + "--------------------------------------\n"
+                    + progreso.obtenerTextoCompleto());
+        }
     }//GEN-LAST:event_txtBuscarEquipoActionPerformed
 
     private void txtBuscarEquipoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarEquipoFocusGained
@@ -652,7 +655,7 @@ public class PanelLlaves extends javax.swing.JPanel {
     private void txtBuscarEquipoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarEquipoFocusLost
         if (txtBuscarEquipo.getText().isEmpty()) {
             txtBuscarEquipo.setText("Buscar Equipo...");
-            txtBuscarEquipo.setForeground(java.awt.Color.GRAY); 
+            txtBuscarEquipo.setForeground(java.awt.Color.GRAY);
         }
     }//GEN-LAST:event_txtBuscarEquipoFocusLost
 
@@ -665,36 +668,29 @@ public class PanelLlaves extends javax.swing.JPanel {
 
     private void btnDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerActionPerformed
         // TODO add your handling code here:
-      if (partidoFinal == null) {
+        if (partidoFinal == null) {
             javax.swing.JOptionPane.showMessageDialog(this, "No hay ningún torneo generado para deshacer.", "Aviso", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-
-        // --- 1. MOSTRAR OPCIONES DE DESHACER ---
         Object[] opciones = {"Deshacer Último Partido", "Reiniciar Torneo Completo", "Cancelar"};
         int eleccion = javax.swing.JOptionPane.showOptionDialog(
-            this,
-            "¿Qué acción deseas realizar?",
-            "Opciones de Deshacer",
-            javax.swing.JOptionPane.DEFAULT_OPTION,
-            javax.swing.JOptionPane.QUESTION_MESSAGE,
-            new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png")), // Usa null si prefieres sin icono
-            opciones,
-            opciones[0]
+                this,
+                "¿Qué acción deseas realizar?",
+                "Opciones de Deshacer",
+                javax.swing.JOptionPane.DEFAULT_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE,
+                new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png")), // Usa null si prefieres sin icono
+                opciones,
+                opciones[0]
         );
 
-        // --- 2. LÓGICA SEGÚN LA ELECCIÓN ---
         if (eleccion == 0) {
-            // Opción: Deshacer solo el último partido del árbol de llaves
             if (!historialAcciones.estaVacia()) {
                 com.utp.aed.proyectotorneo.model.NodoPartido ultimoPartido = historialAcciones.pop();
                 ultimoPartido.ganador = "Pendiente";
-
-                // Actualizar el DAO para que el cambio persista
                 com.utp.aed.proyectotorneo.dao.LlaveDAO dao = new com.utp.aed.proyectotorneo.dao.LlaveDAO();
                 dao.actualizarNodo(ultimoPartido);
 
-                // Refrescar el árbol visual
                 javax.swing.tree.DefaultMutableTreeNode raizVisual = crearNodoVisual(partidoFinal);
                 arbolTorneo.setModel(new javax.swing.tree.DefaultTreeModel(raizVisual));
 
@@ -704,68 +700,58 @@ public class PanelLlaves extends javax.swing.JPanel {
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this, "No hay resultados de partidos en las llaves para deshacer.", "Pila Vacía", javax.swing.JOptionPane.WARNING_MESSAGE);
             }
-            
+
         } else if (eleccion == 1) {
-            // Opción: Reiniciar todo para volver a la fase de grupos o selección inicial
+
             int confirmar = javax.swing.JOptionPane.showConfirmDialog(
-                this, 
-                "¿Estás seguro de que deseas eliminar todo el progreso del torneo actual?\nEsto te permitirá volver a generar los grupos o eliminatorias desde cero.", 
-                "Confirmar Reinicio", 
-                javax.swing.JOptionPane.YES_NO_OPTION, 
-                javax.swing.JOptionPane.WARNING_MESSAGE
+                    this,
+                    "¿Estás seguro de que deseas eliminar todo el progreso del torneo actual?\nEsto te permitirá volver a generar los grupos o eliminatorias desde cero.",
+                    "Confirmar Reinicio",
+                    javax.swing.JOptionPane.YES_NO_OPTION,
+                    javax.swing.JOptionPane.WARNING_MESSAGE
             );
 
             if (confirmar == javax.swing.JOptionPane.YES_OPTION) {
-                // 1. Limpiar la variable raíz del árbol lógico
+             
                 partidoFinal = null;
-                
-                // 2. Limpiar el modelo visual del JTree
                 arbolTorneo.setModel(null);
-                
-                // 3. Vaciar la pila de deshacer completamente
                 while (!historialAcciones.estaVacia()) {
                     historialAcciones.pop();
                 }
-                
-                // 4. Volver a habilitar el botón de generación y ocultar finalizado
                 btnGenerarTorneo.setEnabled(true);
                 btnFinalizado.setVisible(false);
-                
-                // Opcional: Si deseas limpiar el registro guardado en el archivo/BD
-                // new com.utp.aed.proyectotorneo.dao.LlaveDAO().borrarArbol(); 
-                
-                // Limpiar área de historial de búsqueda
                 txtHistorial.setText(" El torneo ha sido reiniciado.");
-                
+
                 javax.swing.JOptionPane.showMessageDialog(this, "El torneo ha sido reiniciado con éxito. Puedes volver a generar los emparejamientos.");
             }
         }
     }//GEN-LAST:event_btnDeshacerActionPerformed
-    
+
     private void buscarHistorial(com.utp.aed.proyectotorneo.model.NodoPartido nodo, String equipo, ListaEnlazadaHistorial progreso) {
-      if (nodo == null) return;
+        if (nodo == null) {
+            return;
+        }
 
         buscarHistorial(nodo.partidoPrevio1, equipo, progreso);
         buscarHistorial(nodo.partidoPrevio2, equipo, progreso);
 
+        if (nodo.equipo1.equalsIgnoreCase(equipo) || nodo.equipo2.equalsIgnoreCase(equipo)) {
+            String rival = nodo.equipo1.equalsIgnoreCase(equipo) ? nodo.equipo2 : nodo.equipo1;
 
-   if (nodo.equipo1.equalsIgnoreCase(equipo) || nodo.equipo2.equalsIgnoreCase(equipo)) {
-    String rival = nodo.equipo1.equalsIgnoreCase(equipo) ? nodo.equipo2 : nodo.equipo1;
-        
-        if (nodo.ganador.equals("Pendiente")) {
-            progreso.insertarFinal(" Próximo partido: Pendiente vs " + rival);
-        } else if (nodo.ganador.equalsIgnoreCase(equipo)) {
-            if (nodo == partidoFinal) {
-                progreso.insertarFinal(" Victoria en la Final vs " + rival);
+            if (nodo.ganador.equals("Pendiente")) {
+                progreso.insertarFinal(" Próximo partido: Pendiente vs " + rival);
+            } else if (nodo.ganador.equalsIgnoreCase(equipo)) {
+                if (nodo == partidoFinal) {
+                    progreso.insertarFinal(" Victoria en la Final vs " + rival);
+                } else {
+                    progreso.insertarFinal(" Victoria vs " + rival);
+                }
             } else {
-                progreso.insertarFinal(" Victoria vs " + rival);
+                progreso.insertarFinal(" Derrota vs " + rival + " (Eliminado)");
             }
-        } else {
-            progreso.insertarFinal(" Derrota vs " + rival + " (Eliminado)");
         }
     }
-}
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arbolTorneo;
     private javax.swing.JButton btnDeshacer;
@@ -781,17 +767,18 @@ public class PanelLlaves extends javax.swing.JPanel {
     private javax.swing.JTextArea txtHistorial;
     // End of variables declaration//GEN-END:variables
 
-
     class NodoTorneo extends javax.swing.tree.DefaultMutableTreeNode {
+
         public com.utp.aed.proyectotorneo.model.NodoPartido partidoLogico;
-        
+
         public NodoTorneo(String texto, com.utp.aed.proyectotorneo.model.NodoPartido partido) {
-            super(texto); 
-            this.partidoLogico = partido; 
+            super(texto);
+            this.partidoLogico = partido;
         }
     }
 
     class NodoHistorial {
+
         String mensaje;
         NodoHistorial siguiente;
 
@@ -802,6 +789,7 @@ public class PanelLlaves extends javax.swing.JPanel {
     }
 
     class ListaEnlazadaHistorial {
+
         NodoHistorial cabeza;
 
         public ListaEnlazadaHistorial() {
@@ -820,29 +808,29 @@ public class PanelLlaves extends javax.swing.JPanel {
                 actual.siguiente = nuevo;
             }
         }
-        
+
         public boolean eliminarPorTexto(String textoBuscado) {
             if (cabeza == null) {
-                return false; 
+                return false;
             }
 
             if (cabeza.mensaje.toLowerCase().contains(textoBuscado.toLowerCase())) {
-                cabeza = cabeza.siguiente; 
+                cabeza = cabeza.siguiente;
                 return true;
             }
 
             NodoHistorial actual = cabeza;
             while (actual.siguiente != null) {
                 if (actual.siguiente.mensaje.toLowerCase().contains(textoBuscado.toLowerCase())) {
-                    actual.siguiente = actual.siguiente.siguiente; 
+                    actual.siguiente = actual.siguiente.siguiente;
                     return true;
                 }
-                actual = actual.siguiente; 
+                actual = actual.siguiente;
             }
 
-            return false; 
+            return false;
         }
-        
+
         public boolean estaVacia() {
             return cabeza == null;
         }
@@ -859,6 +847,7 @@ public class PanelLlaves extends javax.swing.JPanel {
     }
 
     class NodoColaPartido {
+
         com.utp.aed.proyectotorneo.model.NodoPartido partido;
         NodoColaPartido siguiente;
 
@@ -869,9 +858,11 @@ public class PanelLlaves extends javax.swing.JPanel {
     }
 
     class ColaPartidos {
+
         NodoColaPartido frente;
         NodoColaPartido fin;
-        int tamaño; 
+        int tamaño;
+
         public ColaPartidos() {
             this.frente = null;
             this.fin = null;
@@ -891,13 +882,17 @@ public class PanelLlaves extends javax.swing.JPanel {
         }
 
         public com.utp.aed.proyectotorneo.model.NodoPartido desencolar() {
-            if (frente == null) return null;
-            
+            if (frente == null) {
+                return null;
+            }
+
             com.utp.aed.proyectotorneo.model.NodoPartido extraido = frente.partido;
             frente = frente.siguiente;
-            
-            if (frente == null) fin = null;
-            
+
+            if (frente == null) {
+                fin = null;
+            }
+
             tamaño--;
             return extraido;
         }
@@ -905,13 +900,14 @@ public class PanelLlaves extends javax.swing.JPanel {
         public boolean estaVacia() {
             return frente == null;
         }
-        
+
         public int obtenerTamaño() {
             return tamaño;
         }
     }
 
     class NodoPilaPartido {
+
         com.utp.aed.proyectotorneo.model.NodoPartido partido;
         NodoPilaPartido siguiente;
 
@@ -922,6 +918,7 @@ public class PanelLlaves extends javax.swing.JPanel {
     }
 
     class PilaDeshacer {
+
         NodoPilaPartido cima;
 
         public boolean estaVacia() {
@@ -935,8 +932,10 @@ public class PanelLlaves extends javax.swing.JPanel {
         }
 
         public com.utp.aed.proyectotorneo.model.NodoPartido pop() {
-            if (estaVacia()) return null;
-            
+            if (estaVacia()) {
+                return null;
+            }
+
             com.utp.aed.proyectotorneo.model.NodoPartido extraido = cima.partido;
             cima = cima.siguiente;
             return extraido;

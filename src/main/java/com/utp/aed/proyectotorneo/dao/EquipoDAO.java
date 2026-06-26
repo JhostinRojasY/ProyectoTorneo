@@ -54,7 +54,7 @@ public class EquipoDAO {
     }
 
     public boolean eliminarPorNombre(String nombre) {
-        // Reemplaza 'Conexion' por el nombre real de tu clase de conexión a la BD
+        
         String sql = "DELETE FROM Equipo WHERE nombre = ?";
 
         try (java.sql.Connection con = com.utp.aed.proyectotorneo.dao.ConexionDB.getConnection(); 
@@ -63,11 +63,22 @@ public class EquipoDAO {
             ps.setString(1, nombre);
             int filasAfectadas = ps.executeUpdate();
 
-            return filasAfectadas > 0; // Retorna true si se eliminó el registro con éxito
+            return filasAfectadas > 0; 
 
         } catch (java.sql.SQLException e) {
             System.out.println("Error al eliminar equipo: " + e.getMessage());
             return false;
+        }
+    }
+    public void eliminarTodosLosEquipos() {
+        String sql = "DELETE FROM equipos"; // Cambia "equipos" si tu tabla se llama diferente en MySQL
+        try {
+            // Asegúrate de que tu método de conexión se llame así (getConexion o getConnection según lo tengas)
+            java.sql.Connection con = ConexionDB.getConnection(); 
+            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error al borrar la tabla de equipos: " + e.getMessage());
         }
     }
 }

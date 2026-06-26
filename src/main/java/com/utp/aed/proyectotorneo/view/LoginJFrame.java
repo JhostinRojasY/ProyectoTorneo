@@ -35,11 +35,11 @@ public class LoginJFrame extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(null);
 
-        lblTitle.setFont(new java.awt.Font("ItalicT", 1, 20)); // NOI18N
+        lblTitle.setFont(new java.awt.Font("Segoe Print", 1, 20)); // NOI18N
         lblTitle.setForeground(new java.awt.Color(255, 255, 255));
-        lblTitle.setText("Bienvenido al Torneo");
+        lblTitle.setText("Bienvenido al TorneoApp");
         getContentPane().add(lblTitle);
-        lblTitle.setBounds(70, 20, 310, 30);
+        lblTitle.setBounds(80, 20, 270, 30);
 
         jLabel1.setFont(new java.awt.Font("Trophy", 0, 10)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -92,7 +92,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         getContentPane().add(jLabel4);
         jLabel4.setBounds(160, 350, 110, 16);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo_seleccion.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         getContentPane().add(jLabel3);
         jLabel3.setBounds(-10, -180, 440, 550);
 

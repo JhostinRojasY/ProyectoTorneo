@@ -11,18 +11,19 @@ package com.utp.aed.proyectotorneo.view;
 public class SeleccionDeporte extends javax.swing.JFrame {
     
     private com.utp.aed.proyectotorneo.model.Usuario usuarioActual;
-    private ArbolNavegacion enrutador;     
+    private ArbolNavegacionBinario enrutador;
     
     public SeleccionDeporte() {
         initComponents();
         this.setSize(600, 400); 
         this.setLocationRelativeTo(null);
+        
     }
     
     public SeleccionDeporte(com.utp.aed.proyectotorneo.model.Usuario usuario) {
         this(); 
         this.usuarioActual = usuario; 
-        this.enrutador = new ArbolNavegacion(this, this.usuarioActual);
+        this.enrutador = new ArbolNavegacionBinario(this, this.usuarioActual);
     }
     
 
@@ -37,7 +38,6 @@ public class SeleccionDeporte extends javax.swing.JFrame {
 
         btnFutbol = new javax.swing.JButton();
         btnVoley = new javax.swing.JButton();
-        btnBasquet = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -58,7 +58,7 @@ public class SeleccionDeporte extends javax.swing.JFrame {
                 btnFutbolActionPerformed(evt);
             }
         });
-        getContentPane().add(btnFutbol, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 130, 120));
+        getContentPane().add(btnFutbol, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 210, 130, 120));
 
         btnVoley.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         btnVoley.setForeground(new java.awt.Color(255, 255, 255));
@@ -73,22 +73,7 @@ public class SeleccionDeporte extends javax.swing.JFrame {
                 btnVoleyActionPerformed(evt);
             }
         });
-        getContentPane().add(btnVoley, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 130, 120));
-
-        btnBasquet.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
-        btnBasquet.setForeground(new java.awt.Color(255, 255, 255));
-        btnBasquet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_basquet (2).png"))); // NOI18N
-        btnBasquet.setText("BASQUET");
-        btnBasquet.setBorderPainted(false);
-        btnBasquet.setContentAreaFilled(false);
-        btnBasquet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnBasquet.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnBasquet.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBasquetActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnBasquet, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 200, 130, 120));
+        getContentPane().add(btnVoley, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 200, 130, 120));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Black", 3, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -113,11 +98,6 @@ public class SeleccionDeporte extends javax.swing.JFrame {
         enrutador.navegarA("Voley");
     }//GEN-LAST:event_btnVoleyActionPerformed
 
-    private void btnBasquetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBasquetActionPerformed
-        // TODO add your handling code here:
-        enrutador.navegarA("Basquet");
-    }//GEN-LAST:event_btnBasquetActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -129,38 +109,36 @@ public class SeleccionDeporte extends javax.swing.JFrame {
         });
     }
     
-    //ESTRUCTURA
-    
-    class NodoRuta {
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFutbol;
+    private javax.swing.JButton btnVoley;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    // End of variables declaration//GEN-END:variables
+
+    class NodoRutaBinario {
         String nombreModulo;
-        java.util.List<NodoRuta> subModulos; 
-        public NodoRuta(String nombreModulo) {
+        NodoRutaBinario izquierdo; 
+        NodoRutaBinario derecho;
+        
+        public NodoRutaBinario(String nombreModulo) {
             this.nombreModulo = nombreModulo;
-            this.subModulos = new java.util.ArrayList<>();
-        }
-        public void agregarSubRuta(NodoRuta hijo) {
-            subModulos.add(hijo);
+            this.izquierdo = null;
+            this.derecho = null;
         }
     }
 
-    class ArbolNavegacion {
-        NodoRuta raiz;
+    class ArbolNavegacionBinario {
+        NodoRutaBinario raiz;
         javax.swing.JFrame ventanaActual;
         com.utp.aed.proyectotorneo.model.Usuario usuarioActivo;
 
-        public ArbolNavegacion(javax.swing.JFrame ventanaActual, com.utp.aed.proyectotorneo.model.Usuario usuarioActivo) {
+        public ArbolNavegacionBinario(javax.swing.JFrame ventanaActual, com.utp.aed.proyectotorneo.model.Usuario usuarioActivo) {
             this.ventanaActual = ventanaActual;
             this.usuarioActivo = usuarioActivo;
-            
-            raiz = new NodoRuta("SeleccionDeporte");
-            
-            NodoRuta nodoFutbol = new NodoRuta("Futbol");
-            NodoRuta nodoVoley = new NodoRuta("Voley");
-            NodoRuta nodoBasquet = new NodoRuta("Basquet");
-            
-            raiz.agregarSubRuta(nodoFutbol);
-            raiz.agregarSubRuta(nodoVoley);
-            raiz.agregarSubRuta(nodoBasquet);
+            raiz = new NodoRutaBinario("SeleccionDeporte");
+            raiz.izquierdo = new NodoRutaBinario("Futbol");
+            raiz.derecho = new NodoRutaBinario("Voley");
         }
 
         public void navegarA(String destino) {
@@ -168,12 +146,13 @@ public class SeleccionDeporte extends javax.swing.JFrame {
             
             if (!rutaEncontrada) {
                 javax.swing.JOptionPane.showMessageDialog(ventanaActual, 
-                    "Error de enrutamiento: No encontrado en el Árbol de Navegación.", 
-                    "Error ", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    "Error de enrutamiento.", 
+                    "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         }
 
-        private boolean buscarYEjecutarRuta(NodoRuta nodoActual, String destino) {
+        private boolean buscarYEjecutarRuta(NodoRutaBinario nodoActual, String destino) {
+            
             if (nodoActual == null) return false;
             if (nodoActual.nombreModulo.equalsIgnoreCase(destino)) {
                 
@@ -182,27 +161,19 @@ public class SeleccionDeporte extends javax.swing.JFrame {
                     ventanaTorneo.setVisible(true);
                     ventanaActual.dispose();
                 } 
-                else if (destino.equals("Voley") || destino.equals("Basquet")) {
+                else if (destino.equals("Voley")) {
                     javax.swing.JOptionPane.showMessageDialog(ventanaActual, 
-                        "El módulo de " + destino + " se encuentra en fase de desarrollo.", 
-                        "Próximamente", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                        "El módulo de Voley se encuentra en fase de diseño estructural.", 
+                        "En Desarrollo", javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 }
                 return true;
             }
-            for (NodoRuta hijo : nodoActual.subModulos) {
-                if (buscarYEjecutarRuta(hijo, destino)) {
-                    return true;
-                }
+            boolean encontradoIzquierda = buscarYEjecutarRuta(nodoActual.izquierdo, destino);
+            if (encontradoIzquierda) {
+                return true;
             }
-            return false;
+            return buscarYEjecutarRuta(nodoActual.derecho, destino);
         }
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBasquet;
-    private javax.swing.JButton btnFutbol;
-    private javax.swing.JButton btnVoley;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    // End of variables declaration//GEN-END:variables
 }

@@ -55,7 +55,7 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="17" y="75" width="360" height="330"/>
+          <AbsoluteConstraints x="17" y="75" width="430" height="390"/>
         </Constraint>
       </Constraints>
 
@@ -63,6 +63,9 @@
       <SubComponents>
         <Component class="javax.swing.JTree" name="arbolTorneo">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Times New Roman" size="12" style="1"/>
+            </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Default Cursor"/>
             </Property>
@@ -75,6 +78,9 @@
     </Container>
     <Component class="javax.swing.JButton" name="btnFinalizado">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="SansSerif" size="14" style="1"/>
+        </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/img/icono_campeon.png"/>
         </Property>
@@ -85,7 +91,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="403" y="18" width="-1" height="-1"/>
+          <AbsoluteConstraints x="500" y="10" width="190" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -103,7 +109,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="520" y="110" width="140" height="-1"/>
+          <AbsoluteConstraints x="530" y="120" width="150" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -113,7 +119,7 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="448" y="150" width="230" height="230"/>
+          <AbsoluteConstraints x="480" y="160" width="230" height="230"/>
         </Constraint>
       </Constraints>
 
@@ -135,6 +141,9 @@
     </Container>
     <Component class="javax.swing.JButton" name="btnLimpiar">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Rossanova Personal Use Light" size="14" style="1"/>
+        </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/img/icono_limpiar.png"/>
         </Property>
@@ -145,12 +154,15 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="570" y="410" width="-1" height="-1"/>
+          <AbsoluteConstraints x="560" y="410" width="120" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JButton" name="btnDeshacer">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Rossanova Personal Use Light" size="14" style="1"/>
+        </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/img/icono_deshacer.png"/>
         </Property>
@@ -161,7 +173,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="220" y="430" width="-1" height="-1"/>
+          <AbsoluteConstraints x="200" y="490" width="-1" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -173,7 +185,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="480" y="110" width="70" height="-1"/>
+          <AbsoluteConstraints x="480" y="120" width="70" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>

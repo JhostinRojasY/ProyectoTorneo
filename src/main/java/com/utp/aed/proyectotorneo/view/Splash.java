@@ -45,16 +45,14 @@ public class Splash extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblFondo)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
                         .addComponent(lblPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(barraProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblFondo)))
-                .addContainerGap(61, Short.MAX_VALUE))
+                        .addComponent(barraProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -75,26 +73,18 @@ public class Splash extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        // 1. Iniciamos la pantalla de carga
         Splash splash = new Splash();
         splash.setVisible(true);
 
         try {
-            // 2. Iniciamos el bucle del 0 al 100
             for (int i = 0; i <= 100; i++) {
-                
-                // Pausa de 30 milisegundos por cada número (puedes subirlo para que tarde más)
                 Thread.sleep(30); 
-                
-                // Actualizamos la interfaz gráfica
                 splash.lblPorcentaje.setText(i + "%");
                 splash.barraProgreso.setValue(i);
-                
-                // 3. Cuando llega a 100, hacemos la transición
                 if (i == 100) {
-                    splash.dispose(); // Destruimos la pantalla de carga
-                    LoginJFrame login = new LoginJFrame(); // Instanciamos tu Login
-                    login.setVisible(true); // Mostramos el Login
+                    splash.dispose(); 
+                    LoginJFrame login = new LoginJFrame(); 
+                    login.setVisible(true);
                 }
             }
         } catch (InterruptedException e) {

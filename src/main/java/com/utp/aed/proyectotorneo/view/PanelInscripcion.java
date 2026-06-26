@@ -12,10 +12,10 @@ public class PanelInscripcion extends javax.swing.JPanel {
 
     private PilaEquipos pilaDeshacer = new PilaEquipos();
     private PilaPapelera papeleraReciclaje = new PilaPapelera();
-    
+
     public PanelInscripcion() {
         initComponents();
-        
+
         javax.swing.JButton btnOrdenar = new javax.swing.JButton("Ordenar (A-Z)");
         btnOrdenar.addActionListener(e -> {
             Inicio.listaEquipos.ordenarBurbujaAlfabeticamente();
@@ -25,8 +25,6 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 modelo.addRow(new Object[]{Inicio.listaEquipos.obtener(i)});
             }
         });
-
-        // Lo añadimos al panel superior donde está el título
         jPanel1.add(btnOrdenar);
 
         actualizarPantalla();
@@ -49,8 +47,6 @@ public class PanelInscripcion extends javax.swing.JPanel {
         for (int i = 0; i < Inicio.listaEquipos.getTamano(); i++) {
             modelo.addRow(new Object[]{Inicio.listaEquipos.obtener(i)});
         }
-
-        // 3. Validar mínimo de equipos para iniciar el torneo (Cualquier número mayor o igual a 2)
         if (total >= 2) {
             btnGenerarLlaves.setEnabled(true);
         } else {
@@ -107,14 +103,17 @@ public class PanelInscripcion extends javax.swing.JPanel {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_registro.png"))); // NOI18N
         jLabel1.setText("REGISTRO DE EQUIPOS");
 
+        jLabel4.setFont(new java.awt.Font("Swis721 BlkCn BT", 0, 14)); // NOI18N
         jLabel4.setText("Nombre del equipo");
 
+        txtNombreEquipo.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         txtNombreEquipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreEquipoActionPerformed(evt);
             }
         });
 
+        btnAgregar.setFont(new java.awt.Font("Rossanova Personal Use Light", 0, 14)); // NOI18N
         btnAgregar.setText("+ Agregar Equipo");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,36 +126,37 @@ public class PanelInscripcion extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtNombreEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addComponent(txtNombreEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtNombreEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnAgregar)
-                .addGap(24, 24, 24))
+                .addGap(30, 30, 30))
         );
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 85, -1, -1));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 85, -1, 170));
 
         jLabel5.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_torneo1.png"))); // NOI18N
@@ -214,12 +214,13 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 291, -1, -1));
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Roboto Thin", 0, 18)); // NOI18N
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_inscripcion.png"))); // NOI18N
         jLabel8.setText("Lista De Equipos Inscritos");
 
+        tablaEquipos.setFont(new java.awt.Font("MV Boli", 0, 15)); // NOI18N
         tablaEquipos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null}
@@ -237,9 +238,11 @@ public class PanelInscripcion extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(0, 144, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,11 +250,11 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, 85, -1, -1));
+        add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, 85, 390, 480));
 
         btnReiniciar.setBackground(new java.awt.Color(255, 51, 51));
         btnReiniciar.setForeground(new java.awt.Color(255, 255, 255));
@@ -263,6 +266,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
         });
         add(btnReiniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(599, 28, -1, -1));
 
+        btnEliminar.setFont(new java.awt.Font("Rossanova Personal Use Light", 0, 14)); // NOI18N
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_eliminar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -270,8 +274,9 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 btnEliminarActionPerformed(evt);
             }
         });
-        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(636, 134, 116, -1));
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 130, 116, -1));
 
+        btnDeshacer.setFont(new java.awt.Font("Rossanova Personal Use Light", 0, 12)); // NOI18N
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png"))); // NOI18N
         btnDeshacer.setText("Deshacer");
         btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
@@ -279,8 +284,9 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 btnDeshacerActionPerformed(evt);
             }
         });
-        add(btnDeshacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 470, -1, -1));
+        add(btnDeshacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 590, 130, -1));
 
+        btnRestaurar.setFont(new java.awt.Font("Rossanova Personal Use Light", 0, 12)); // NOI18N
         btnRestaurar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_restaurar.png"))); // NOI18N
         btnRestaurar.setText("Restaurar");
         btnRestaurar.addActionListener(new java.awt.event.ActionListener() {
@@ -288,8 +294,9 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 btnRestaurarActionPerformed(evt);
             }
         });
-        add(btnRestaurar, new org.netbeans.lib.awtextra.AbsoluteConstraints(636, 191, -1, -1));
+        add(btnRestaurar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 190, -1, -1));
 
+        btnOrdenar.setFont(new java.awt.Font("Rossanova Personal Use Light", 0, 12)); // NOI18N
         btnOrdenar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_ordenar.png"))); // NOI18N
         btnOrdenar.setText("Ordenar");
         btnOrdenar.addActionListener(new java.awt.event.ActionListener() {
@@ -297,38 +304,28 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 btnOrdenarActionPerformed(evt);
             }
         });
-        add(btnOrdenar, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 250, -1, -1));
+        add(btnOrdenar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 260, 110, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 2320, 950));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarLlavesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarLlavesActionPerformed
-                                                    
-    // 1. Buscamos la ventana principal que contiene este panel
-    java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
-    
-    // 2. Verificamos que la ventana sea realmente nuestro JFrame "Inicio"
-    if (ventana instanceof Inicio) {
-        Inicio inicioFrame = (Inicio) ventana;
-        
-        // 3. Le ordenamos a la ventana principal que cambie al panel de llaves
-        inicioFrame.irAPanelLlaves();
-    
-}
+
+        java.awt.Window ventana = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+        if (ventana instanceof Inicio) {
+            Inicio inicioFrame = (Inicio) ventana;
+            inicioFrame.irAPanelLlaves();
+
+        }
     }//GEN-LAST:event_btnGenerarLlavesActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-        // 1. Obtener el índice de la fila seleccionada en la tabla
         int filaSeleccionada = tablaEquipos.getSelectedRow();
-
-        // 2. Verificar si el usuario realmente seleccionó una fila
         if (filaSeleccionada != -1) {
-            // Obtener el nombre del equipo de la columna 0 en la fila seleccionada
             String nombreEquipo = tablaEquipos.getValueAt(filaSeleccionada, 0).toString();
-
-            // 3. Ventana de confirmación para evitar eliminaciones accidentales
             int confirmar = javax.swing.JOptionPane.showConfirmDialog(this,
                     "¿Estás seguro de que deseas eliminar al equipo '" + nombreEquipo + "'?",
                     "Confirmar Eliminación",
@@ -336,13 +333,11 @@ public class PanelInscripcion extends javax.swing.JPanel {
                     javax.swing.JOptionPane.WARNING_MESSAGE);
 
             if (confirmar == javax.swing.JOptionPane.YES_OPTION) {
-                // Creamos la conexión DAO PRIMERO
-                com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
 
-                // 4. Ejecutar la eliminación en la BD y guardar en la Pila (Papelera)
+                com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
                 if (dao.eliminarPorNombre(nombreEquipo)) {
 
-                    papeleraReciclaje.push(nombreEquipo); // <-- SE GUARDA EN LA PILA DE LA PAPELERA
+                    papeleraReciclaje.push(nombreEquipo);
 
                     javax.swing.JOptionPane.showMessageDialog(this, "Equipo enviado a la papelera.");
                     actualizarPantalla();
@@ -387,19 +382,13 @@ public class PanelInscripcion extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRestaurarActionPerformed
 
     private void btnOrdenarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdenarActionPerformed
-        // 1. Instanciamos nuestro Árbol Binario de Búsqueda
-        ArbolBinarioBusqueda arbolEquipos = new ArbolBinarioBusqueda();
 
-        // 2. Llenamos el árbol con los equipos que están en la lista enlazada actual
+        ArbolBinarioBusqueda arbolEquipos = new ArbolBinarioBusqueda();
         for (int i = 0; i < Inicio.listaEquipos.getTamano(); i++) {
             arbolEquipos.insertar(Inicio.listaEquipos.obtener(i));
         }
-
-        // 3. Preparamos la tabla para recibir los datos ordenados
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaEquipos.getModel();
-        modelo.setRowCount(0); // Limpia la tabla visual
-
-        // 4. Ejecutamos el recorrido En Orden (In-Order) que llenará la tabla automáticamente
+        modelo.setRowCount(0);
         arbolEquipos.llenarTablaEnOrden(arbolEquipos.raiz, modelo);
 
         javax.swing.JOptionPane.showMessageDialog(this, "Equipos ordenados");
@@ -446,7 +435,6 @@ public class PanelInscripcion extends javax.swing.JPanel {
         }
     }
 
-// ESTRUCTURAS DE DATOS: PILA PARA DESHACER INSCRIPCIONES
     class NodoPilaEquipo {
 
         String nombreEquipo;
@@ -484,7 +472,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
 
     class PilaPapelera {
 
-        NodoPilaEquipo cima; // Usa la misma clase NodoPilaEquipo que ya creaste
+        NodoPilaEquipo cima;
 
         public void push(String nombre) {
             NodoPilaEquipo nuevo = new NodoPilaEquipo(nombre);
@@ -506,7 +494,6 @@ public class PanelInscripcion extends javax.swing.JPanel {
         }
     }
 
-    // ESTRUCTURA DE DATOS: ÁRBOL BINARIO DE BÚSQUEDA (ABB) PARA ORDENAMIENTO
     class NodoArbolEquipo {
 
         String nombreEquipo;
@@ -526,7 +513,6 @@ public class PanelInscripcion extends javax.swing.JPanel {
             raiz = null;
         }
 
-        // Método para insertar manteniendo la regla del ABB alfabético
         public void insertar(String nombre) {
             raiz = insertarRecursivo(raiz, nombre);
         }
@@ -535,22 +521,18 @@ public class PanelInscripcion extends javax.swing.JPanel {
             if (nodo == null) {
                 return new NodoArbolEquipo(nombre);
             }
-
-            // Compara alfabéticamente ignorando mayúsculas/minúsculas
             if (nombre.compareToIgnoreCase(nodo.nombreEquipo) < 0) {
                 nodo.izquierdo = insertarRecursivo(nodo.izquierdo, nombre);
             } else if (nombre.compareToIgnoreCase(nodo.nombreEquipo) > 0) {
                 nodo.derecho = insertarRecursivo(nodo.derecho, nombre);
             }
-            // Si es igual, no se inserta (evita duplicados en el árbol)
             return nodo;
         }
 
-        // Recorrido In-Order: Izquierda -> Raíz -> Derecha (Devuelve A-Z)
         public void llenarTablaEnOrden(NodoArbolEquipo nodo, javax.swing.table.DefaultTableModel modelo) {
             if (nodo != null) {
                 llenarTablaEnOrden(nodo.izquierdo, modelo);
-                modelo.addRow(new Object[]{nodo.nombreEquipo}); // Añade a la tabla
+                modelo.addRow(new Object[]{nodo.nombreEquipo});
                 llenarTablaEnOrden(nodo.derecho, modelo);
             }
         }

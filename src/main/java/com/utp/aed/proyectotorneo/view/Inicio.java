@@ -150,14 +150,8 @@ public class Inicio extends javax.swing.JFrame {
     private void btnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigActionPerformed
         // TODO add your handling code here:
         PanelConfiguracion pnlConfig = new PanelConfiguracion();
-
-// 2. Limpiar todo lo que haya actualmente en el contenedor central
         pnlContenido.removeAll();
-
-// 3. Añadir el nuevo panel indicando que ocupe todo el centro
         pnlContenido.add(pnlConfig, java.awt.BorderLayout.CENTER);
-
-// 4. Refrescar y repintar la ventana para que los cambios sean visibles
         pnlContenido.revalidate();
         pnlContenido.repaint();
     }//GEN-LAST:event_btnConfigActionPerformed
@@ -203,15 +197,13 @@ public class Inicio extends javax.swing.JFrame {
         });
     }
 public void irAPanelLlaves() {
-        // Usamos el usuarioActual que ya está guardado en Inicio
         PanelLlaves pnlLlav = new PanelLlaves(this.usuarioActual);
-        
-        // Limpiamos y repintamos el panel central, tal como hacen tus botones del menú
         pnlContenido.removeAll();
         pnlContenido.add(pnlLlav, java.awt.BorderLayout.CENTER);
         pnlContenido.revalidate();
         pnlContenido.repaint();
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfig;
     private javax.swing.JButton btnDashboard;

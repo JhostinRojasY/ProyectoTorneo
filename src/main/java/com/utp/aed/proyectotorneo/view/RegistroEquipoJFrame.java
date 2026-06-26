@@ -43,18 +43,25 @@ public class RegistroEquipoJFrame extends javax.swing.JFrame {
         getContentPane().add(lblTitle);
         lblTitle.setBounds(80, 20, 250, 30);
 
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel1.setText("Usuario:");
         getContentPane().add(jLabel1);
         jLabel1.setBounds(50, 80, 80, 25);
-        getContentPane().add(txtUsername);
-        txtUsername.setBounds(150, 80, 150, 25);
 
+        txtUsername.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        getContentPane().add(txtUsername);
+        txtUsername.setBounds(150, 75, 150, 30);
+
+        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel2.setText("Contraseña:");
         getContentPane().add(jLabel2);
         jLabel2.setBounds(50, 130, 80, 25);
+
+        txtPassword.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         getContentPane().add(txtPassword);
         txtPassword.setBounds(150, 130, 150, 25);
 
+        btnRegistrar.setFont(new java.awt.Font("Rossanova Personal Use Light", 0, 14)); // NOI18N
         btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_registrar.png"))); // NOI18N
         btnRegistrar.setText("Registrar");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -65,6 +72,7 @@ public class RegistroEquipoJFrame extends javax.swing.JFrame {
         getContentPane().add(btnRegistrar);
         btnRegistrar.setBounds(130, 180, 150, 40);
 
+        btnVolver.setFont(new java.awt.Font("Rossanova Personal Use Light", 0, 14)); // NOI18N
         btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png"))); // NOI18N
         btnVolver.setText("Volver al Login");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {

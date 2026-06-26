@@ -213,6 +213,7 @@ public class PanelDashboard extends javax.swing.JPanel {
         txtConsola.setEditable(false);
         txtConsola.setBackground(new java.awt.Color(255, 255, 255));
         txtConsola.setColumns(20);
+        txtConsola.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         txtConsola.setForeground(new java.awt.Color(33, 37, 41));
         txtConsola.setRows(5);
         jScrollPane1.setViewportView(txtConsola);
@@ -236,11 +237,11 @@ public class PanelDashboard extends javax.swing.JPanel {
                 .addGap(17, 17, 17)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 140, 663, -1));
+        add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 140, 663, 330));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(800, 700));
