@@ -34,9 +34,21 @@ CREATE TABLE IF NOT EXISTS Llave (
     FOREIGN KEY (previo2_id) REFERENCES Llave(id) ON DELETE SET NULL
 );
 
-
 INSERT IGNORE INTO Rol (nombre) VALUES ('Administrador');
 INSERT IGNORE INTO Rol (nombre) VALUES ('Equipo');
 
-
 INSERT IGNORE INTO Usuario (username, password, rol_id) VALUES ('admin', 'admin123', 1);
+
+INSERT IGNORE INTO Equipo (nombre) VALUES
+('México'), ('Sudáfrica'), ('Corea del Sur'), ('República Checa'),
+('Canadá'), ('Bosnia y Herzegovina'), ('Qatar'), ('Suiza'),
+('Brasil'), ('Marruecos'), ('Haití'), ('Escocia'),
+('Estados Unidos'), ('Paraguay'), ('Australia'), ('Turquía'),
+('Alemania'), ('Curazao'), ('Costa de Marfil'), ('Ecuador'),
+('Países Bajos'), ('Japón'), ('Suecia'), ('Túnez'),
+('Bélgica'), ('Egipto'), ('Irán'), ('Nueva Zelanda'),
+('España'), ('Cabo Verde'), ('Arabia Saudita'), ('Uruguay'),
+('Francia'), ('Senegal'), ('Irak'), ('Noruega'),
+('Argentina'), ('Argelia'), ('Austria'), ('Jordania'),
+('Portugal'), ('República Democrática del Congo'), ('Uzbekistán'), ('Colombia'),
+('Inglaterra'), ('Croacia'), ('Ghana'), ('Panamá');
