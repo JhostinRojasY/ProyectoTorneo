@@ -233,24 +233,32 @@ public class PanelLlaves extends javax.swing.JPanel {
 
     private void btnGenerarTorneoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarTorneoActionPerformed
 
-        Object[] opciones = {"Fase de Grupos", "Eliminatorias Directas", "Cancelar"};
+        Object[] opciones = {"Fase de Grupos", "Eliminatorias Directas", "Simular Mundial 2026", "Cancelar"};
         int eleccionFormato = javax.swing.JOptionPane.showOptionDialog(
                 this,
                 "¿Qué formato deseas utilizar para el torneo?",
                 "Formato de Emparejamientos",
                 javax.swing.JOptionPane.DEFAULT_OPTION,
                 javax.swing.JOptionPane.QUESTION_MESSAGE,
-                new javax.swing.ImageIcon(getClass().getResource("/img/icono_generar.png")), // Puedes usar null si no quieres icono
+                new javax.swing.ImageIcon(getClass().getResource("/img/icono_generar.png")), 
                 opciones,
                 opciones[0]
         );
 
-        if (eleccionFormato == 2 || eleccionFormato == javax.swing.JOptionPane.CLOSED_OPTION) {
+        // El índice 3 ahora es "Cancelar"
+        if (eleccionFormato == 3 || eleccionFormato == javax.swing.JOptionPane.CLOSED_OPTION) {
+            return;
+        }
+        
+        // El índice 2 es nuestro nuevo botón "Simular Mundial 2026"
+        if (eleccionFormato == 2) {
+            simularMundialConGrupos(); // <-- Ahora sí abre la ventana verde primero
             return;
         }
 
         ListaEnlazadaHistorial equiposParaLlaves = new ListaEnlazadaHistorial();
 
+        // El índice 0 es "Fase de Grupos"
         if (eleccionFormato == 0) {
             equiposParaLlaves = obtenerClasificadosFaseGrupos();
 
@@ -322,6 +330,198 @@ public class PanelLlaves extends javax.swing.JPanel {
         }
     }
 
+    private void generarMundialActualidad() {
+      try {
+            ColaPartidos cola = new ColaPartidos();
+            
+            // --- Partidos ya definidos ---
+            com.utp.aed.proyectotorneo.model.NodoPartido p1 = new com.utp.aed.proyectotorneo.model.NodoPartido("Sudáfrica", "Canadá"); p1.ganador = "Canadá";
+            com.utp.aed.proyectotorneo.model.NodoPartido p2 = new com.utp.aed.proyectotorneo.model.NodoPartido("Brasil", "Japón"); p2.ganador = "Brasil";
+            com.utp.aed.proyectotorneo.model.NodoPartido p3 = new com.utp.aed.proyectotorneo.model.NodoPartido("Alemania", "Paraguay"); p3.ganador = "Paraguay";
+            com.utp.aed.proyectotorneo.model.NodoPartido p4 = new com.utp.aed.proyectotorneo.model.NodoPartido("Países Bajos", "Marruecos"); p4.ganador = "Marruecos";
+            com.utp.aed.proyectotorneo.model.NodoPartido p5 = new com.utp.aed.proyectotorneo.model.NodoPartido("Costa de Marfil", "Noruega"); p5.ganador = "Noruega";
+            com.utp.aed.proyectotorneo.model.NodoPartido p6 = new com.utp.aed.proyectotorneo.model.NodoPartido("Francia", "Suecia"); p6.ganador = "Francia";
+            com.utp.aed.proyectotorneo.model.NodoPartido p7 = new com.utp.aed.proyectotorneo.model.NodoPartido("México", "Ecuador"); p7.ganador = "México";
+            
+            // === LA CLAVE: Forzar el estado "Pendiente" para evitar el NullPointerException ===
+            com.utp.aed.proyectotorneo.model.NodoPartido p8 = new com.utp.aed.proyectotorneo.model.NodoPartido("Inglaterra", "RD Congo"); p8.ganador = "Pendiente";
+            com.utp.aed.proyectotorneo.model.NodoPartido p9 = new com.utp.aed.proyectotorneo.model.NodoPartido("Bélgica", "Senegal"); p9.ganador = "Pendiente";
+            com.utp.aed.proyectotorneo.model.NodoPartido p10 = new com.utp.aed.proyectotorneo.model.NodoPartido("Estados Unidos", "Bosnia"); p10.ganador = "Pendiente";
+            com.utp.aed.proyectotorneo.model.NodoPartido p11 = new com.utp.aed.proyectotorneo.model.NodoPartido("España", "Austria"); p11.ganador = "Pendiente";
+            com.utp.aed.proyectotorneo.model.NodoPartido p12 = new com.utp.aed.proyectotorneo.model.NodoPartido("Portugal", "Croacia"); p12.ganador = "Pendiente";
+            com.utp.aed.proyectotorneo.model.NodoPartido p13 = new com.utp.aed.proyectotorneo.model.NodoPartido("Suiza", "Argelia"); p13.ganador = "Pendiente";
+            com.utp.aed.proyectotorneo.model.NodoPartido p14 = new com.utp.aed.proyectotorneo.model.NodoPartido("Australia", "Egipto"); p14.ganador = "Pendiente";
+            com.utp.aed.proyectotorneo.model.NodoPartido p15 = new com.utp.aed.proyectotorneo.model.NodoPartido("Argentina", "Cabo Verde"); p15.ganador = "Pendiente";
+            com.utp.aed.proyectotorneo.model.NodoPartido p16 = new com.utp.aed.proyectotorneo.model.NodoPartido("Colombia", "Ghana"); p16.ganador = "Pendiente";
+
+            cola.encolar(p1); cola.encolar(p2); cola.encolar(p3); cola.encolar(p4);
+            cola.encolar(p5); cola.encolar(p6); cola.encolar(p7); cola.encolar(p8);
+            cola.encolar(p9); cola.encolar(p10); cola.encolar(p11); cola.encolar(p12);
+            cola.encolar(p13); cola.encolar(p14); cola.encolar(p15); cola.encolar(p16);
+
+            // Armamos el árbol hasta la final
+            while (cola.obtenerTamaño() > 1) {
+                com.utp.aed.proyectotorneo.model.NodoPartido izq = cola.desencolar();
+                com.utp.aed.proyectotorneo.model.NodoPartido der = cola.desencolar();
+
+                com.utp.aed.proyectotorneo.model.NodoPartido padre = new com.utp.aed.proyectotorneo.model.NodoPartido(izq, der);
+                
+                // Validación segura extra
+                String ganadorIzq = (izq.ganador != null) ? izq.ganador : "Pendiente";
+                String ganadorDer = (der.ganador != null) ? der.ganador : "Pendiente";
+                
+                padre.equipo1 = (!ganadorIzq.equals("Pendiente")) ? ganadorIzq : "Esperando...";
+                padre.equipo2 = (!ganadorDer.equals("Pendiente")) ? ganadorDer : "Esperando...";
+                
+                // Si no forzamos el padre como pendiente, fallará en la siguiente vuelta del ciclo
+                padre.ganador = "Pendiente"; 
+                
+                cola.encolar(padre);
+            }
+
+            partidoFinal = cola.desencolar();
+            llenarArbol(partidoFinal);
+            btnGenerarTorneo.setEnabled(false);
+            
+            // Guardamos el árbol
+            new com.utp.aed.proyectotorneo.dao.LlaveDAO().guardarArbol(partidoFinal);
+
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Llaves del Mundial 2026 generadas con los resultados a la fecha!", "Mundial 2026", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            
+        } catch (Exception ex) {
+            // Si hay un error con el archivo DAO u otra cosa, ahora sí saltará este aviso visual.
+            javax.swing.JOptionPane.showMessageDialog(this, "Hubo un error interno al crear las llaves:\n" + ex.getMessage(), "Error Crítico", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private String obtenerResultadosGrupo(char letra) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("==========================================\n");
+        sb.append("         FICHAS DE PARTIDOS - GRUPO ").append(letra).append("   \n");
+        sb.append("==========================================\n\n");
+        
+        // Simulamos los partidos reales y las posiciones de los clasificados del árbol
+        switch(letra) {
+            case 'A':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - México 2 - 1 Ecuador\n");
+                sb.append("  - Canadá 1 - 0 Sudáfrica\n");
+                sb.append("  - México 1 - 1 Canadá\n");
+                sb.append("  - Ecuador 2 - 0 Sudáfrica\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   Canadá (Clas)    3   2   1   0   7\n");
+                sb.append("  2°   México (Clas)    3   2   1   0   7\n");
+                sb.append("  3°   Ecuador (Clas)   3   1   0   2   3\n");
+                sb.append("  4°   Sudáfrica        3   0   0   3   0\n");
+                break;
+                
+            case 'B':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - Brasil 3 - 1 Japón\n");
+                sb.append("  - España 2 - 0 Austria\n");
+                sb.append("  - Brasil 2 - 2 España\n");
+                sb.append("  - Japón 1 - 0 Austria\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   Brasil (Clas)    3   2   1   0   7\n");
+                sb.append("  2°   España (Clas)    3   2   1   0   7\n");
+                sb.append("  3°   Japón (Clas)     3   1   0   2   3\n");
+                sb.append("  4°   Austria          3   0   0   3   0\n");
+                break;
+                
+            case 'C':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - Alemania 1 - 1 Paraguay\n");
+                sb.append("  - Francia 3 - 0 Suecia\n");
+                sb.append("  - Francia 2 - 1 Alemania\n");
+                sb.append("  - Paraguay 2 - 0 Suecia\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   Francia (Clas)   3   3   0   0   9\n");
+                sb.append("  2°   Paraguay (Clas)  3   1   2   0   5\n");
+                sb.append("  3°   Alemania (Clas)  3   1   1   1   4\n");
+                sb.append("  4°   Suecia (Clas)    3   0   1   2   1\n");
+                break;
+
+            default: // Información genérica para el resto de grupos de la D a la L
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - Argentina 2 - 0 Cabo Verde\n");
+                sb.append("  - Inglaterra 3 - 1 RD Congo\n");
+                sb.append("  - Países Bajos 2 - 2 Marruecos\n");
+                sb.append("  - Colombia 1 - 0 Ghana\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   Clasificado 1    3   2   1   0   7\n");
+                sb.append("  2°   Clasificado 2    3   2   0   1   6\n");
+                sb.append("  3°   Repechaje Avanza 3   1   1   1   4\n");
+                sb.append("  4°   Eliminado        3   0   0   3   0\n");
+                break;
+        }
+        
+        sb.append("\n==========================================");
+        return sb.toString();
+    }
+    
+    private void simularMundialConGrupos() {
+        int numGrupos = 12; // A hasta la L
+        
+        javax.swing.JDialog dialogoPrincipal = new javax.swing.JDialog((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), "Fase de Grupos - Mundial 2026", true);
+        dialogoPrincipal.setLayout(new java.awt.BorderLayout());
+        dialogoPrincipal.setSize(420, 480);
+        dialogoPrincipal.setLocationRelativeTo(this);
+        dialogoPrincipal.setDefaultCloseOperation(javax.swing.JDialog.DISPOSE_ON_CLOSE);
+
+        javax.swing.JPanel panelBotonesGrupos = new javax.swing.JPanel(new java.awt.GridLayout(numGrupos, 1, 8, 8));
+        panelBotonesGrupos.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        javax.swing.JButton[] botonesGrupos = new javax.swing.JButton[numGrupos];
+
+        for (int i = 0; i < numGrupos; i++) {
+            char letra = (char) ('A' + i);
+            botonesGrupos[i] = new javax.swing.JButton("Ver Resultados - Grupo " + letra);
+            botonesGrupos[i].setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+            botonesGrupos[i].setBackground(new java.awt.Color(180, 240, 180)); 
+            
+            botonesGrupos[i].addActionListener(e -> {
+                String infoGrupo = obtenerResultadosGrupo(letra);
+                javax.swing.JTextArea txtArea = new javax.swing.JTextArea(infoGrupo);
+                txtArea.setEditable(false);
+                txtArea.setFont(new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 13)); 
+                txtArea.setBackground(new java.awt.Color(250, 250, 250));
+                
+                javax.swing.JScrollPane scrollFicha = new javax.swing.JScrollPane(txtArea);
+                scrollFicha.setPreferredSize(new java.awt.Dimension(380, 280));
+                
+                javax.swing.JOptionPane.showMessageDialog(dialogoPrincipal, scrollFicha, "Estadísticas del Grupo " + letra, javax.swing.JOptionPane.PLAIN_MESSAGE);
+            });
+
+            panelBotonesGrupos.add(botonesGrupos[i]);
+        }
+
+        javax.swing.JScrollPane scrollPrincipal = new javax.swing.JScrollPane(panelBotonesGrupos);
+        dialogoPrincipal.add(scrollPrincipal, java.awt.BorderLayout.CENTER);
+
+        javax.swing.JPanel panelSurPrincipal = new javax.swing.JPanel();
+        javax.swing.JButton btnContinuarLlaves = new javax.swing.JButton("Generar Llaves de Eliminatorias");
+        btnContinuarLlaves.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+
+        // ==== AQUÍ ESTÁ LA SOLUCIÓN AL BOTÓN ====
+        btnContinuarLlaves.addActionListener(e -> {
+            dialogoPrincipal.dispose(); // 1. Cierra la ventana verde para desbloquear el panel
+            generarMundialActualidad(); // 2. Ejecuta el método que dibuja el árbol
+        });
+
+        panelSurPrincipal.add(btnContinuarLlaves);
+        dialogoPrincipal.add(panelSurPrincipal, java.awt.BorderLayout.SOUTH);
+
+        dialogoPrincipal.setVisible(true);
+    }
+    
     private ListaEnlazadaHistorial obtenerClasificadosFaseGrupos() {
         ListaEnlazadaHistorial clasificados = new ListaEnlazadaHistorial();
         int totalEquipos = Inicio.listaEquipos.getTamano();
