@@ -160,7 +160,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnFinalizadoActionPerformed(evt);
             }
         });
-        add(btnFinalizado, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 190, -1));
+        add(btnFinalizado, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 200, -1));
 
         txtBuscarEquipo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtBuscarEquipo.setText("Buscar Equipo...");

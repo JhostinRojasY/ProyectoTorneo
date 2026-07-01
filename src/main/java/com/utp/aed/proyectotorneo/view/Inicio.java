@@ -15,9 +15,6 @@ public class Inicio extends javax.swing.JFrame {
     
     private com.utp.aed.proyectotorneo.model.Usuario usuarioActual;
 
-    /**
-     * Creates new form Inicio
-     */
     public Inicio() {
         initComponents();
         this.setSize(1000, 700);
