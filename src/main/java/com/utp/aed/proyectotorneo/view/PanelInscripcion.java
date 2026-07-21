@@ -274,7 +274,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 btnEliminarActionPerformed(evt);
             }
         });
-        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 130, 116, -1));
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 130, 120, -1));
 
         btnDeshacer.setFont(new java.awt.Font("Rossanova Personal Use Light", 0, 12)); // NOI18N
         btnDeshacer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_deshacer.png"))); // NOI18N
@@ -304,7 +304,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
                 btnOrdenarActionPerformed(evt);
             }
         });
-        add(btnOrdenar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 260, 110, -1));
+        add(btnOrdenar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 260, 120, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 2320, 950));
@@ -368,7 +368,6 @@ public class PanelInscripcion extends javax.swing.JPanel {
 
     private void btnRestaurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestaurarActionPerformed
         if (!papeleraReciclaje.estaVacia()) {
-            // Sacamos el último eliminado de la pila (LIFO)
             String equipoARestaurar = papeleraReciclaje.pop();
 
             com.utp.aed.proyectotorneo.dao.EquipoDAO dao = new com.utp.aed.proyectotorneo.dao.EquipoDAO();
@@ -415,7 +414,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
             javax.swing.JOptionPane.showMessageDialog(this, "Escribe un nombre de equipo.");
         }
     }
-
+    
     private void btnReiniciarActionPerformed(java.awt.event.ActionEvent evt) {
 
         int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this,

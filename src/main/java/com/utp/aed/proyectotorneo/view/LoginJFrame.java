@@ -25,7 +25,6 @@ public class LoginJFrame extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
         btnRegistro = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -87,11 +86,6 @@ public class LoginJFrame extends javax.swing.JFrame {
         getContentPane().add(btnRegistro);
         btnRegistro.setBounds(240, 290, 170, 40);
 
-        jLabel4.setForeground(new java.awt.Color(51, 51, 255));
-        jLabel4.setText("¿Olvide Contraseña?");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(160, 350, 110, 16);
-
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         getContentPane().add(jLabel3);
         jLabel3.setBounds(-10, -180, 440, 550);
@@ -140,7 +134,6 @@ public class LoginJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;

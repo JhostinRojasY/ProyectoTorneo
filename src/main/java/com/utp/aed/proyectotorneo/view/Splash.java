@@ -15,8 +15,8 @@ public class Splash extends javax.swing.JFrame {
      */
     public Splash() {
         initComponents();
-        this.setLocationRelativeTo(null); // Centrar en pantalla
-        this.setBackground(new java.awt.Color(0, 0, 0, 0)); // Hace el fondo del JFrame 100% transparente
+        this.setLocationRelativeTo(null); 
+        this.setBackground(new java.awt.Color(0, 0, 0, 0)); 
     }
 
     /**
@@ -36,6 +36,7 @@ public class Splash extends javax.swing.JFrame {
         setUndecorated(true);
 
         lblPorcentaje.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        lblPorcentaje.setForeground(new java.awt.Color(255, 255, 255));
         lblPorcentaje.setText("0%");
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/splash.png"))); // NOI18N

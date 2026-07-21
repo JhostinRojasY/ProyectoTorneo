@@ -1,6 +1,7 @@
 package com.utp.aed.proyectotorneo.estructuras;
 
 public class ListaEnlazadaEquipos {
+
     private NodoEquipo cabeza;
     private int tamano;
 
@@ -9,7 +10,6 @@ public class ListaEnlazadaEquipos {
         this.tamano = 0;
     }
 
-    // Insertar al final
     public void insertar(String nombre) {
         NodoEquipo nuevo = new NodoEquipo(nombre);
         if (cabeza == null) {
@@ -23,8 +23,7 @@ public class ListaEnlazadaEquipos {
         }
         tamano++;
     }
-
-    // Obtener elemento por índice 
+    
     public String obtener(int indice) {
         if (indice < 0 || indice >= tamano) {
             return null;
@@ -60,11 +59,10 @@ public class ListaEnlazadaEquipos {
         return false;
     }
 
-    // Algoritmo de Búsqueda Binaria 
     public boolean buscarBinaria(String nombre) {
-        if (tamano == 0) return false;
-        
-        // 1. Convertir a Arreglo
+        if (tamano == 0) {
+            return false;
+        }
         String[] arreglo = new String[tamano];
         NodoEquipo actual = cabeza;
         int index = 0;
@@ -72,19 +70,15 @@ public class ListaEnlazadaEquipos {
             arreglo[index++] = actual.getNombre();
             actual = actual.getSiguiente();
         }
-        
-        // 2. Ordenar el arreglo 
         java.util.Arrays.sort(arreglo, String.CASE_INSENSITIVE_ORDER);
-        
-        // 3. Búsqueda Binaria Clásica
         int inicio = 0;
         int fin = tamano - 1;
         while (inicio <= fin) {
             int medio = inicio + (fin - inicio) / 2;
             int comparacion = arreglo[medio].compareToIgnoreCase(nombre);
-            
+
             if (comparacion == 0) {
-                return true; // Encontrado
+                return true; 
             }
             if (comparacion < 0) {
                 inicio = medio + 1;
@@ -94,8 +88,6 @@ public class ListaEnlazadaEquipos {
         }
         return false;
     }
-
-    // Algoritmo de Ordenamiento
     public void ordenarBurbujaAlfabeticamente() {
         if (tamano > 1) {
             boolean huboCambio;
@@ -108,8 +100,6 @@ public class ListaEnlazadaEquipos {
                 while (siguiente != null) {
                     if (actual.getNombre().compareToIgnoreCase(siguiente.getNombre()) > 0) {
                         huboCambio = true;
-                        
-                        // Intercambiar nodos 
                         if (previo != null) {
                             NodoEquipo sig = siguiente.getSiguiente();
                             previo.setSiguiente(siguiente);
@@ -121,8 +111,6 @@ public class ListaEnlazadaEquipos {
                             siguiente.setSiguiente(actual);
                             actual.setSiguiente(sig);
                         }
-                        
-                        // Desplazar punteros adecuadamente tras el intercambio
                         previo = siguiente;
                         siguiente = actual.getSiguiente();
                     } else {
@@ -134,25 +122,24 @@ public class ListaEnlazadaEquipos {
             } while (huboCambio);
         }
     }
-
-    // Algoritmo de Ordenamiento: Método de Selección adaptado a Listas Enlazadas
     public void ordenarSeleccionAlfabeticamente() {
-        if (cabeza == null || cabeza.getSiguiente() == null) return;
-        
+        if (cabeza == null || cabeza.getSiguiente() == null) {
+            return;
+        }
+
         NodoEquipo actual = cabeza;
         while (actual != null) {
             NodoEquipo min = actual;
             NodoEquipo iter = actual.getSiguiente();
-            
+
             while (iter != null) {
                 if (iter.getNombre().compareToIgnoreCase(min.getNombre()) < 0) {
                     min = iter;
                 }
                 iter = iter.getSiguiente();
             }
-            
+
             if (min != actual) {
-                // Intercambio simple de valores (para mantenerlo comprensible en selección)
                 String temp = actual.getNombre();
                 actual.setNombre(min.getNombre());
                 min.setNombre(temp);
@@ -162,10 +149,11 @@ public class ListaEnlazadaEquipos {
     }
 
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        throw new UnsupportedOperationException("Not supported yet.");
     }
+
     public void vaciar() {
-        this.cabeza = null; 
+        this.cabeza = null;
         this.tamano = 0;
     }
 }

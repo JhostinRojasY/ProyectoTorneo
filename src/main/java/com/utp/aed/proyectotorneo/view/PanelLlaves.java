@@ -160,7 +160,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 btnFinalizadoActionPerformed(evt);
             }
         });
-        add(btnFinalizado, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 190, -1));
+        add(btnFinalizado, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 200, -1));
 
         txtBuscarEquipo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtBuscarEquipo.setText("Buscar Equipo...");
@@ -245,20 +245,17 @@ public class PanelLlaves extends javax.swing.JPanel {
                 opciones[0]
         );
 
-        // El índice 3 ahora es "Cancelar"
         if (eleccionFormato == 3 || eleccionFormato == javax.swing.JOptionPane.CLOSED_OPTION) {
             return;
         }
-        
-        // El índice 2 es nuestro nuevo botón "Simular Mundial 2026"
+
         if (eleccionFormato == 2) {
-            simularMundialConGrupos(); // <-- Ahora sí abre la ventana verde primero
+            simularMundialConGrupos();
             return;
         }
 
         ListaEnlazadaHistorial equiposParaLlaves = new ListaEnlazadaHistorial();
 
-        // El índice 0 es "Fase de Grupos"
         if (eleccionFormato == 0) {
             equiposParaLlaves = obtenerClasificadosFaseGrupos();
 
@@ -379,17 +376,13 @@ public class PanelLlaves extends javax.swing.JPanel {
                 cola.encolar(padre);
             }
 
-            partidoFinal = cola.desencolar();
+           partidoFinal = cola.desencolar();
             llenarArbol(partidoFinal);
-            btnGenerarTorneo.setEnabled(false);
-            
-            // Guardamos el árbol
+            btnGenerarTorneo.setText("Continuar Eliminatorias"); 
             new com.utp.aed.proyectotorneo.dao.LlaveDAO().guardarArbol(partidoFinal);
-
-            javax.swing.JOptionPane.showMessageDialog(this, "¡Llaves del Mundial 2026 generadas con los resultados a la fecha!", "Mundial 2026", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            abrirVentanaPartidosEliminatoria();
             
         } catch (Exception ex) {
-            // Si hay un error con el archivo DAO u otra cosa, ahora sí saltará este aviso visual.
             javax.swing.JOptionPane.showMessageDialog(this, "Hubo un error interno al crear las llaves:\n" + ex.getMessage(), "Error Crítico", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -638,16 +631,176 @@ public class PanelLlaves extends javax.swing.JPanel {
         javax.swing.JButton btnContinuarLlaves = new javax.swing.JButton("Generar Llaves de Eliminatorias");
         btnContinuarLlaves.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
 
-        // ==== AQUÍ ESTÁ LA SOLUCIÓN AL BOTÓN ====
+ 
         btnContinuarLlaves.addActionListener(e -> {
-            dialogoPrincipal.dispose(); // 1. Cierra la ventana verde para desbloquear el panel
-            generarMundialActualidad(); // 2. Ejecuta el método que dibuja el árbol
+            dialogoPrincipal.dispose(); 
+            generarMundialActualidad(); 
         });
 
         panelSurPrincipal.add(btnContinuarLlaves);
         dialogoPrincipal.add(panelSurPrincipal, java.awt.BorderLayout.SOUTH);
 
         dialogoPrincipal.setVisible(true);
+    }
+    
+    
+    private void obtenerPartidosListos(com.utp.aed.proyectotorneo.model.NodoPartido nodo, java.util.ArrayList<com.utp.aed.proyectotorneo.model.NodoPartido> listos) {
+        if (nodo == null) {
+            return;
+        }
+
+        obtenerPartidosListos(nodo.partidoPrevio1, listos);
+        obtenerPartidosListos(nodo.partidoPrevio2, listos);
+
+        if (nodo.ganador.equals("Pendiente") && 
+            !nodo.equipo1.startsWith("Esperando") && 
+            !nodo.equipo2.startsWith("Esperando")) {
+            listos.add(nodo);
+        }
+    }
+
+   private void abrirVentanaPartidosEliminatoria() {
+      if (partidoFinal == null) {
+            return;
+        }
+
+        java.util.ArrayList<com.utp.aed.proyectotorneo.model.NodoPartido> partidosListos = new java.util.ArrayList<>();
+        obtenerPartidosListos(partidoFinal, partidosListos);
+
+        if (partidosListos.isEmpty()) {
+            return;
+        }
+
+        String nombreFase;
+        int cantidad = partidosListos.size();
+        
+        if (cantidad >= 9) {
+            nombreFase = "16avos de Final";
+        } else if (cantidad >= 5) {
+            nombreFase = "Octavos de Final";
+        } else if (cantidad >= 3) {
+            nombreFase = "Cuartos de Final";
+        } else if (cantidad == 2) {
+            nombreFase = "Semifinal";
+        } else if (cantidad == 1) {
+            nombreFase = "La Gran Final";
+        } else {
+            nombreFase = "Ronda Eliminatoria";
+        }
+
+   
+        javax.swing.JDialog dialogoRonda = new javax.swing.JDialog((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), "Mundial 2026 - " + nombreFase, true);
+        dialogoRonda.setLayout(new java.awt.BorderLayout());
+        
+        int alturaDialogo = Math.max(200, 50 * partidosListos.size() + 110);
+        dialogoRonda.setSize(480, alturaDialogo); 
+        dialogoRonda.setLocationRelativeTo(this);
+        dialogoRonda.setDefaultCloseOperation(javax.swing.JDialog.DISPOSE_ON_CLOSE);
+
+        javax.swing.JLabel lblFase = new javax.swing.JLabel("" + nombreFase.toUpperCase() + "", javax.swing.SwingConstants.CENTER);
+        lblFase.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
+        lblFase.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 5, 0));
+        dialogoRonda.add(lblFase, java.awt.BorderLayout.NORTH);
+
+        javax.swing.JPanel panelCentro = new javax.swing.JPanel(new java.awt.GridLayout(partidosListos.size(), 1, 5, 5));
+        panelCentro.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        javax.swing.JButton[] botonesPartidos = new javax.swing.JButton[partidosListos.size()];
+        String[] ganadoresPartido = new String[partidosListos.size()];
+        java.util.Stack<Integer> pilaDeshacer = new java.util.Stack<>();
+
+        for (int p = 0; p < partidosListos.size(); p++) {
+            final int index = p;
+            com.utp.aed.proyectotorneo.model.NodoPartido partido = partidosListos.get(p);
+            String eq1 = partido.equipo1;
+            String eq2 = partido.equipo2;
+
+            botonesPartidos[index] = new javax.swing.JButton();
+            botonesPartidos[index].setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
+            botonesPartidos[index].setText("Partido " + (index + 1) + ": " + eq1 + " vs " + eq2 + " (Pendiente)");
+
+            botonesPartidos[index].addActionListener(e -> {
+                if (ganadoresPartido[index] != null) return; 
+
+                String[] opciones = {eq1, eq2};
+                int eleccion = javax.swing.JOptionPane.showOptionDialog(
+                        dialogoRonda,
+                        "¿Quién ganó el partido?\n\n" + eq1 + "  VS  " + eq2,
+                        "Definir Ganador",
+                        javax.swing.JOptionPane.DEFAULT_OPTION,
+                        javax.swing.JOptionPane.QUESTION_MESSAGE,
+                        null, opciones, opciones[0]
+                );
+
+                if (eleccion >= 0) {
+                    pilaDeshacer.push(index);
+                    ganadoresPartido[index] = opciones[eleccion];
+                    botonesPartidos[index].setText("Partido " + (index + 1) + ": " + eq1 + " vs " + eq2 + " Ganó: " + opciones[eleccion]);
+                    botonesPartidos[index].setBackground(new java.awt.Color(200, 255, 200)); 
+                }
+            });
+            panelCentro.add(botonesPartidos[index]);
+        }
+        javax.swing.JScrollPane scrollPanel = new javax.swing.JScrollPane(panelCentro);
+        dialogoRonda.add(scrollPanel, java.awt.BorderLayout.CENTER);
+
+
+        javax.swing.JPanel panelSur = new javax.swing.JPanel();
+        
+        javax.swing.JButton btnSiguiente = new javax.swing.JButton("Guardar y Jugar Siguiente Ronda");
+        btnSiguiente.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        
+        javax.swing.JButton btnDeshacer = new javax.swing.JButton("Deshacer");
+        btnDeshacer.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+
+        btnSiguiente.addActionListener(e -> {
+            boolean todosJugados = true;
+            for (String g : ganadoresPartido) {
+                if (g == null) {
+                    todosJugados = false;
+                    break;
+                }
+            }
+
+            if (!todosJugados) {
+                javax.swing.JOptionPane.showMessageDialog(dialogoRonda, "Aún hay partidos pendientes.", "Incompleto", javax.swing.JOptionPane.WARNING_MESSAGE);
+            } else {
+                com.utp.aed.proyectotorneo.dao.LlaveDAO dao = new com.utp.aed.proyectotorneo.dao.LlaveDAO();
+                for (int i = 0; i < partidosListos.size(); i++) {
+                    com.utp.aed.proyectotorneo.model.NodoPartido p = partidosListos.get(i);
+                    p.ganador = ganadoresPartido[i];
+                    historialAcciones.push(p);
+                    dao.actualizarNodo(p);
+                    actualizarPadre(partidoFinal, p, p.ganador, dao);
+                }
+                llenarArbol(partidoFinal); 
+                dialogoRonda.dispose(); 
+
+                if (partidoFinal != null && partidoFinal.ganador.equals("Pendiente")) {
+                    abrirVentanaPartidosEliminatoria(); 
+                } else if (partidoFinal != null && !partidoFinal.ganador.equals("Pendiente")) {
+                    // Si ya se eligió el ganador de la Gran Final
+                    javax.swing.JOptionPane.showMessageDialog(this, "¡EL TORNEO HA FINALIZADO!\nEl campeón es: " + partidoFinal.ganador, "FIN DEL MUNDIAL", javax.swing.JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
+        btnDeshacer.addActionListener(e -> {
+            if (!pilaDeshacer.isEmpty()) {
+                int ultimoIndex = pilaDeshacer.pop();
+                ganadoresPartido[ultimoIndex] = null;
+                String eq1 = partidosListos.get(ultimoIndex).equipo1;
+                String eq2 = partidosListos.get(ultimoIndex).equipo2;
+                botonesPartidos[ultimoIndex].setText("Partido " + (ultimoIndex + 1) + ": " + eq1 + " vs " + eq2 + " (Pendiente)");
+                botonesPartidos[ultimoIndex].setBackground(null); 
+            }
+        });
+
+        panelSur.add(btnSiguiente);
+        panelSur.add(btnDeshacer);
+        dialogoRonda.add(panelSur, java.awt.BorderLayout.SOUTH);
+
+        dialogoRonda.setVisible(true);
     }
     
     private ListaEnlazadaHistorial obtenerClasificadosFaseGrupos() {
