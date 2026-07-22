@@ -48,6 +48,7 @@ public class Inicio extends javax.swing.JFrame {
         btnConfig = new javax.swing.JButton();
         btncerrar = new javax.swing.JButton();
         pnlContenido = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -115,6 +116,10 @@ public class Inicio extends javax.swing.JFrame {
         pnlContenido.setBackground(new java.awt.Color(0, 0, 0));
         pnlContenido.setForeground(new java.awt.Color(255, 255, 255));
         pnlContenido.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/mundial.png"))); // NOI18N
+        pnlContenido.add(jLabel1, java.awt.BorderLayout.CENTER);
+
         getContentPane().add(pnlContenido, java.awt.BorderLayout.CENTER);
 
         pack();
@@ -207,6 +212,7 @@ public void irAPanelLlaves() {
     private javax.swing.JButton btnIns;
     private javax.swing.JButton btnLlaves;
     private javax.swing.JButton btncerrar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlSidebar;
     // End of variables declaration//GEN-END:variables

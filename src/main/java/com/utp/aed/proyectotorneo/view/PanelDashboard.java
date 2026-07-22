@@ -84,6 +84,7 @@ public class PanelDashboard extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtConsola = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(0, 0, 0));
@@ -243,6 +244,9 @@ public class PanelDashboard extends javax.swing.JPanel {
 
         add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 140, 663, 330));
 
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/mundial.png"))); // NOI18N
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 250, -1, -1));
+
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(800, 700));
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 2810, 1470));
@@ -252,6 +256,7 @@ public class PanelDashboard extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

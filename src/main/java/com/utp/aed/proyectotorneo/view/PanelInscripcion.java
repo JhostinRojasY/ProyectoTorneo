@@ -85,6 +85,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
         btnDeshacer = new javax.swing.JButton();
         btnRestaurar = new javax.swing.JButton();
         btnOrdenar = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(0, 0, 0));
@@ -137,7 +138,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtNombreEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -305,6 +306,9 @@ public class PanelInscripcion extends javax.swing.JPanel {
             }
         });
         add(btnOrdenar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 260, 120, -1));
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/mundial.png"))); // NOI18N
+        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, -1, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 2320, 950));
@@ -546,6 +550,7 @@ public class PanelInscripcion extends javax.swing.JPanel {
     private javax.swing.JButton btnReiniciar;
     private javax.swing.JButton btnRestaurar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -124,6 +124,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         btnLimpiar = new javax.swing.JButton();
         btnDeshacer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         jLabel3.setText("jLabel3");
@@ -142,6 +143,7 @@ public class PanelLlaves extends javax.swing.JPanel {
         add(btnGenerarTorneo, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 17, -1, -1));
 
         arbolTorneo.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        arbolTorneo.setToolTipText("");
         arbolTorneo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         arbolTorneo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -211,6 +213,9 @@ public class PanelLlaves extends javax.swing.JPanel {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icono_buscar.png"))); // NOI18N
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 120, 70, -1));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/mundial.png"))); // NOI18N
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 360, 290, 280));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoLogin.png"))); // NOI18N
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -400,10 +405,9 @@ public class PanelLlaves extends javax.swing.JPanel {
         sb.append("         FICHAS DE PARTIDOS - GRUPO ").append(letra).append("   \n");
         sb.append("==========================================\n\n");
         
-        // Simulamos los partidos reales y las posiciones de los clasificados del árbol
         switch(letra) {
             case 'A':
-                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append(" ⚽ RESULTADOS:\n");
                 sb.append("  - México 2 - 1 Ecuador\n");
                 sb.append("  - Canadá 1 - 0 Sudáfrica\n");
                 sb.append("  - México 1 - 1 Canadá\n");
@@ -418,7 +422,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 break;
                 
             case 'B':
-                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append(" ⚽ RESULTADOS:\n");
                 sb.append("  - Brasil 3 - 1 Japón\n");
                 sb.append("  - España 2 - 0 Austria\n");
                 sb.append("  - Brasil 2 - 2 España\n");
@@ -433,7 +437,7 @@ public class PanelLlaves extends javax.swing.JPanel {
                 break;
                 
             case 'C':
-                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append(" ⚽ RESULTADOS:\n");
                 sb.append("  - Alemania 1 - 1 Paraguay\n");
                 sb.append("  - Francia 3 - 0 Suecia\n");
                 sb.append("  - Francia 2 - 1 Alemania\n");
@@ -447,19 +451,148 @@ public class PanelLlaves extends javax.swing.JPanel {
                 sb.append("  4°   Suecia (Clas)    3   0   1   2   1\n");
                 break;
 
-            default: // Información genérica para el resto de grupos de la D a la L
-                sb.append(" ⚽ RESULTADOS:\n");
+            case 'D':
+                sb.append(" ⚽ RESULTADOS:\n");
                 sb.append("  - Argentina 2 - 0 Cabo Verde\n");
-                sb.append("  - Inglaterra 3 - 1 RD Congo\n");
-                sb.append("  - Países Bajos 2 - 2 Marruecos\n");
-                sb.append("  - Colombia 1 - 0 Ghana\n\n");
+                sb.append("  - Nigeria 1 - 1 Escocia\n");
+                sb.append("  - Argentina 3 - 1 Nigeria\n");
+                sb.append("  - Cabo Verde 1 - 0 Escocia\n\n");
                 sb.append(" 🏆 TABLA DE POSICIONES:\n");
                 sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
                 sb.append("  ----------------------------------------\n");
-                sb.append("  1°   Clasificado 1    3   2   1   0   7\n");
-                sb.append("  2°   Clasificado 2    3   2   0   1   6\n");
-                sb.append("  3°   Repechaje Avanza 3   1   1   1   4\n");
-                sb.append("  4°   Eliminado        3   0   0   3   0\n");
+                sb.append("  1°   Argentina(Clas)  3   2   1   0   7\n");
+                sb.append("  2°   Cabo Verde(Clas) 3   2   0   1   6\n");
+                sb.append("  3°   Nigeria          3   0   1   2   1\n");
+                sb.append("  4°   Escocia          3   0   1   2   1\n");
+                break;
+
+            case 'E':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - Inglaterra 3 - 1 RD Congo\n");
+                sb.append("  - Uruguay 2 - 0 Vietnam\n");
+                sb.append("  - Inglaterra 1 - 1 Uruguay\n");
+                sb.append("  - RD Congo 2 - 1 Vietnam\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   Inglaterra(Clas) 3   2   1   0   7\n");
+                sb.append("  2°   RD Congo (Clas)  3   2   0   1   6\n");
+                sb.append("  3°   Uruguay          3   1   1   1   4\n");
+                sb.append("  4°   Vietnam          3   0   0   3   0\n");
+                break;
+
+            case 'F':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - Países Bajos 2 - 2 Marruecos\n");
+                sb.append("  - Polonia 1 - 0 N. Zelanda\n");
+                sb.append("  - Países Bajos 2 - 0 Polonia\n");
+                sb.append("  - Marruecos 3 - 1 N. Zelanda\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   Países B. (Clas) 3   2   1   0   7\n");
+                sb.append("  2°   Marruecos (Clas) 3   1   2   0   5\n");
+                sb.append("  3°   Polonia          3   1   0   2   3\n");
+                sb.append("  4°   N. Zelanda       3   0   0   3   0\n");
+                break;
+
+            case 'G':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - C. Marfil 2 - 1 Noruega\n");
+                sb.append("  - Italia 1 - 1 Honduras\n");
+                sb.append("  - C. Marfil 1 - 1 Italia\n");
+                sb.append("  - Noruega 2 - 0 Honduras\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   C. Marfil (Clas) 3   2   1   0   7\n");
+                sb.append("  2°   Noruega (Clas)   3   2   0   1   6\n");
+                sb.append("  3°   Italia           3   0   2   1   2\n");
+                sb.append("  4°   Honduras         3   0   1   2   1\n");
+                break;
+
+            case 'H':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - Bélgica 2 - 1 Senegal\n");
+                sb.append("  - Chile 2 - 0 A. Saudita\n");
+                sb.append("  - Bélgica 1 - 0 Chile\n");
+                sb.append("  - Senegal 3 - 1 A. Saudita\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   Bélgica (Clas)   3   3   0   0   9\n");
+                sb.append("  2°   Senegal (Clas)   3   1   1   1   4\n");
+                sb.append("  3°   Chile            3   1   1   1   4\n");
+                sb.append("  4°   A. Saudita       3   0   0   3   0\n");
+                break;
+
+            case 'I':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - EE.UU. 2 - 1 Bosnia\n");
+                sb.append("  - Perú 0 - 0 Corea Sur\n");
+                sb.append("  - EE.UU. 1 - 0 Perú\n");
+                sb.append("  - Bosnia 2 - 0 Corea Sur\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   EE.UU. (Clas)    3   2   1   0   7\n");
+                sb.append("  2°   Bosnia (Clas)    3   2   0   1   6\n");
+                sb.append("  3°   Perú             3   0   2   1   2\n");
+                sb.append("  4°   Corea Sur        3   0   1   2   1\n");
+                break;
+
+            case 'J':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - Portugal 2 - 1 Croacia\n");
+                sb.append("  - Venezuela 1 - 0 Mali\n");
+                sb.append("  - Portugal 3 - 1 Venezuela\n");
+                sb.append("  - Croacia 2 - 0 Mali\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   Portugal (Clas)  3   3   0   0   9\n");
+                sb.append("  2°   Croacia (Clas)   3   2   0   1   6\n");
+                sb.append("  3°   Venezuela        3   1   0   2   3\n");
+                sb.append("  4°   Mali             3   0   0   3   0\n");
+                break;
+
+            case 'K':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - Suiza 1 - 1 Argelia\n");
+                sb.append("  - Colombia 2 - 0 Panamá\n");
+                sb.append("  - Suiza 2 - 1 Colombia\n");
+                sb.append("  - Argelia 1 - 0 Panamá\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   Suiza (Clas)     3   2   1   0   7\n");
+                sb.append("  2°   Argelia (Clas)   3   1   2   0   5\n");
+                sb.append("  3°   Colombia (Clas)  3   1   1   1   4\n");
+                sb.append("  4°   Panamá           3   0   0   3   0\n");
+                break;
+
+            case 'L':
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  - Australia 1 - 1 Egipto\n");
+                sb.append("  - Ghana 2 - 1 Serbia\n");
+                sb.append("  - Australia 2 - 0 Ghana\n");
+                sb.append("  - Egipto 1 - 0 Serbia\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  1°   Australia (Clas) 3   2   1   0   7\n");
+                sb.append("  2°   Egipto (Clas)    3   1   2   0   5\n");
+                sb.append("  3°   Ghana (Clas)     3   1   1   1   4\n");
+                sb.append("  4°   Serbia           3   0   0   3   0\n");
+                break;
+
+            default:
+                sb.append(" ⚽ RESULTADOS:\n");
+                sb.append("  Datos no disponibles.\n\n");
+                sb.append(" 🏆 TABLA DE POSICIONES:\n");
+                sb.append("  Pos  Equipo          PJ  PG  PE  PP  PTS\n");
+                sb.append("  ----------------------------------------\n");
+                sb.append("  -    -                -   -   -   -   -\n");
                 break;
         }
         
@@ -961,6 +1094,7 @@ public class PanelLlaves extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtBuscarEquipo;
