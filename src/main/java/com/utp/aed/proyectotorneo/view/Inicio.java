@@ -151,11 +151,16 @@ public class Inicio extends javax.swing.JFrame {
 
     private void btnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigActionPerformed
         // TODO add your handling code here:
-        PanelConfiguracion pnlConfig = new PanelConfiguracion();
+    try {
+        PanelConfiguracion pnlConfig = new PanelConfiguracion(); 
+        
         pnlContenido.removeAll();
         pnlContenido.add(pnlConfig, java.awt.BorderLayout.CENTER);
         pnlContenido.revalidate();
         pnlContenido.repaint();
+    } catch (Exception e) {
+        e.printStackTrace(); 
+    }
     }//GEN-LAST:event_btnConfigActionPerformed
 
     private void btncerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarActionPerformed
